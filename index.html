@@ -19,8 +19,10 @@
       --gold: #c7a43a;
       --cyan: #00eaff;
       --red: #ff4d6d;
-      --purple: rgba(180, 120, 255, 0.22);
-      --purple-glow: rgba(180, 120, 255, 0.10);
+      --purple: rgba(180, 120, 255, 0.35);
+      --purple-glow-1: rgba(180, 120, 255, 0.28);
+      --purple-glow-2: rgba(180, 120, 255, 0.16);
+      --purple-inset: rgba(180, 120, 255, 0.08);
     }
 
     body {
@@ -50,8 +52,10 @@
       border: 1px solid var(--purple);
       border-radius: 24px;
       box-shadow:
-        0 0 10px var(--purple-glow),
-        inset 0 0 10px rgba(180, 120, 255, 0.03);
+        0 0 12px var(--purple-glow-1),
+        0 0 32px var(--purple-glow-2),
+        0 0 60px rgba(180, 120, 255, 0.08),
+        inset 0 0 10px var(--purple-inset);
       padding: 18px 14px 22px;
       background: rgba(255,255,255,0.01);
       backdrop-filter: blur(1px);
@@ -185,12 +189,13 @@
       transform: scale(0.97);
     }
 
-    /* scan line button */
+    /* ===== Scan button with thick cyan line ===== */
     .scan-btn {
       margin-top: 22px;
       margin-bottom: 4px;
       color: #fff;
-      border-color: rgba(255,255,255,0.85);
+      border-color: rgba(255,255,255,0.88);
+      background: rgba(255,255,255,0.01);
       box-shadow:
         0 0 8px rgba(255,255,255,0.18),
         0 0 18px rgba(0, 234, 255, 0.08);
@@ -206,23 +211,26 @@
       position: absolute;
       top: 10%;
       bottom: 10%;
-      width: 2px;
+      width: 4px;
       left: 10%;
       background: linear-gradient(
         to bottom,
-        transparent,
-        rgba(0,234,255,1),
-        transparent
+        transparent 0%,
+        rgba(0,234,255,1) 20%,
+        rgba(0,234,255,1) 50%,
+        rgba(0,234,255,1) 80%,
+        transparent 100%
       );
       box-shadow:
-        0 0 8px rgba(0,234,255,0.9),
-        0 0 18px rgba(0,234,255,0.6);
+        0 0 10px rgba(0,234,255,1),
+        0 0 20px rgba(0,234,255,0.8),
+        0 0 40px rgba(0,234,255,0.5);
       animation: scanLine 2s ease-in-out infinite alternate;
     }
 
     @keyframes scanLine {
       0% { left: 10%; }
-      100% { left: calc(90% - 2px); }
+      100% { left: calc(90% - 4px); }
     }
 
     /* ===== Verified page ===== */
@@ -236,8 +244,7 @@
       font-size: 1.6rem;
       letter-spacing: 2px;
       margin-bottom: 14px;
-      text-shadow:
-        0 0 6px rgba(0,234,255,0.16);
+      text-shadow: 0 0 6px rgba(0,234,255,0.16);
     }
 
     /* ===== Warning ===== */
@@ -484,7 +491,7 @@
 <body>
   <div class="container">
 
-    <!-- STEP 1 -->
+    <!-- STEP 1: Full ticket card -->
     <div id="step1" class="page active">
       <div class="ticket">
         <div class="ticket-header">
@@ -525,7 +532,7 @@
       <button id="startBtn" class="scan-btn">SCAN TO BOARD</button>
     </div>
 
-    <!-- STEP 2 -->
+    <!-- STEP 2: Verified -->
     <div id="step2" class="page">
       <div class="verified-card">
         <div class="verified-title">PASS VERIFIED</div>
@@ -536,7 +543,7 @@
       </div>
     </div>
 
-    <!-- STEP 3 -->
+    <!-- STEP 3: Warning -->
     <div id="step3" class="page">
       <div class="warning-box">
         <h2 class="warning-title">WARNING:<br>ONE WAY TICKET</h2>
@@ -549,7 +556,7 @@
       </div>
     </div>
 
-    <!-- STEP 4 -->
+    <!-- STEP 4: Typewriter -->
     <div id="step4" class="page">
       <div id="finalViewport">
         <div id="final">
@@ -581,7 +588,7 @@
       </div>
     </div>
 
-    <!-- STEP 5 -->
+    <!-- STEP 5: Success -->
     <div id="step5" class="page">
       <div id="success">
         <div class="success-text">BOARDING CONFIRMED</div>
