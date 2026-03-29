@@ -3,142 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boarding Pass</title>
+
+<title>Boarding</title>
 
 <style>
-* { box-sizing: border-box; }
-
-:root {
-  --bg: #06070a;
-  --text: #f5f7ff;
-  --cyan: #00eaff;
-  --red: #ff4d6d;
-  --purple: rgba(180,120,255,0.2);
+:root{
+  --bg:#06070a;
+  --text:#f5f7ff;
+  --cyan:#00eaff;
+  --purple:rgba(180,120,255,0.2);
 }
 
-/* ===== BODY ===== */
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-  text-align: center;
-  overflow-y: auto;
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial;
+  text-align:center;
 }
 
-/* ===== CONTAINER ===== */
-.container {
-  max-width: 420px;
-  margin: auto;
-  padding: 30px 16px 100px;
+.container{
+  max-width:420px;
+  margin:auto;
+  padding:40px 16px 120px;
 }
 
-/* ===== PAGE ===== */
-.page {
-  display: none;
-  border: 1px solid var(--purple);
-  border-radius: 20px;
-  padding: 16px;
+.page{
+  display:none;
+  border:1px solid var(--purple);
+  border-radius:20px;
+  padding:20px;
 }
 
-.page.active {
-  display: block;
+.page.active{ display:block; }
+
+/* ===== 登機證 ===== */
+.ticket{
+  line-height:1.8;
 }
 
-/* ===== BUTTON ===== */
-button {
-  border: 2px solid var(--cyan);
-  background: transparent;
-  color: var(--cyan);
-  padding: 12px 20px;
-  border-radius: 999px;
-  margin-top: 20px;
+/* ===== 掃描按鈕 ===== */
+.scan-btn{
+  margin-top:30px;
+  padding:14px 24px;
+  border-radius:999px;
+  border:2px solid var(--cyan);
+  color:var(--cyan);
+  background:transparent;
+  position:relative;
+  overflow:hidden;
+}
+
+/* 🔥 掃描光 */
+.scan-btn::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(0,234,255,0.6),
+    transparent
+  );
+  animation:scan 2s infinite;
+}
+
+@keyframes scan{
+  0%{ left:-100%; }
+  50%{ left:100%; }
+  100%{ left:-100%; }
 }
 
 /* ===== WARNING ===== */
-.warning {
-  border: 2px solid var(--red);
-  box-shadow: 0 0 20px rgba(255,0,0,0.4);
-  padding: 20px;
+.warning{
+  border:2px solid #ff4d6d;
+  box-shadow:0 0 20px rgba(255,0,0,0.4);
+  padding:20px;
 }
 
-/* ===== TYPEWRITER ===== */
-#typewriter {
-  line-height: 2;
-  font-size: 18px;
+/* ===== 打字 ===== */
+#typewriter{
+  line-height:2;
 }
 
-/* ===== GLITCH（重點） ===== */
-.glitch {
-  position: relative;
+/* ===== 按鈕區 ===== */
+#buttons{
+  display:none;
+  margin-top:30px;
 }
 
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0.15;
+.choice{
+  margin:6px;
+  padding:12px 18px;
+  border-radius:999px;
+  border:2px solid var(--cyan);
+  background:transparent;
+  color:var(--cyan);
 }
 
-.glitch::before {
-  color: #00eaff;
-  animation: glitch1 3s infinite;
+/* ===== 成功 ===== */
+#success{
+  opacity:0;
+  transform:scale(0.9);
+  transition:0.8s;
 }
 
-.glitch::after {
-  color: #ff4d6d;
-  animation: glitch2 3s infinite;
+#success.active{
+  opacity:1;
+  transform:scale(1);
 }
 
-@keyframes glitch1 {
-  0%, 97%, 100% { transform: none; }
-  98% { transform: translate(-1px, 0); }
-  99% { transform: translate(1px, 0); }
-}
-
-@keyframes glitch2 {
-  0%, 97%, 100% { transform: none; }
-  98% { transform: translate(1px, 0); }
-  99% { transform: translate(-1px, 0); }
-}
-
-/* ===== FINAL GLOW ===== */
-.final-glow {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(0,234,255,0.08), transparent 60%);
-  opacity: 0;
-  transition: 1s;
-}
-
-.final-glow.active {
-  opacity: 1;
-}
-
-/* ===== BUTTON GROUP ===== */
-#buttons {
-  display: none;
-  margin-top: 30px;
-}
-
-.choice {
-  margin: 5px;
-}
-
-/* ===== SUCCESS ===== */
-#success {
-  opacity: 0;
-  transform: scale(0.9);
-  transition: 0.8s;
-}
-
-#success.active {
-  opacity: 1;
-  transform: scale(1);
-}
 </style>
 </head>
 
@@ -146,37 +123,58 @@ button {
 
 <div class="container">
 
-<!-- STEP 1 -->
+<!-- STEP 1 登機證 -->
 <div id="step1" class="page active">
-  <h3>BOARDING PASS</h3>
-  <p>FROM: OUR STORY</p>
-  <p>TO: THE NEXT CHAPTER</p>
-  <p>FLIGHT: AI143</p>
-  <button onclick="nextStep(2)">SCAN TO BOARD</button>
+  <div class="ticket">
+    <h2>BOARDING PASS</h2>
+    <p>FROM: OUR STORY</p>
+    <p>TO: THE NEXT CHAPTER</p>
+    <p>FLIGHT: AI143</p>
+  </div>
+
+  <button class="scan-btn" onclick="nextStep(2)">
+    SCAN TO BOARD
+  </button>
 </div>
 
-<!-- STEP 2 -->
+<!-- STEP 2 登機證確認（你要的那頁） -->
 <div id="step2" class="page">
+  <h3>PASS VERIFIED</h3>
+  <p>Passenger: Yudai</p>
+  <p>Seat: 1A</p>
+  <p>Status: CLEARED</p>
+
+  <button class="scan-btn" onclick="nextStep(3)">
+    CONTINUE
+  </button>
+</div>
+
+<!-- STEP 3 WARNING -->
+<div id="step3" class="page">
   <div class="warning">
     <h2>WARNING</h2>
     <p>ONE WAY TICKET</p>
-    <button onclick="startFinal()">CONFIRM</button>
+    <p>No return once confirmed.</p>
+
+    <button class="scan-btn" onclick="startTyping()">
+      CONFIRM BOARDING
+    </button>
   </div>
 </div>
 
-<!-- STEP 3 -->
-<div id="step3" class="page">
-  <div id="typewriter" class="glitch" data-text=""></div>
+<!-- STEP 4 打字 -->
+<div id="step4" class="page">
+  <div id="typewriter"></div>
 
   <div id="buttons">
-    <button class="choice" onclick="nextStep(4)">Accept</button>
+    <button class="choice" onclick="nextStep(5)">Accept</button>
     <button class="choice">Gift Notice</button>
-    <button class="choice" onclick="nextStep(4)">Accept</button>
+    <button class="choice" onclick="nextStep(5)">Accept</button>
   </div>
 </div>
 
-<!-- STEP 4 -->
-<div id="step4" class="page">
+<!-- STEP 5 -->
+<div id="step5" class="page">
   <div id="success">
     <h1>BOARDING CONFIRMED</h1>
     ❤️
@@ -184,8 +182,6 @@ button {
 </div>
 
 </div>
-
-<div class="final-glow" id="glow"></div>
 
 <script>
 const text = `Dear Most Precious Passenger Yudai:
@@ -202,47 +198,42 @@ it has always been here.
 Now,
 please look to your left.
 
-Your gift is right here.`;
+Your gift is right here.`
 
-let i = 0;
+let i=0;
 
 function nextStep(n){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("step"+n).classList.add("active");
 }
 
-function startFinal(){
-  nextStep(3);
-  i = 0;
-  document.getElementById("typewriter").innerHTML = "";
+function startTyping(){
+  nextStep(4);
+  i=0;
+  document.getElementById("typewriter").innerHTML="";
   type();
 }
 
 function type(){
-  if(i < text.length){
-    let char = text[i];
-    let el = document.getElementById("typewriter");
-
-    el.innerHTML += char === "\n" ? "<br>" : char;
-    el.setAttribute("data-text", el.innerText);
-
+  if(i<text.length){
+    let char=text[i];
+    document.getElementById("typewriter").innerHTML+= char=="\n"?"<br>":char;
     i++;
-    setTimeout(type, 40);
-  } else {
+    setTimeout(type,40);
+  }else{
     setTimeout(()=>{
-      document.getElementById("buttons").style.display = "block";
-      document.getElementById("glow").classList.add("active");
-    },600);
+      document.getElementById("buttons").style.display="block";
+    },500);
   }
 }
 
 document.querySelectorAll(".choice").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    nextStep(4);
+  btn.onclick=()=>{
+    nextStep(5);
     setTimeout(()=>{
       document.getElementById("success").classList.add("active");
     },50);
-  });
+  }
 });
 </script>
 
