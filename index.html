@@ -205,6 +205,7 @@
       color: #fff;
     }
 
+    /* 上下漸淡、中間最亮 */
     .scan-btn::after {
       content: "";
       position: absolute;
@@ -214,16 +215,18 @@
       left: 10%;
       background: linear-gradient(
         to bottom,
-        transparent 0%,
-        rgba(0,234,255,1) 20%,
-        rgba(0,234,255,1) 50%,
-        rgba(0,234,255,1) 80%,
-        transparent 100%
+        rgba(0, 234, 255, 0) 0%,
+        rgba(0, 234, 255, 0.35) 18%,
+        rgba(0, 234, 255, 0.95) 42%,
+        rgba(0, 234, 255, 1) 50%,
+        rgba(0, 234, 255, 0.95) 58%,
+        rgba(0, 234, 255, 0.35) 82%,
+        rgba(0, 234, 255, 0) 100%
       );
       box-shadow:
         0 0 10px rgba(0,234,255,1),
         0 0 20px rgba(0,234,255,0.8),
-        0 0 40px rgba(0,234,255,0.5);
+        0 0 40px rgba(0,234,255,0.45);
       animation: scanLine 2s ease-in-out infinite alternate;
     }
 
@@ -591,7 +594,7 @@ Your gift is right here.`;
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function tvTransition(nextPageId) {
+    function tvTransition(nextPageId, callback) {
       tvOff.style.opacity = 1;
       tvOff.classList.add("tv-off-active");
 
@@ -599,6 +602,7 @@ Your gift is right here.`;
         tvOff.classList.remove("tv-off-active");
         tvOff.style.opacity = 0;
         showPage(nextPageId);
+        if (callback) callback();
       }, 620);
     }
 
@@ -645,33 +649,34 @@ Your gift is right here.`;
     });
 
     document.getElementById("confirmBtn").addEventListener("click", () => {
-      showPage("step3");
+      tvTransition("step3", () => {
+        finalUnlocked = false;
+        finalViewport.classList.remove("unlocked");
+        finalViewport.scrollTop = 0;
 
-      finalUnlocked = false;
-      finalViewport.classList.remove("unlocked");
-      finalViewport.scrollTop = 0;
-
-      typingIndex = 0;
-      typewriterEl.innerHTML = "";
-      buttonsEl.style.display = "none";
-      typeMessage();
+        typingIndex = 0;
+        typewriterEl.innerHTML = "";
+        buttonsEl.style.display = "none";
+        typeMessage();
+      });
     });
 
     document.querySelectorAll(".yes-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        showPage("step4");
-        setTimeout(() => {
-          document.getElementById("success").classList.add("active");
-        }, 50);
+        tvTransition("step4", () => {
+          setTimeout(() => {
+            document.getElementById("success").classList.add("active");
+          }, 50);
+        });
       });
     });
 
     document.getElementById("noticeBtn").addEventListener("click", () => {
-      showPage("stepNotice");
+      tvTransition("stepNotice");
     });
 
     document.getElementById("back").addEventListener("click", () => {
-      showPage("step3");
+      tvTransition("step3");
     });
   </script>
 </body>
