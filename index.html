@@ -1,603 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Boarding Pass</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boarding Pass</title>
 
-    :root {
-      --bg: #06070a;
-      --text: #f5f7ff;
-      --muted: #7f8899;
-      --ticket-bg: #f2f2f2;
-      --ticket-text: #171717;
-      --line: #cfcfcf;
-      --gold: #c7a43a;
-      --cyan: #00eaff;
-      --cyan-soft: rgba(0, 234, 255, 0.35);
-      --red: #ff4d6d;
-      --red-soft: rgba(255, 77, 109, 0.45);
-      --purple: rgba(180, 120, 255, 0.22);
-      --purple-glow: rgba(180, 120, 255, 0.12);
-    }
+<style>
+* { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.06), transparent 28%),
-        radial-gradient(circle at 50% 80%, rgba(255, 77, 109, 0.04), transparent 30%),
-        var(--bg);
-      color: var(--text);
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      text-align: center;
-      overflow-y: auto;
-      padding: 16px;
-    }
+:root {
+  --bg: #06070a;
+  --text: #f5f7ff;
+  --cyan: #00eaff;
+  --red: #ff4d6d;
+  --purple: rgba(180,120,255,0.2);
+}
 
-    .container {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      padding-top: 36px;
-      padding-bottom: 120px;
-    }
+/* ===== BODY ===== */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow-y: auto;
+}
 
-    .page {
-      display: none;
-      border: 1px solid var(--purple);
-      border-radius: 24px;
-      box-shadow:
-        0 0 10px var(--purple-glow),
-        inset 0 0 10px rgba(180, 120, 255, 0.03);
-      padding: 18px 14px 22px;
-      background: rgba(255,255,255,0.01);
-      backdrop-filter: blur(1px);
-    }
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 30px 16px 100px;
+}
 
-    .page.active {
-      display: block;
-    }
+/* ===== PAGE ===== */
+.page {
+  display: none;
+  border: 1px solid var(--purple);
+  border-radius: 20px;
+  padding: 16px;
+}
 
-    /* ===== Boarding Pass ===== */
-    .ticket {
-      position: relative;
-      overflow: hidden;
-      background: var(--ticket-bg);
-      color: var(--ticket-text);
-      border-radius: 22px;
-      padding: 20px;
-      text-align: left;
-      box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        0 0 18px rgba(0, 234, 255, 0.08);
-    }
+.page.active {
+  display: block;
+}
 
-    .ticket::after {
-      content: "";
-      position: absolute;
-      top: -60%;
-      left: -80%;
-      width: 120%;
-      height: 220%;
-      background: linear-gradient(
-        115deg,
-        transparent 35%,
-        rgba(0, 234, 255, 0.13) 48%,
-        rgba(255,255,255,0.14) 50%,
-        rgba(0, 234, 255, 0.10) 52%,
-        transparent 65%
-      );
-      transform: rotate(18deg);
-      animation: sweep 5s linear infinite;
-      pointer-events: none;
-    }
+/* ===== BUTTON ===== */
+button {
+  border: 2px solid var(--cyan);
+  background: transparent;
+  color: var(--cyan);
+  padding: 12px 20px;
+  border-radius: 999px;
+  margin-top: 20px;
+}
 
-    @keyframes sweep {
-      0% { transform: translateX(-120%) rotate(18deg); }
-      100% { transform: translateX(180%) rotate(18deg); }
-    }
+/* ===== WARNING ===== */
+.warning {
+  border: 2px solid var(--red);
+  box-shadow: 0 0 20px rgba(255,0,0,0.4);
+  padding: 20px;
+}
 
-    .ticket-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      font-size: 0.82rem;
-      line-height: 1.55;
-    }
+/* ===== TYPEWRITER ===== */
+#typewriter {
+  line-height: 2;
+  font-size: 18px;
+}
 
-    .ticket-right {
-      text-align: right;
-    }
+/* ===== GLITCH（重點） ===== */
+.glitch {
+  position: relative;
+}
 
-    .first-class {
-      color: var(--gold);
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.15;
+}
 
-    .divider {
-      height: 1px;
-      background: var(--line);
-      margin: 14px 0;
-    }
+.glitch::before {
+  color: #00eaff;
+  animation: glitch1 3s infinite;
+}
 
-    .ticket-label {
-      font-size: 0.72rem;
-      color: #777;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
+.glitch::after {
+  color: #ff4d6d;
+  animation: glitch2 3s infinite;
+}
 
-    .ticket-value {
-      font-size: 1.06rem;
-      margin-bottom: 12px;
-      letter-spacing: 0.6px;
-    }
+@keyframes glitch1 {
+  0%, 97%, 100% { transform: none; }
+  98% { transform: translate(-1px, 0); }
+  99% { transform: translate(1px, 0); }
+}
 
-    .ticket-meta {
-      font-size: 0.92rem;
-      line-height: 1.8;
-    }
+@keyframes glitch2 {
+  0%, 97%, 100% { transform: none; }
+  98% { transform: translate(1px, 0); }
+  99% { transform: translate(-1px, 0); }
+}
 
-    .barcode {
-      border-top: 1px dashed #bdbdbd;
-      margin-top: 12px;
-      padding-top: 8px;
-      text-align: center;
-      font-size: 0.62rem;
-      letter-spacing: 2px;
-      color: #666;
-      line-height: 1.7;
-    }
+/* ===== FINAL GLOW ===== */
+.final-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(0,234,255,0.08), transparent 60%);
+  opacity: 0;
+  transition: 1s;
+}
 
-    /* ===== Buttons ===== */
-    button {
-      appearance: none;
-      -webkit-appearance: none;
-      border: 2px solid var(--cyan);
-      background: transparent;
-      color: var(--cyan);
-      padding: 13px 26px;
-      border-radius: 999px;
-      font-size: 0.98rem;
-      cursor: pointer;
-      transition: 0.2s ease;
-      box-shadow:
-        0 0 6px rgba(0, 234, 255, 0.35),
-        0 0 18px rgba(0, 234, 255, 0.12);
-      font-family: inherit;
-    }
+.final-glow.active {
+  opacity: 1;
+}
 
-    button:hover {
-      background: rgba(0, 234, 255, 0.10);
-      box-shadow:
-        0 0 10px rgba(0, 234, 255, 0.6),
-        0 0 24px rgba(0, 234, 255, 0.25);
-    }
+/* ===== BUTTON GROUP ===== */
+#buttons {
+  display: none;
+  margin-top: 30px;
+}
 
-    button:active {
-      transform: scale(0.97);
-    }
+.choice {
+  margin: 5px;
+}
 
-    #startBtn {
-      margin-top: 22px;
-      margin-bottom: 4px;
-      color: #fff;
-      border-color: rgba(255,255,255,0.85);
-      box-shadow:
-        0 0 8px rgba(255,255,255,0.18),
-        0 0 18px rgba(0, 234, 255, 0.08);
-    }
+/* ===== SUCCESS ===== */
+#success {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: 0.8s;
+}
 
-    #startBtn:hover {
-      background: rgba(255,255,255,0.06);
-      color: #fff;
-    }
-
-    /* ===== Warning ===== */
-    .warning-box {
-      background: rgba(20, 20, 24, 0.92);
-      border: 2px solid var(--red);
-      border-radius: 22px;
-      padding: 28px 22px;
-      box-shadow:
-        0 0 8px rgba(255, 77, 109, 0.95),
-        0 0 20px rgba(255, 77, 109, 0.55),
-        0 0 40px rgba(255, 77, 109, 0.18);
-    }
-
-    .warning-title {
-      color: var(--red);
-      font-size: 1.45rem;
-      line-height: 1.4;
-      letter-spacing: 1.2px;
-      margin: 0 0 18px;
-      text-shadow: 0 0 10px rgba(255, 77, 109, 0.28);
-    }
-
-    .warning-text {
-      margin: 0;
-      font-size: 1rem;
-      line-height: 1.9;
-      color: #ededf0;
-    }
-
-    .danger-btn {
-      margin-top: 24px;
-      border-color: var(--cyan);
-      color: var(--cyan);
-      background: rgba(0, 234, 255, 0.06);
-      box-shadow:
-        0 0 8px rgba(0, 234, 255, 0.45),
-        0 0 20px rgba(0, 234, 255, 0.20);
-    }
-
-    .danger-btn:hover {
-      background: rgba(0, 234, 255, 0.16);
-      box-shadow:
-        0 0 12px rgba(0, 234, 255, 0.70),
-        0 0 36px rgba(0, 234, 255, 0.35);
-      color: #fff;
-    }
-
-    /* ===== Final Typewriter ===== */
-    #step3 {
-      padding: 0;
-      overflow: hidden;
-    }
-
-    #finalViewport {
-      height: calc(100vh - 32px);
-      overflow-y: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 18px 14px 22px;
-      border-radius: 24px;
-    }
-
-    #finalViewport.unlocked {
-      overflow-y: auto;
-      align-items: flex-start;
-    }
-
-    #final {
-      width: 100%;
-      max-width: 420px;
-      padding-top: 36px;
-      padding-bottom: 120px;
-      text-align: center;
-    }
-
-    #typewriter {
-      font-size: 1.06rem;
-      line-height: 2.0;
-      letter-spacing: 0.4px;
-      white-space: normal;
-      text-shadow:
-        0 0 2px rgba(255,255,255,0.55),
-        0 0 10px rgba(0, 234, 255, 0.14);
-    }
-
-    #buttons {
-      display: none;
-      margin-top: 34px;
-      padding-bottom: 84px;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: nowrap;
-    }
-
-    .choice-btn {
-      min-width: 104px;
-      padding: 12px 18px;
-      font-size: 0.96rem;
-    }
-
-    .notice-btn {
-      min-width: 132px;
-    }
-
-    /* ===== Notice ===== */
-    #noticeBox {
-      background: rgba(18, 18, 22, 0.95);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 22px;
-      padding: 28px 20px;
-      box-shadow:
-        0 0 12px rgba(0,234,255,0.08),
-        0 0 20px rgba(255,77,109,0.08);
-    }
-
-    #noticeBox h3 {
-      margin: 0 0 18px;
-      font-size: 1.22rem;
-      letter-spacing: 1px;
-      color: var(--cyan);
-      text-shadow: 0 0 8px rgba(0,234,255,0.18);
-    }
-
-    #noticeBox p {
-      margin: 0;
-      line-height: 1.9;
-      font-size: 0.98rem;
-      color: #efefef;
-    }
-
-    #back {
-      margin-top: 24px;
-    }
-
-    /* ===== Success ===== */
-    #success {
-      padding-top: 120px;
-      padding-bottom: 80px;
-    }
-
-    .success-text {
-      font-size: 1.8rem;
-      letter-spacing: 4px;
-      text-shadow:
-        0 0 8px rgba(255,255,255,0.18),
-        0 0 16px rgba(0,234,255,0.10);
-    }
-
-    .heart {
-      font-size: 2.2rem;
-      margin-top: 16px;
-      animation: pulse 1.25s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.14); }
-      100% { transform: scale(1); }
-    }
-
-    @media (max-width: 430px) {
-      .ticket {
-        padding: 18px;
-      }
-
-      .ticket-header {
-        font-size: 0.76rem;
-      }
-
-      .ticket-value {
-        font-size: 1rem;
-      }
-
-      #typewriter {
-        font-size: 1rem;
-        line-height: 1.95;
-      }
-
-      #buttons {
-        gap: 8px;
-      }
-
-      .choice-btn {
-        min-width: 96px;
-        padding: 11px 14px;
-        font-size: 0.92rem;
-      }
-
-      .notice-btn {
-        min-width: 122px;
-      }
-    }
-  </style>
+#success.active {
+  opacity: 1;
+  transform: scale(1);
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
 
-    <!-- STEP 1 -->
-    <div id="step1" class="page active">
-      <div class="ticket">
-        <div class="ticket-header">
-          <div>
-            AIR NEW ZEALAND<br>
-            TRAVELER: YUDAI
-          </div>
-          <div class="ticket-right">
-            <span class="first-class">FIRST CLASS</span><br>
-            SEAT: 1A<br>
-            FLIGHT: AI143
-          </div>
-        </div>
+<div class="container">
 
-        <div class="divider"></div>
+<!-- STEP 1 -->
+<div id="step1" class="page active">
+  <h3>BOARDING PASS</h3>
+  <p>FROM: OUR STORY</p>
+  <p>TO: THE NEXT CHAPTER</p>
+  <p>FLIGHT: AI143</p>
+  <button onclick="nextStep(2)">SCAN TO BOARD</button>
+</div>
 
-        <div class="ticket-label">FROM</div>
-        <div class="ticket-value">OUR STORY</div>
-
-        <div class="ticket-label">TO</div>
-        <div class="ticket-value">THE NEXT CHAPTER</div>
-
-        <div class="ticket-label">DATE</div>
-        <div class="ticket-value">2025 / 10 / 30</div>
-
-        <div class="divider"></div>
-
-        <div class="ticket-meta">
-          STATUS: CLEARED<br>
-          TYPE: ONE WAY
-        </div>
-
-        <div class="barcode">
-          YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY
-        </div>
-      </div>
-
-      <button id="startBtn">SCAN TO BOARD</button>
-    </div>
-
-    <!-- STEP 2 -->
-    <div id="step2" class="page">
-      <div class="warning-box">
-        <h2 class="warning-title">WARNING:<br>ONE WAY TICKET</h2>
-        <p class="warning-text">
-          This ticket cannot be refunded.<br>
-          Once boarding is confirmed,<br>
-          there is no return.
-        </p>
-        <button class="danger-btn" id="confirmBtn">CONFIRM BOARDING</button>
-      </div>
-    </div>
-
-    <!-- STEP 3 -->
-    <div id="step3" class="page">
-      <div id="finalViewport">
-        <div id="final">
-          <div id="typewriter"></div>
-
-          <div id="buttons">
-            <button class="choice-btn yes-btn">Accept</button>
-            <button class="choice-btn notice-btn" id="noticeBtn">Gift Notice</button>
-            <button class="choice-btn yes-btn">Accept</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- NOTICE -->
-    <div id="stepNotice" class="page">
-      <div id="noticeBox">
-        <h3>GIFT NOTICE</h3>
-        <p>
-          This gift is one way and non-returnable.<br><br>
-          I hope to be treated with care,<br>
-          and I will treat you the same way.<br><br>
-          If something feels wrong,<br>
-          I hope we can talk about it.<br><br>
-          Perfection is not required,<br>
-          but sincerity is.
-        </p>
-        <button id="back">Back</button>
-      </div>
-    </div>
-
-    <!-- STEP 4 -->
-    <div id="step4" class="page">
-      <div id="success">
-        <div class="success-text">BOARDING CONFIRMED</div>
-        <div class="heart">❤️</div>
-      </div>
-    </div>
+<!-- STEP 2 -->
+<div id="step2" class="page">
+  <div class="warning">
+    <h2>WARNING</h2>
+    <p>ONE WAY TICKET</p>
+    <button onclick="startFinal()">CONFIRM</button>
   </div>
+</div>
 
-  <script>
-    const pages = document.querySelectorAll(".page");
-    const typewriterEl = document.getElementById("typewriter");
-    const buttonsEl = document.getElementById("buttons");
-    const finalViewport = document.getElementById("finalViewport");
+<!-- STEP 3 -->
+<div id="step3" class="page">
+  <div id="typewriter" class="glitch" data-text=""></div>
 
-    const finalText = `Dear Most Precious Passenger Yudai:
+  <div id="buttons">
+    <button class="choice" onclick="nextStep(4)">Accept</button>
+    <button class="choice">Gift Notice</button>
+    <button class="choice" onclick="nextStep(4)">Accept</button>
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div id="step4" class="page">
+  <div id="success">
+    <h1>BOARDING CONFIRMED</h1>
+    ❤️
+  </div>
+</div>
+
+</div>
+
+<div class="final-glow" id="glow"></div>
+
+<script>
+const text = `Dear Most Precious Passenger Yudai:
 
 Before boarding,
 we have prepared a special gift for you.
 
-It is not a short-lived surprise,
-nor something that appears for only one day.
-
-If you are willing to accept it,
-it will stay by your side.
+It will stay by your side.
 
 Because—
 
-it has actually been here all along.
+it has always been here.
 
 Now,
 please look to your left.
 
 Your gift is right here.`;
 
-    let typingIndex = 0;
-    let typingStarted = false;
-    let finalUnlocked = false;
+let i = 0;
 
-    function showPage(pageId) {
-      pages.forEach(page => page.classList.remove("active"));
-      document.getElementById(pageId).classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+function nextStep(n){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("step"+n).classList.add("active");
+}
 
-    function unlockFinalScroll() {
-      if (!finalUnlocked) {
-        finalUnlocked = true;
-        finalViewport.classList.add("unlocked");
-      }
-    }
+function startFinal(){
+  nextStep(3);
+  i = 0;
+  document.getElementById("typewriter").innerHTML = "";
+  type();
+}
 
-    function typeMessage() {
-      if (typingIndex < finalText.length) {
-        const char = finalText.charAt(typingIndex);
-        typewriterEl.innerHTML += char === "\n" ? "<br>" : char;
-        typingIndex++;
+function type(){
+  if(i < text.length){
+    let char = text[i];
+    let el = document.getElementById("typewriter");
 
-        let delay = 42;
-        if (char === ",") delay = 120;
-        if (char === "." || char === "!" || char === "?") delay = 230;
-        if (char === "—") delay = 340;
-        if (char === "\n") delay = 170;
+    el.innerHTML += char === "\n" ? "<br>" : char;
+    el.setAttribute("data-text", el.innerText);
 
-        setTimeout(typeMessage, delay);
-      } else {
-        buttonsEl.style.display = "flex";
+    i++;
+    setTimeout(type, 40);
+  } else {
+    setTimeout(()=>{
+      document.getElementById("buttons").style.display = "block";
+      document.getElementById("glow").classList.add("active");
+    },600);
+  }
+}
 
-        if (!finalUnlocked) {
-          setTimeout(() => {
-            finalViewport.scrollTo({
-              top: finalViewport.scrollHeight,
-              behavior: "smooth"
-            });
-          }, 200);
-        }
-      }
-    }
+document.querySelectorAll(".choice").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    nextStep(4);
+    setTimeout(()=>{
+      document.getElementById("success").classList.add("active");
+    },50);
+  });
+});
+</script>
 
-    finalViewport.addEventListener("touchstart", unlockFinalScroll, { passive: true });
-    finalViewport.addEventListener("mousedown", unlockFinalScroll);
-    finalViewport.addEventListener("wheel", unlockFinalScroll, { passive: true });
-
-    document.getElementById("startBtn").addEventListener("click", () => {
-      showPage("step2");
-    });
-
-    document.getElementById("confirmBtn").addEventListener("click", () => {
-      showPage("step3");
-
-      finalUnlocked = false;
-      finalViewport.classList.remove("unlocked");
-      finalViewport.scrollTop = 0;
-
-      typingStarted = true;
-      typingIndex = 0;
-      typewriterEl.innerHTML = "";
-      buttonsEl.style.display = "none";
-      typeMessage();
-    });
-
-    document.querySelectorAll(".yes-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        showPage("step4");
-      });
-    });
-
-    document.getElementById("noticeBtn").addEventListener("click", () => {
-      showPage("stepNotice");
-    });
-
-    document.getElementById("back").addEventListener("click", () => {
-      showPage("step3");
-    });
-  </script>
 </body>
 </html>
