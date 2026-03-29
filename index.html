@@ -1,282 +1,454 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boarding Pass</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Boarding Pass</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
-body {
-    margin:0;
-    background:#0f0f10;
-    color:#fff;
-    font-family:"Microsoft JhengHei";
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    text-align:center;
-}
+    :root {
+      --bg: #0f0f10;
+      --text: #ffffff;
+      --ticket-bg: #f3f3f3;
+      --ticket-text: #222222;
+      --muted: #777777;
+      --line: #cccccc;
+      --danger: #ff4d4d;
+      --gold: #c7a43a;
+    }
 
-.container { width:90%; max-width:420px; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      padding: 16px;
+    }
 
-/* 登機證 */
-#boardingCard {
-    background:#f3f3f3;
-    color:#222;
-    border-radius:14px;
-    padding:18px;
-    margin-bottom:20px;
-    text-align:left;
-}
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
 
-.top {
-    display:flex;
-    justify-content:space-between;
-}
+    /* Page 1 */
+    #step1 {
+      display: block;
+    }
 
-.class-tag {
-    color:#c7a43a;
-    font-weight:bold;
-}
+    #boardingCard {
+      background: var(--ticket-bg);
+      color: var(--ticket-text);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      text-align: left;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
 
-.divider {
-    height:1px;
-    background:#ccc;
-    margin:10px 0;
-}
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+    }
 
-.main {
-    margin:10px 0;
-}
+    .top-left,
+    .top-right {
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
 
-.label {
-    font-size:0.6rem;
-    color:#777;
-}
+    .class-tag {
+      color: var(--gold);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
 
-.big {
-    font-size:1.8rem;
-}
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 12px 0;
+    }
 
-.barcode {
-    border-top:1px dashed #bbb;
-    margin-top:10px;
-    padding-top:6px;
-    font-size:0.6rem;
-    text-align:center;
-    letter-spacing:2px;
-}
+    .main {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 10px 0;
+    }
 
-/* 按鈕 */
-#startBtn {
-    margin-bottom:40px;
-    border:2px solid #fff;
-    background:none;
-    color:#fff;
-    padding:12px 25px;
-    border-radius:30px;
-}
+    .label {
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
 
-/* warning */
-#warning {
-    display:none;
-}
+    .big {
+      display: inline-block;
+      margin-top: 2px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
 
-.confirm-btn {
-    margin-top:20px;
-    background:#ff4d4d;
-    border:none;
-    padding:10px 20px;
-    color:white;
-}
+    .route-text {
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
 
-/* 打字機 */
-#typewriter {
-    font-size:1.2rem;
-    line-height:2;
-    white-space:pre-wrap;
-}
+    .ticket-meta {
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
 
-/* 按鈕 */
-#buttons {
-    display:none;
-    margin-top:20px;
-    gap:10px;
-    justify-content:center;
-}
+    .barcode {
+      border-top: 1px dashed #bbbbbb;
+      margin-top: 12px;
+      padding-top: 8px;
+      font-size: 0.6rem;
+      text-align: center;
+      letter-spacing: 2px;
+      color: #666666;
+      line-height: 1.7;
+    }
 
-.choice {
-    border:2px solid #fff;
-    background:none;
-    color:#fff;
-    padding:10px 20px;
-    border-radius:30px;
-}
+    #startBtn {
+      border: 2px solid #ffffff;
+      background: transparent;
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      margin-top: 8px;
+      margin-bottom: 36px;
+      transition: 0.2s ease;
+    }
 
-/* 禮物須知 */
-#notice {
-    display:none;
-}
+    #startBtn:hover {
+      transform: translateY(-1px);
+    }
 
-/* 成功頁 */
-#success {
-    display:none;
-    font-size:1.6rem;
-}
-</style>
+    /* Page 2 */
+    #warning {
+      display: none;
+      background: #1f1f1f;
+      border: 2px solid var(--danger);
+      border-radius: 16px;
+      padding: 28px 22px;
+      box-shadow:
+        0 0 6px rgba(255, 80, 80, 0.85),
+        0 0 18px rgba(255, 70, 70, 0.35);
+    }
+
+    #warning h2 {
+      margin: 0 0 16px;
+      color: var(--danger);
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+    }
+
+    #warning p {
+      margin: 0;
+      line-height: 1.8;
+      color: #e9e9e9;
+      font-size: 1rem;
+    }
+
+    .confirm-btn {
+      margin-top: 22px;
+      background: var(--danger);
+      border: none;
+      color: white;
+      padding: 11px 20px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    /* Page 3 */
+    #final {
+      display: none;
+    }
+
+    #typewriter {
+      font-size: 1.12rem;
+      line-height: 1.95;
+      white-space: pre-wrap;
+      letter-spacing: 0.5px;
+    }
+
+    #buttons {
+      display: none;
+      margin-top: 24px;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .choice {
+      border: 2px solid #ffffff;
+      background: transparent;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .choice:hover {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    /* Notice page */
+    #notice {
+      display: none;
+    }
+
+    #noticeBox {
+      background: #1a1a1c;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 26px 20px;
+      text-align: center;
+    }
+
+    #noticeBox h3 {
+      margin: 0 0 18px;
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+    }
+
+    #noticeBox p {
+      margin: 0;
+      line-height: 1.9;
+      color: #ededed;
+      font-size: 0.98rem;
+    }
+
+    #back {
+      margin-top: 22px;
+      border: 2px solid #ffffff;
+      background: transparent;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.92rem;
+    }
+
+    /* Success page */
+    #success {
+      display: none;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 430px) {
+      #typewriter {
+        font-size: 1.03rem;
+      }
+
+      .route-text {
+        font-size: 1rem;
+      }
+
+      .big {
+        font-size: 1.08rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<div class="container">
-
-<!-- 第一頁 -->
-<div id="step1">
-    <div id="boardingCard">
+  <div class="container">
+    <!-- Page 1 -->
+    <div id="step1">
+      <div id="boardingCard">
         <div class="top">
-            <div>
-                AIR NEW ZEALAND<br>
-                TRAVELER: YUDAI
-            </div>
-            <div>
-                <span class="class-tag">FIRST CLASS</span><br>
-                SEAT: 1A<br>
-                FLIGHT: AI143
-            </div>
+          <div class="top-left">
+            AIR NEW ZEALAND<br />
+            TRAVELER: YUDAI
+          </div>
+          <div class="top-right">
+            <span class="class-tag">FIRST CLASS</span><br />
+            SEAT: 1A<br />
+            FLIGHT: AI143
+          </div>
         </div>
 
         <div class="divider"></div>
 
         <div class="main">
-            <div><span class="label">FROM</span><br><span class="big">ME</span></div>
-            <div><span class="label">TO</span><br><span class="big">SOMEONE I CHERISH</span></div>
-            <div><span class="label">DATE</span><br>2025 / 10 / 30</div>
+          <div>
+            <span class="label">FROM</span><br />
+            <span class="big route-text">OUR STORY</span>
+          </div>
+
+          <div>
+            <span class="label">TO</span><br />
+            <span class="big route-text">THE NEXT CHAPTER</span>
+          </div>
+
+          <div>
+            <span class="label">DATE</span><br />
+            <span class="big">2025 / 10 / 30</span>
+          </div>
         </div>
 
         <div class="divider"></div>
 
-        STATUS: CLEARED<br>
-        TYPE: ONE WAY<br>
+        <div class="ticket-meta">
+          STATUS: CLEARED<br />
+          TYPE: ONE WAY
+        </div>
 
         <div class="barcode">
-            YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY
+          YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY
         </div>
+      </div>
+
+      <button id="startBtn">SCAN TO BOARD</button>
     </div>
 
-    <button id="startBtn">SCAN TO BOARD</button>
-</div>
-
-<!-- 第二頁 -->
-<div id="warning">
-    ⚠️ ONE WAY TICKET<br><br>
-    一旦登機，無法返回<br>
-    <button class="confirm-btn" id="confirm">確認登機</button>
-</div>
-
-<!-- 第三頁 -->
-<div id="final" style="display:none;">
-    <div id="typewriter"></div>
-
-    <div id="buttons">
-        <button class="choice yes">收下</button>
-        <button class="choice noticeBtn">禮物須知</button>
-        <button class="choice yes">收下</button>
+    <!-- Page 2 -->
+    <div id="warning">
+      <h2>ONE WAY TICKET</h2>
+      <p>
+        Once boarding is confirmed,<br />
+        there is no return.
+      </p>
+      <button class="confirm-btn" id="confirm">Confirm Boarding</button>
     </div>
-</div>
 
-<!-- 禮物須知 -->
-<div id="notice">
-    <p>
-    本禮物為單程，不提供退換服務。<br><br>
-    希望被好好對待，<br>
-    也會用同樣的方式對待你。<br><br>
-    如果有不開心的事，<br>
-    希望我們可以好好說。<br><br>
-    不需要完美，<br>
-    但希望是真心的。
-    </p>
-    <button id="back">返回</button>
-</div>
+    <!-- Page 3 -->
+    <div id="final">
+      <div id="typewriter"></div>
 
-<!-- 成功 -->
-<div id="success">
-    BOARDING CONFIRMED ❤️
-</div>
+      <div id="buttons">
+        <button class="choice yes">Accept</button>
+        <button class="choice noticeBtn">Gift Notice</button>
+        <button class="choice yes">Accept</button>
+      </div>
+    </div>
 
-</div>
+    <!-- Notice page -->
+    <div id="notice">
+      <div id="noticeBox">
+        <h3>GIFT NOTICE</h3>
+        <p>
+          This gift is one way and non-returnable.<br /><br />
+          I hope to be treated with care,<br />
+          and I will treat you the same way.<br /><br />
+          If something feels wrong,<br />
+          I hope we can talk about it.<br /><br />
+          Perfection is not required,<br />
+          but sincerity is.
+        </p>
+        <button id="back">Back</button>
+      </div>
+    </div>
 
-<script>
+    <!-- Success page -->
+    <div id="success">
+      BOARDING CONFIRMED ❤️
+    </div>
+  </div>
 
-const text = `致 最珍貴的旅客 Yudai：
+  <script>
+    const text = `Dear Most Precious Passenger Yudai:
 
-在登機之前，
-我們為您準備了一份特別的禮物。
+Before boarding,
+we have prepared a special gift for you.
 
-它不是短暫的驚喜，
-也不是某一天才會出現的東西。
+It is not a short-lived surprise,
+nor something that appears for only one day.
 
-如果您願意收下，
-它會一直陪在您身邊。
+If you are willing to accept it,
+it will stay by your side.
 
-因為——
+Because—
 
-它其實一直都在這裡。
+it has actually been here all along.
 
-現在，
-請您往左邊看。
+Now,
+please look to your left.
 
-您的禮物，
-就在這裡。`;
+Your gift
+is right here.`;
 
-let i=0;
-const el=document.getElementById("typewriter");
+    let i = 0;
+    let isTyping = false;
 
-function type(){
-    if(i<text.length){
-        let c=text[i];
-        el.innerHTML+=c==="\\n"?"<br>":c;
+    const typewriterEl = document.getElementById("typewriter");
+    const buttonsEl = document.getElementById("buttons");
+
+    function type() {
+      if (i < text.length) {
+        const c = text[i];
+        typewriterEl.innerHTML += c === "\n" ? "<br>" : c;
         i++;
-        let speed=50;
-        if(c==="，"||c==="。") speed=200;
-        if(c==="—") speed=350;
-        setTimeout(type,speed);
-    }else{
-        document.getElementById("buttons").style.display="flex";
+
+        let speed = 50;
+        if (c === "。" || c === "." || c === "!" || c === "?") speed = 220;
+        if (c === "," ) speed = 140;
+        if (c === "—") speed = 340;
+        if (c === "\n") speed = 170;
+
+        setTimeout(type, speed);
+      } else {
+        buttonsEl.style.display = "flex";
+        isTyping = false;
+      }
     }
-}
 
-/* flow */
-document.getElementById("startBtn").onclick=()=>{
-    document.getElementById("step1").style.display="none";
-    document.getElementById("warning").style.display="block";
-};
+    document.getElementById("startBtn").onclick = () => {
+      document.getElementById("step1").style.display = "none";
+      document.getElementById("warning").style.display = "block";
+    };
 
-document.getElementById("confirm").onclick=()=>{
-    document.getElementById("warning").style.display="none";
-    document.getElementById("final").style.display="block";
-    type();
-};
+    document.getElementById("confirm").onclick = () => {
+      document.getElementById("warning").style.display = "none";
+      document.getElementById("final").style.display = "block";
 
-/* 按鈕 */
-document.querySelectorAll(".yes").forEach(b=>{
-    b.onclick=()=>{
-        document.getElementById("final").style.display="none";
-        document.getElementById("success").style.display="block";
-    }
-});
+      if (!isTyping) {
+        isTyping = true;
+        i = 0;
+        typewriterEl.innerHTML = "";
+        buttonsEl.style.display = "none";
+        type();
+      }
+    };
 
-document.querySelector(".noticeBtn").onclick=()=>{
-    document.getElementById("final").style.display="none";
-    document.getElementById("notice").style.display="block";
-};
+    document.querySelectorAll(".yes").forEach((button) => {
+      button.onclick = () => {
+        document.getElementById("final").style.display = "none";
+        document.getElementById("success").style.display = "block";
+      };
+    });
 
-document.getElementById("back").onclick=()=>{
-    document.getElementById("notice").style.display="none";
-    document.getElementById("final").style.display="block";
-};
+    document.querySelector(".noticeBtn").onclick = () => {
+      document.getElementById("final").style.display = "none";
+      document.getElementById("notice").style.display = "block";
+    };
 
-</script>
-
+    document.getElementById("back").onclick = () => {
+      document.getElementById("notice").style.display = "none";
+      document.getElementById("final").style.display = "block";
+    };
+  </script>
 </body>
 </html>
