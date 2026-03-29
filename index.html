@@ -12,7 +12,6 @@
     :root {
       --bg: #06070a;
       --text: #f5f7ff;
-      --muted: #7f8899;
       --ticket-bg: #f2f2f2;
       --ticket-text: #171717;
       --line: #cfcfcf;
@@ -189,7 +188,7 @@
       transform: scale(0.97);
     }
 
-    /* ===== Scan button with thick cyan line ===== */
+    /* ===== Scan line effect for all main buttons ===== */
     .scan-btn {
       margin-top: 22px;
       margin-bottom: 4px;
@@ -233,20 +232,6 @@
       100% { left: calc(90% - 4px); }
     }
 
-    /* ===== Verified page ===== */
-    .verified-card {
-      padding: 18px 8px 4px;
-      line-height: 2;
-      font-size: 1rem;
-    }
-
-    .verified-title {
-      font-size: 1.6rem;
-      letter-spacing: 2px;
-      margin-bottom: 14px;
-      text-shadow: 0 0 6px rgba(0,234,255,0.16);
-    }
-
     /* ===== Warning ===== */
     .warning-box {
       background: rgba(20, 20, 24, 0.92);
@@ -275,26 +260,8 @@
       color: #ededf0;
     }
 
-    .danger-btn {
-      margin-top: 24px;
-      border-color: var(--cyan);
-      color: var(--cyan);
-      background: rgba(0, 234, 255, 0.06);
-      box-shadow:
-        0 0 8px rgba(0, 234, 255, 0.45),
-        0 0 20px rgba(0, 234, 255, 0.20);
-    }
-
-    .danger-btn:hover {
-      background: rgba(0, 234, 255, 0.16);
-      box-shadow:
-        0 0 12px rgba(0, 234, 255, 0.70),
-        0 0 36px rgba(0, 234, 255, 0.35);
-      color: #fff;
-    }
-
     /* ===== Final Typewriter ===== */
-    #step4 {
+    #step3 {
       padding: 0;
       overflow: hidden;
     }
@@ -491,7 +458,7 @@
 <body>
   <div class="container">
 
-    <!-- STEP 1: Full ticket card -->
+    <!-- STEP 1 -->
     <div id="step1" class="page active">
       <div class="ticket">
         <div class="ticket-header">
@@ -532,19 +499,8 @@
       <button id="startBtn" class="scan-btn">SCAN TO BOARD</button>
     </div>
 
-    <!-- STEP 2: Verified -->
+    <!-- STEP 2 -->
     <div id="step2" class="page">
-      <div class="verified-card">
-        <div class="verified-title">PASS VERIFIED</div>
-        <div>Passenger: Yudai</div>
-        <div>Seat: 1A</div>
-        <div>Status: CLEARED</div>
-        <button id="continueBtn" class="scan-btn">CONTINUE</button>
-      </div>
-    </div>
-
-    <!-- STEP 3: Warning -->
-    <div id="step3" class="page">
       <div class="warning-box">
         <h2 class="warning-title">WARNING:<br>ONE WAY TICKET</h2>
         <p class="warning-text">
@@ -552,20 +508,20 @@
           Once boarding is confirmed,<br>
           there is no return.
         </p>
-        <button class="danger-btn" id="confirmBtn">CONFIRM BOARDING</button>
+        <button class="scan-btn" id="confirmBtn">CONFIRM BOARDING</button>
       </div>
     </div>
 
-    <!-- STEP 4: Typewriter -->
-    <div id="step4" class="page">
+    <!-- STEP 3 -->
+    <div id="step3" class="page">
       <div id="finalViewport">
         <div id="final">
           <div id="typewriter"></div>
 
           <div id="buttons">
-            <button class="choice-btn yes-btn">Accept</button>
-            <button class="choice-btn notice-btn" id="noticeBtn">Gift Notice</button>
-            <button class="choice-btn yes-btn">Accept</button>
+            <button class="choice-btn yes-btn scan-btn">Accept</button>
+            <button class="choice-btn notice-btn scan-btn" id="noticeBtn">Gift Notice</button>
+            <button class="choice-btn yes-btn scan-btn">Accept</button>
           </div>
         </div>
       </div>
@@ -584,12 +540,12 @@
           Perfection is not required,<br>
           but sincerity is.
         </p>
-        <button id="back">Back</button>
+        <button id="back" class="scan-btn">Back</button>
       </div>
     </div>
 
-    <!-- STEP 5: Success -->
-    <div id="step5" class="page">
+    <!-- STEP 4 -->
+    <div id="step4" class="page">
       <div id="success">
         <div class="success-text">BOARDING CONFIRMED</div>
         <div class="heart">❤️</div>
@@ -688,12 +644,8 @@ Your gift is right here.`;
       tvTransition("step2");
     });
 
-    document.getElementById("continueBtn").addEventListener("click", () => {
-      showPage("step3");
-    });
-
     document.getElementById("confirmBtn").addEventListener("click", () => {
-      showPage("step4");
+      showPage("step3");
 
       finalUnlocked = false;
       finalViewport.classList.remove("unlocked");
@@ -707,7 +659,7 @@ Your gift is right here.`;
 
     document.querySelectorAll(".yes-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        showPage("step5");
+        showPage("step4");
         setTimeout(() => {
           document.getElementById("success").classList.add("active");
         }, 50);
@@ -719,7 +671,7 @@ Your gift is right here.`;
     });
 
     document.getElementById("back").addEventListener("click", () => {
-      showPage("step4");
+      showPage("step3");
     });
   </script>
 </body>
