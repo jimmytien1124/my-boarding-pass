@@ -1,683 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Boarding Pass</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boarding</title>
 
-    :root {
-      --bg: #06070a;
-      --text: #f5f7ff;
-      --ticket-bg: #f2f2f2;
-      --ticket-text: #171717;
-      --line: #cfcfcf;
-      --gold: #c7a43a;
-      --cyan: #00eaff;
-      --red: #ff4d6d;
-      --purple: rgba(180, 120, 255, 0.35);
-      --purple-glow-1: rgba(180, 120, 255, 0.28);
-      --purple-glow-2: rgba(180, 120, 255, 0.16);
-      --purple-inset: rgba(180, 120, 255, 0.08);
-    }
+<style>
+:root{
+  --bg:#06070a;
+  --text:#f5f7ff;
+  --cyan:#00eaff;
+  --red:#ff4d6d;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 28%),
-        radial-gradient(circle at 50% 80%, rgba(255, 77, 109, 0.04), transparent 30%),
-        var(--bg);
-      color: var(--text);
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      text-align: center;
-      overflow-y: auto;
-      padding: 16px;
-    }
+/* ===== 基本 ===== */
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial;
+  text-align:center;
+  padding:16px;
+}
 
-    .container {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      padding-top: 36px;
-      padding-bottom: 120px;
-    }
+.container{
+  max-width:420px;
+  margin:auto;
+  padding-top:30px;
+}
 
-    .page {
-      display: none;
-      border: 1px solid var(--purple);
-      border-radius: 24px;
-      box-shadow:
-        0 0 12px var(--purple-glow-1),
-        0 0 32px var(--purple-glow-2),
-        0 0 60px rgba(180, 120, 255, 0.08),
-        inset 0 0 10px var(--purple-inset);
-      padding: 18px 14px 22px;
-      background: rgba(255,255,255,0.01);
-      backdrop-filter: blur(1px);
-    }
+/* ===== 紫框 ===== */
+.page{
+  display:none;
+  border:1px solid rgba(180,120,255,0.5);
+  border-radius:24px;
+  padding:18px;
+  box-shadow:
+    0 0 12px rgba(180,120,255,0.4),
+    0 0 30px rgba(180,120,255,0.25),
+    0 0 60px rgba(180,120,255,0.15),
+    inset 0 0 10px rgba(180,120,255,0.08);
+}
 
-    .page.active {
-      display: block;
-    }
+.page.active{
+  display:block;
+}
 
-    /* ===== Boarding pass card ===== */
-    .ticket {
-      position: relative;
-      overflow: hidden;
-      background: var(--ticket-bg);
-      color: var(--ticket-text);
-      border-radius: 22px;
-      padding: 20px;
-      text-align: left;
-      box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        0 0 18px rgba(0, 234, 255, 0.08);
-    }
+/* ===== 登機證 ===== */
+.ticket{
+  background:#f2f2f2;
+  color:#111;
+  border-radius:20px;
+  padding:20px;
+  text-align:left;
+  position:relative;
+  overflow:hidden;
+}
 
-    .ticket::after {
-      content: "";
-      position: absolute;
-      top: -60%;
-      left: -80%;
-      width: 120%;
-      height: 220%;
-      background: linear-gradient(
-        115deg,
-        transparent 35%,
-        rgba(0, 234, 255, 0.13) 48%,
-        rgba(255,255,255,0.14) 50%,
-        rgba(0, 234, 255, 0.10) 52%,
-        transparent 65%
-      );
-      transform: rotate(18deg);
-      animation: ticketSweep 5s linear infinite;
-      pointer-events: none;
-    }
+.ticket-header{
+  display:flex;
+  justify-content:space-between;
+  font-size:0.8rem;
+}
 
-    @keyframes ticketSweep {
-      0% { transform: translateX(-120%) rotate(18deg); }
-      100% { transform: translateX(180%) rotate(18deg); }
-    }
+.first{
+  color:#c7a43a;
+  font-weight:bold;
+}
 
-    .ticket-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      font-size: 0.82rem;
-      line-height: 1.55;
-    }
+.line{
+  height:1px;
+  background:#ccc;
+  margin:12px 0;
+}
 
-    .ticket-right {
-      text-align: right;
-    }
+.label{
+  font-size:0.7rem;
+  color:#777;
+}
 
-    .first-class {
-      color: var(--gold);
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
+.value{
+  font-size:1rem;
+  margin-bottom:10px;
+}
 
-    .divider {
-      height: 1px;
-      background: var(--line);
-      margin: 14px 0;
-    }
+.barcode{
+  border-top:1px dashed #aaa;
+  margin-top:10px;
+  padding-top:5px;
+  font-size:0.6rem;
+  text-align:center;
+}
 
-    .ticket-label {
-      font-size: 0.72rem;
-      color: #777;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
+/* ===== 按鈕 ===== */
+button{
+  border:2px solid var(--cyan);
+  background:transparent;
+  color:var(--cyan);
+  padding:12px 24px;
+  border-radius:999px;
+  margin-top:20px;
+  position:relative;
+  overflow:hidden;
+}
 
-    .ticket-value {
-      font-size: 1.06rem;
-      margin-bottom: 12px;
-      letter-spacing: 0.6px;
-    }
+/* 🔥 藍色掃描線（漸淡版） */
+.scan-btn::after{
+  content:"";
+  position:absolute;
+  top:10%;
+  bottom:10%;
+  width:4px;
+  left:10%;
 
-    .ticket-meta {
-      font-size: 0.92rem;
-      line-height: 1.8;
-    }
+  background: linear-gradient(
+    to bottom,
+    rgba(0,234,255,0) 0%,
+    rgba(0,234,255,0.4) 20%,
+    rgba(0,234,255,1) 50%,
+    rgba(0,234,255,0.4) 80%,
+    rgba(0,234,255,0) 100%
+  );
 
-    .barcode {
-      border-top: 1px dashed #bdbdbd;
-      margin-top: 12px;
-      padding-top: 8px;
-      text-align: center;
-      font-size: 0.62rem;
-      letter-spacing: 2px;
-      color: #666;
-      line-height: 1.7;
-    }
+  box-shadow:
+    0 0 10px rgba(0,234,255,1),
+    0 0 20px rgba(0,234,255,0.8),
+    0 0 40px rgba(0,234,255,0.5);
 
-    /* ===== Buttons ===== */
-    button {
-      appearance: none;
-      -webkit-appearance: none;
-      border: 2px solid var(--cyan);
-      background: transparent;
-      color: var(--cyan);
-      padding: 13px 26px;
-      border-radius: 999px;
-      font-size: 0.98rem;
-      cursor: pointer;
-      transition: 0.2s ease;
-      box-shadow:
-        0 0 6px rgba(0, 234, 255, 0.35),
-        0 0 18px rgba(0, 234, 255, 0.12);
-      font-family: inherit;
-      position: relative;
-      overflow: hidden;
-    }
+  animation:scan 2s infinite alternate;
+}
 
-    button:hover {
-      background: rgba(0, 234, 255, 0.10);
-      box-shadow:
-        0 0 10px rgba(0, 234, 255, 0.6),
-        0 0 24px rgba(0, 234, 255, 0.25);
-    }
+@keyframes scan{
+  0%{left:10%;}
+  100%{left:90%;}
+}
 
-    button:active {
-      transform: scale(0.97);
-    }
+/* 🔴 紅色按鈕 */
+.danger-btn{
+  border:2px solid var(--red);
+  color:var(--red);
+}
 
-    /* ===== Scan line effect for all main buttons ===== */
-    .scan-btn {
-      margin-top: 22px;
-      margin-bottom: 4px;
-      color: #fff;
-      border-color: rgba(255,255,255,0.88);
-      background: rgba(255,255,255,0.01);
-      box-shadow:
-        0 0 8px rgba(255,255,255,0.18),
-        0 0 18px rgba(0, 234, 255, 0.08);
-    }
+.danger-btn::after{
+  content:"";
+  position:absolute;
+  top:10%;
+  bottom:10%;
+  width:4px;
+  left:10%;
 
-    .scan-btn:hover {
-      background: rgba(255,255,255,0.04);
-      color: #fff;
-    }
+  background: linear-gradient(
+    to bottom,
+    rgba(255,77,109,0) 0%,
+    rgba(255,77,109,0.4) 20%,
+    rgba(255,77,109,1) 50%,
+    rgba(255,77,109,0.4) 80%,
+    rgba(255,77,109,0) 100%
+  );
 
-    /* 上下漸淡、中間最亮 */
-    .scan-btn::after {
-      content: "";
-      position: absolute;
-      top: 10%;
-      bottom: 10%;
-      width: 4px;
-      left: 10%;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 234, 255, 0) 0%,
-        rgba(0, 234, 255, 0.35) 18%,
-        rgba(0, 234, 255, 0.95) 42%,
-        rgba(0, 234, 255, 1) 50%,
-        rgba(0, 234, 255, 0.95) 58%,
-        rgba(0, 234, 255, 0.35) 82%,
-        rgba(0, 234, 255, 0) 100%
-      );
-      box-shadow:
-        0 0 10px rgba(0,234,255,1),
-        0 0 20px rgba(0,234,255,0.8),
-        0 0 40px rgba(0,234,255,0.45);
-      animation: scanLine 2s ease-in-out infinite alternate;
-    }
+  box-shadow:
+    0 0 10px rgba(255,77,109,1),
+    0 0 20px rgba(255,77,109,0.8),
+    0 0 40px rgba(255,77,109,0.5);
 
-    @keyframes scanLine {
-      0% { left: 10%; }
-      100% { left: calc(90% - 4px); }
-    }
+  animation:scan 2s infinite alternate;
+}
 
-    /* ===== Warning ===== */
-    .warning-box {
-      background: rgba(20, 20, 24, 0.92);
-      border: 2px solid var(--red);
-      border-radius: 22px;
-      padding: 28px 22px;
-      box-shadow:
-        0 0 8px rgba(255, 77, 109, 0.95),
-        0 0 20px rgba(255, 77, 109, 0.55),
-        0 0 40px rgba(255, 77, 109, 0.18);
-    }
+/* ===== 打字 ===== */
+#type{
+  line-height:2;
+}
 
-    .warning-title {
-      color: var(--red);
-      font-size: 1.45rem;
-      line-height: 1.4;
-      letter-spacing: 1.2px;
-      margin: 0 0 18px;
-      text-shadow: 0 0 10px rgba(255, 77, 109, 0.28);
-    }
+/* ===== CRT ===== */
+#tv{
+  position:fixed;
+  inset:0;
+  background:black;
+  z-index:999;
+  opacity:0;
+}
 
-    .warning-text {
-      margin: 0;
-      font-size: 1rem;
-      line-height: 1.9;
-      color: #ededf0;
-    }
+.tv-on{
+  animation:tv 0.6s forwards;
+}
 
-    /* ===== Final Typewriter ===== */
-    #step3 {
-      padding: 0;
-      overflow: hidden;
-    }
+@keyframes tv{
+  0%{transform:scaleY(1);}
+  70%{transform:scaleY(0.05);}
+  100%{transform:scaleY(0);}
+}
 
-    #finalViewport {
-      height: calc(100vh - 32px);
-      overflow-y: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 18px 14px 22px;
-      border-radius: 24px;
-    }
+/* ===== Notice ===== */
+.notice-title{
+  color:var(--cyan);
+  margin-bottom:15px;
+}
 
-    #finalViewport.unlocked {
-      overflow-y: auto;
-      align-items: flex-start;
-    }
+.notice-list{
+  text-align:left;
+  font-family:monospace;
+}
 
-    #final {
-      width: 100%;
-      max-width: 420px;
-      padding-top: 36px;
-      padding-bottom: 120px;
-      text-align: center;
-    }
+.notice-list li{
+  margin-bottom:10px;
+}
 
-    #typewriter {
-      font-size: 1.06rem;
-      line-height: 2;
-      letter-spacing: 0.4px;
-      white-space: normal;
-      text-shadow:
-        0 0 2px rgba(255,255,255,0.55),
-        0 0 10px rgba(0, 234, 255, 0.14);
-    }
+/* ===== 成功 ===== */
+#success{
+  opacity:0;
+  transform:scale(0.9);
+  transition:0.8s;
+}
 
-    #buttons {
-      display: none;
-      margin-top: 34px;
-      padding-bottom: 84px;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: nowrap;
-    }
-
-    .choice-btn {
-      min-width: 104px;
-      padding: 12px 18px;
-      font-size: 0.96rem;
-    }
-
-    .notice-btn {
-      min-width: 132px;
-    }
-
-    /* ===== Notice ===== */
-    #noticeBox {
-      background: rgba(18, 18, 22, 0.95);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 22px;
-      padding: 28px 20px;
-      box-shadow:
-        0 0 12px rgba(0,234,255,0.08),
-        0 0 20px rgba(255,77,109,0.08);
-    }
-
-    #noticeBox h3 {
-      margin: 0 0 18px;
-      font-size: 1.22rem;
-      letter-spacing: 1px;
-      color: var(--cyan);
-      text-shadow: 0 0 8px rgba(0,234,255,0.18);
-    }
-
-    #noticeBox p {
-      margin: 0;
-      line-height: 1.9;
-      font-size: 0.98rem;
-      color: #efefef;
-    }
-
-    #back {
-      margin-top: 24px;
-    }
-
-    /* ===== Success ===== */
-    #success {
-      padding-top: 120px;
-      padding-bottom: 80px;
-      opacity: 0;
-      transform: scale(0.94);
-      transition: 0.8s;
-    }
-
-    #success.active {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .success-text {
-      font-size: 1.8rem;
-      letter-spacing: 4px;
-      text-shadow:
-        0 0 8px rgba(255,255,255,0.18),
-        0 0 16px rgba(0,234,255,0.10);
-    }
-
-    .heart {
-      font-size: 2.2rem;
-      margin-top: 16px;
-      animation: pulse 1.25s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.14); }
-      100% { transform: scale(1); }
-    }
-
-    /* ===== CRT off effect ===== */
-    #tvOff {
-      position: fixed;
-      inset: 0;
-      background: black;
-      z-index: 999;
-      pointer-events: none;
-      opacity: 0;
-      transform-origin: center center;
-    }
-
-    .tv-off-active {
-      animation: tvClose 0.62s forwards;
-    }
-
-    @keyframes tvClose {
-      0% {
-        transform: scaleY(1);
-        opacity: 1;
-        filter: brightness(1);
-      }
-      55% {
-        transform: scaleY(0.06);
-        opacity: 1;
-        filter: brightness(1.15);
-      }
-      78% {
-        transform: scaleY(0.02);
-        opacity: 1;
-        filter: brightness(2);
-      }
-      100% {
-        transform: scaleY(0);
-        opacity: 1;
-        filter: brightness(1);
-      }
-    }
-
-    @media (max-width: 430px) {
-      .ticket {
-        padding: 18px;
-      }
-
-      .ticket-header {
-        font-size: 0.76rem;
-      }
-
-      .ticket-value {
-        font-size: 1rem;
-      }
-
-      #typewriter {
-        font-size: 1rem;
-        line-height: 1.95;
-      }
-
-      #buttons {
-        gap: 8px;
-      }
-
-      .choice-btn {
-        min-width: 96px;
-        padding: 11px 14px;
-        font-size: 0.92rem;
-      }
-
-      .notice-btn {
-        min-width: 122px;
-      }
-    }
-  </style>
+#success.show{
+  opacity:1;
+  transform:scale(1);
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
 
-    <!-- STEP 1 -->
-    <div id="step1" class="page active">
-      <div class="ticket">
-        <div class="ticket-header">
-          <div>
-            AIR NEW ZEALAND<br>
-            TRAVELER: YUDAI
-          </div>
-          <div class="ticket-right">
-            <span class="first-class">FIRST CLASS</span><br>
-            SEAT: 1A<br>
-            FLIGHT: AI143
-          </div>
-        </div>
+<div class="container">
 
-        <div class="divider"></div>
-
-        <div class="ticket-label">FROM</div>
-        <div class="ticket-value">OUR STORY</div>
-
-        <div class="ticket-label">TO</div>
-        <div class="ticket-value">THE NEXT CHAPTER</div>
-
-        <div class="ticket-label">DATE</div>
-        <div class="ticket-value">2025 / 10 / 30</div>
-
-        <div class="divider"></div>
-
-        <div class="ticket-meta">
-          STATUS: CLEARED<br>
-          TYPE: ONE WAY
-        </div>
-
-        <div class="barcode">
-          YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY
-        </div>
-      </div>
-
-      <button id="startBtn" class="scan-btn">SCAN TO BOARD</button>
+<!-- STEP1 -->
+<div id="p1" class="page active">
+  <div class="ticket">
+    <div class="ticket-header">
+      <div>AIR NEW ZEALAND<br>TRAVELER: YUDAI</div>
+      <div><span class="first">FIRST CLASS</span><br>SEAT:1A<br>FLIGHT:AI143</div>
     </div>
 
-    <!-- STEP 2 -->
-    <div id="step2" class="page">
-      <div class="warning-box">
-        <h2 class="warning-title">WARNING:<br>ONE WAY TICKET</h2>
-        <p class="warning-text">
-          This ticket cannot be refunded.<br>
-          Once boarding is confirmed,<br>
-          there is no return.
-        </p>
-        <button class="scan-btn" id="confirmBtn">CONFIRM BOARDING</button>
-      </div>
-    </div>
+    <div class="line"></div>
 
-    <!-- STEP 3 -->
-    <div id="step3" class="page">
-      <div id="finalViewport">
-        <div id="final">
-          <div id="typewriter"></div>
+    <div class="label">FROM</div>
+    <div class="value">OUR STORY</div>
 
-          <div id="buttons">
-            <button class="choice-btn yes-btn scan-btn">Accept</button>
-            <button class="choice-btn notice-btn scan-btn" id="noticeBtn">Gift Notice</button>
-            <button class="choice-btn yes-btn scan-btn">Accept</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="label">TO</div>
+    <div class="value">THE NEXT CHAPTER</div>
 
-    <!-- STEP NOTICE -->
-    <div id="stepNotice" class="page">
-      <div id="noticeBox">
-        <h3>GIFT NOTICE</h3>
-        <p>
-          This gift is one way and non-returnable.<br><br>
-          I hope to be treated with care,<br>
-          and I will treat you the same way.<br><br>
-          If something feels wrong,<br>
-          I hope we can talk about it.<br><br>
-          Perfection is not required,<br>
-          but sincerity is.
-        </p>
-        <button id="back" class="scan-btn">Back</button>
-      </div>
-    </div>
+    <div class="label">DATE</div>
+    <div class="value">2025 / 10 / 30</div>
 
-    <!-- STEP 4 -->
-    <div id="step4" class="page">
-      <div id="success">
-        <div class="success-text">BOARDING CONFIRMED</div>
-        <div class="heart">❤️</div>
-      </div>
-    </div>
+    <div class="line"></div>
+
+    STATUS: CLEARED<br>
+    TYPE: ONE WAY
+
+    <div class="barcode">YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY</div>
   </div>
 
-  <div id="tvOff"></div>
+  <button class="scan-btn" onclick="tvGo(2)">SCAN TO BOARD</button>
+</div>
 
-  <script>
-    const pages = document.querySelectorAll(".page");
-    const typewriterEl = document.getElementById("typewriter");
-    const buttonsEl = document.getElementById("buttons");
-    const finalViewport = document.getElementById("finalViewport");
-    const tvOff = document.getElementById("tvOff");
+<!-- STEP2 -->
+<div id="p2" class="page">
+  <h2>WARNING</h2>
+  ONE WAY TICKET<br><br>
+  <button class="scan-btn" onclick="tvGo(3)">CONFIRM</button>
+</div>
 
-    const finalText = `Dear Most Precious Passenger Yudai:
+<!-- STEP3 -->
+<div id="p3" class="page">
+  <div id="type"></div>
+
+  <div id="btns" style="display:none;">
+    <button class="scan-btn" onclick="tvGo(4)">Accept</button>
+    <button class="danger-btn" onclick="tvGo('notice')">Gift Notice</button>
+    <button class="scan-btn" onclick="tvGo(4)">Accept</button>
+  </div>
+</div>
+
+<!-- NOTICE -->
+<div id="pnotice" class="page">
+  <div class="notice-title">[ GIFT NOTICE ]</div>
+
+  <ul class="notice-list">
+    <li>This gift is one-way and non-returnable.</li>
+    <li>It may not always be perfect,<br>but it will always be sincere.</li>
+    <li>Care is expected,<br>and care will be given in return.</li>
+    <li>Honesty is required,<br>even when it may hurt.</li>
+    <li>Replies shouldn’t take too long.<br>Being left waiting may make this gift a little sad.</li>
+    <li>Occasional photos are appreciated.<br>They tend to make this gift very happy.</li>
+    <li>If something feels wrong,<br>communication is required.</li>
+    <li>Silence is not a solution.</li>
+    <li>No perfection is needed,<br>only honesty.</li>
+    <li>Continue only if you mean it.</li>
+  </ul>
+
+  <button class="scan-btn" onclick="tvGo(3)">Back</button>
+</div>
+
+<!-- STEP4 -->
+<div id="p4" class="page">
+  <div id="success">
+    <h1>BOARDING CONFIRMED</h1>
+    ❤️
+  </div>
+</div>
+
+</div>
+
+<div id="tv"></div>
+
+<script>
+let text=`Dear Most Precious Passenger Yudai:
 
 Before boarding,
 we have prepared a special gift for you.
 
-It is not a short-lived surprise,
-nor something that appears for only one day.
-
-If you are willing to accept it,
+If you accept it,
 it will stay by your side.
 
 Because—
 
-it has actually been here all along.
+it has always been here.
 
 Now,
-please look to your left.
+look to your left.
 
 Your gift is right here.`;
 
-    let typingIndex = 0;
-    let finalUnlocked = false;
+let i=0;
 
-    function showPage(pageId) {
-      pages.forEach(page => page.classList.remove("active"));
-      document.getElementById(pageId).classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+function go(n){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("p"+n).classList.add("active");
+}
+
+function tvGo(n){
+  let tv=document.getElementById("tv");
+  tv.style.opacity=1;
+  tv.classList.add("tv-on");
+
+  setTimeout(()=>{
+    tv.classList.remove("tv-on");
+    tv.style.opacity=0;
+
+    if(n==="notice") go("notice");
+    else go(n);
+
+    if(n===3){
+      i=0;
+      document.getElementById("type").innerHTML="";
+      document.getElementById("btns").style.display="none";
+      type();
     }
 
-    function tvTransition(nextPageId, callback) {
-      tvOff.style.opacity = 1;
-      tvOff.classList.add("tv-off-active");
-
-      setTimeout(() => {
-        tvOff.classList.remove("tv-off-active");
-        tvOff.style.opacity = 0;
-        showPage(nextPageId);
-        if (callback) callback();
-      }, 620);
+    if(n===4){
+      setTimeout(()=>{
+        document.getElementById("success").classList.add("show");
+      },50);
     }
 
-    function unlockFinalScroll() {
-      if (!finalUnlocked) {
-        finalUnlocked = true;
-        finalViewport.classList.add("unlocked");
-      }
-    }
+  },600);
+}
 
-    function typeMessage() {
-      if (typingIndex < finalText.length) {
-        const char = finalText.charAt(typingIndex);
-        typewriterEl.innerHTML += char === "\n" ? "<br>" : char;
-        typingIndex++;
+function type(){
+  if(i<text.length){
+    let c=text[i];
+    document.getElementById("type").innerHTML+=c=="\n"?"<br>":c;
+    i++;
+    setTimeout(type,40);
+  }else{
+    document.getElementById("btns").style.display="block";
+  }
+}
+</script>
 
-        let delay = 42;
-        if (char === ",") delay = 120;
-        if (char === "." || char === "!" || char === "?") delay = 230;
-        if (char === "—") delay = 340;
-        if (char === "\n") delay = 170;
-
-        setTimeout(typeMessage, delay);
-      } else {
-        buttonsEl.style.display = "flex";
-
-        if (!finalUnlocked) {
-          setTimeout(() => {
-            finalViewport.scrollTo({
-              top: finalViewport.scrollHeight,
-              behavior: "smooth"
-            });
-          }, 200);
-        }
-      }
-    }
-
-    finalViewport.addEventListener("touchstart", unlockFinalScroll, { passive: true });
-    finalViewport.addEventListener("mousedown", unlockFinalScroll);
-    finalViewport.addEventListener("wheel", unlockFinalScroll, { passive: true });
-
-    document.getElementById("startBtn").addEventListener("click", () => {
-      tvTransition("step2");
-    });
-
-    document.getElementById("confirmBtn").addEventListener("click", () => {
-      tvTransition("step3", () => {
-        finalUnlocked = false;
-        finalViewport.classList.remove("unlocked");
-        finalViewport.scrollTop = 0;
-
-        typingIndex = 0;
-        typewriterEl.innerHTML = "";
-        buttonsEl.style.display = "none";
-        typeMessage();
-      });
-    });
-
-    document.querySelectorAll(".yes-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        tvTransition("step4", () => {
-          setTimeout(() => {
-            document.getElementById("success").classList.add("active");
-          }, 50);
-        });
-      });
-    });
-
-    document.getElementById("noticeBtn").addEventListener("click", () => {
-      tvTransition("stepNotice");
-    });
-
-    document.getElementById("back").addEventListener("click", () => {
-      tvTransition("step3");
-    });
-  </script>
 </body>
 </html>
