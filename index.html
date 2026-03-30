@@ -381,11 +381,19 @@
         0 0 18px rgba(0,234,255,0.3);
     }
 
+    #step4 {
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+    }
+
     #success {
-      padding-top: 120px;
-      padding-bottom: 80px;
+      position: relative;
+      z-index: 5;
+      padding-top: 60px;
+      padding-bottom: 50px;
       opacity: 0;
-      transform: scale(0.94);
+      transform: scale(0.96);
       transition: 0.8s;
     }
 
@@ -395,23 +403,86 @@
     }
 
     .success-text {
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       letter-spacing: 4px;
       text-shadow:
         0 0 8px rgba(255,255,255,0.18),
         0 0 16px rgba(0,234,255,0.10);
+      margin-bottom: 18px;
     }
 
-    .heart {
-      font-size: 2.2rem;
-      margin-top: 16px;
-      animation: pulse 1.25s infinite;
+    .success-subtext {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 18px;
     }
 
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.14); }
-      100% { transform: scale(1); }
+    .stars {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .stars span {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      opacity: 0;
+      animation: twinkle 4s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .dot-heart {
+      margin-top: 24px;
+      font-family: monospace;
+      font-size: 22px;
+      line-height: 1.15;
+      letter-spacing: 2px;
+      white-space: pre;
+      position: relative;
+      z-index: 10;
+
+      background: linear-gradient(
+        90deg,
+        rgba(0,234,255,0.2),
+        rgba(0,234,255,1),
+        rgba(0,234,255,0.2)
+      );
+      background-size: 200% 100%;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      text-shadow:
+        0 0 8px rgba(0,234,255,0.4),
+        0 0 20px rgba(0,234,255,0.25);
+
+      opacity: 0;
+      animation:
+        heartFadeIn 1.2s ease forwards,
+        heartFlow 5s ease-in-out infinite;
+      animation-delay: 0.6s, 1.2s;
+    }
+
+    @keyframes heartFlow {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes heartFadeIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     #tvOff {
@@ -445,6 +516,24 @@
       100% {
         transform: scaleY(0);
         opacity: 1;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .ticket { padding: 18px; }
+      .ticket-header { font-size: 0.76rem; }
+      .ticket-value { font-size: 1rem; }
+      #typewriter { font-size: 1rem; line-height: 1.95; }
+      #buttons { gap: 8px; }
+      .choice-btn {
+        min-width: 96px;
+        padding: 11px 14px;
+        font-size: 0.92rem;
+      }
+      .notice-btn { min-width: 122px; }
+      .dot-heart {
+        font-size: 20px;
+        letter-spacing: 1px;
       }
     }
   </style>
@@ -540,9 +629,22 @@
     </div>
 
     <div id="step4" class="page">
+      <div class="stars" id="stars"></div>
+
       <div id="success">
         <div class="success-text">BOARDING CONFIRMED</div>
-        <div class="heart">❤️</div>
+        <div class="success-subtext">
+          It was never a new journey.<br>
+          It just finally began.
+        </div>
+
+        <pre class="dot-heart">..     ..
+.... .... 
+......... 
+ .......  
+  .....   
+   ...    
+    .     </pre>
       </div>
     </div>
   </div>
@@ -572,6 +674,7 @@ Your gift is right here.`;
 
     let typingIndex = 0;
     let typingTimer = null;
+    let starsBuilt = false;
 
     function showPage(pageId) {
       document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
@@ -630,6 +733,23 @@ Your gift is right here.`;
       typeNext();
     }
 
+    function createStars() {
+      if (starsBuilt) return;
+      const container = document.getElementById("stars");
+      if (!container) return;
+
+      for (let i = 0; i < 32; i++) {
+        const star = document.createElement("span");
+        star.style.top = Math.random() * 100 + "%";
+        star.style.left = Math.random() * 100 + "%";
+        star.style.animationDelay = Math.random() * 4 + "s";
+        star.style.animationDuration = (3 + Math.random() * 3) + "s";
+        container.appendChild(star);
+      }
+
+      starsBuilt = true;
+    }
+
     function tvToStep2() {
       tvTransition("step2");
     }
@@ -650,6 +770,7 @@ Your gift is right here.`;
 
     function tvToSuccess() {
       tvTransition("step4", () => {
+        createStars();
         const success = document.getElementById("success");
         if (!success) return;
         success.classList.remove("active");
