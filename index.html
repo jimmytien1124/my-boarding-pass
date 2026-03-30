@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,6 +13,7 @@
       --ticket-bg: #f2f2f2;
       --ticket-text: #171717;
       --cyan: #00eaff;
+      --gold: #c7a43a;
       --red: #ff4d6d;
       --purple: rgba(180, 120, 255, 0.4);
     }
@@ -20,7 +21,7 @@
     body {
       margin: 0; min-height: 100vh;
       background: radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 28%), var(--bg);
-      color: var(--text); font-family: "Helvetica Neue", Arial, sans-serif;
+      color: var(--text); font-family: "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
       text-align: center; padding: 16px; overflow-x: hidden;
     }
 
@@ -33,54 +34,51 @@
     }
     .page.active { display: block; }
 
-    /* 機票與按鈕基本樣式 */
+    /* 機票詳細設計 */
     .ticket {
       position: relative; overflow: hidden; background: var(--ticket-bg); color: var(--ticket-text);
       border-radius: 22px; padding: 20px; text-align: left; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
+    .ticket-header { display: flex; justify-content: space-between; font-size: 0.8rem; line-height: 1.4; }
+    .first-class { color: var(--gold); font-weight: bold; }
     .divider { height: 1px; background: #cfcfcf; margin: 14px 0; }
+    .label { font-size: 0.7rem; color: #777; text-transform: uppercase; margin-bottom: 2px; }
+    .value { font-size: 1.05rem; margin-bottom: 10px; font-weight: 500; }
+    
+    .barcode { 
+      border-top: 1px dashed #bbb; margin-top: 10px; padding-top: 10px; 
+      text-align: center; font-size: 0.65rem; letter-spacing: 2px; color: #555;
+    }
+
     button {
       appearance: none; border: 2px solid var(--cyan); background: transparent; color: var(--cyan);
       padding: 13px 26px; border-radius: 999px; font-size: 0.98rem; cursor: pointer; margin-top: 22px;
+      transition: 0.2s;
     }
+    button:active { transform: scale(0.96); }
 
-    /* --- 彈出式載入視窗 (Loading Modal) --- */
+    /* --- 載入彈窗 (僅限第一頁使用) --- */
     #loadingModal {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
       z-index: 10000; display: none; justify-content: center; align-items: center;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
     }
-
     .modal-content {
       width: 85%; max-width: 300px; background: #111; border: 1px solid var(--cyan);
-      border-radius: 20px; padding: 30px 20px; box-shadow: 0 0 20px rgba(0, 234, 255, 0.2);
-      text-align: center;
+      border-radius: 20px; padding: 30px 20px; box-shadow: 0 0 30px rgba(0, 234, 255, 0.3);
     }
-
-    /* 轉圈圈 */
     .spinner {
-      width: 40px; height: 40px; border: 3px solid rgba(0, 234, 255, 0.1);
+      width: 35px; height: 35px; border: 3px solid rgba(0, 234, 255, 0.1);
       border-top: 3px solid var(--cyan); border-radius: 50%;
       margin: 0 auto 20px; animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loading-title { color: var(--cyan); font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 15px; }
-
-    /* 進度條容器 */
-    .progress-container {
-      display: flex; align-items: center; gap: 10px; width: 100%;
-    }
-    .progress-bg {
-      flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;
-    }
-    .progress-bar {
-      width: 0%; height: 100%; background: var(--cyan);
-      box-shadow: 0 0 10px var(--cyan); transition: width 0.1s linear;
-    }
+    .progress-container { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 15px;}
+    .progress-bg { flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+    .progress-bar { width: 0%; height: 100%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
     .progress-percent { color: var(--cyan); font-family: monospace; font-size: 0.85rem; min-width: 35px; }
 
-    /* 心電圖無限循環 */
+    /* --- 無限心電圖 --- */
     .heartbeat-line {
       fill: none; stroke: var(--cyan); stroke-width: 4;
       stroke-dasharray: 600, 600; stroke-dashoffset: 1200;
@@ -89,7 +87,7 @@
     @keyframes drawingHeartbeat { to { stroke-dashoffset: 600; } }
     @keyframes loopHeartbeat { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
 
-    #typewriter { line-height: 2; min-height: 100px; }
+    #typewriter { line-height: 1.8; font-size: 1.05rem; text-align: left; }
   </style>
 </head>
 <body>
@@ -97,11 +95,9 @@
   <div id="loadingModal">
     <div class="modal-content">
       <div class="spinner"></div>
-      <div class="loading-title" id="loadingText">PROCESSING...</div>
+      <div style="color:var(--cyan); font-size:0.85rem; letter-spacing:2px;">SYNCING DATA...</div>
       <div class="progress-container">
-        <div class="progress-bg">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
+        <div class="progress-bg"><div class="progress-bar" id="progressBar"></div></div>
         <div class="progress-percent" id="progressPercent">0%</div>
       </div>
     </div>
@@ -110,57 +106,63 @@
   <div class="container">
     <div id="step1" class="page active">
       <div class="ticket">
-        <div>AIR NEW ZEALAND<br>TRAVELER: YUDAI</div>
+        <div class="ticket-header">
+          <div>AIR NEW ZEALAND<br>TRAVELER: YUDAI</div>
+          <div style="text-align:right;">
+            <span class="first-class">FIRST CLASS</span><br>
+            SEAT: 1A<br>FLIGHT: AI143
+          </div>
+        </div>
         <div class="divider"></div>
-        <div style="font-size: 0.72rem; color: #777;">FROM</div><div>OUR STORY</div>
-        <div style="font-size: 0.72rem; color: #777;">TO</div><div>THE NEXT CHAPTER</div>
+        <div class="label">FROM</div><div class="value">OUR STORY</div>
+        <div class="label">TO</div><div class="value">THE NEXT CHAPTER</div>
+        <div class="label">DATE</div><div class="value">2025 / 10 / 30</div>
+        <div class="divider"></div>
+        <div style="font-size: 0.85rem;">STATUS: CLEARED<br>TYPE: ONE WAY</div>
+        <div class="barcode">YUDAI · AI143 · 1A · FIRST CLASS</div>
       </div>
-      <button onclick="startLoading('step2')">SCAN TO BOARD</button>
+      <button onclick="startLoadingWithProgress('step2')">SCAN TO BOARD</button>
     </div>
 
     <div id="step2" class="page">
-      <h2 style="color:var(--red)">ONE WAY TICKET</h2>
-      <p>Confirm boarding? There is no return.</p>
-      <button onclick="startLoading('step3', startTypewriter)">CONFIRM</button>
+      <h2 style="color:var(--red); margin-top:0;">WARNING</h2>
+      <p style="line-height:1.6;">This is a one-way ticket.<br>Once boarding is confirmed,<br>there is no return.</p>
+      <button onclick="showPage('step3', startTypewriter)">CONFIRM BOARDING</button>
     </div>
 
     <div id="step3" class="page">
       <div id="typewriter"></div>
-      <div id="buttons" style="display:none; gap:10px; justify-content:center; margin-top:20px;">
-        <button onclick="startLoading('step4', finishAction)">Accept</button>
+      <div id="buttons" style="display:none; gap:10px; justify-content:center; margin-top:24px;">
+        <button onclick="showPage('step4')">Accept</button>
       </div>
     </div>
 
     <div id="step4" class="page">
-      <h2>BOARDING CONFIRMED</h2>
-      <svg viewBox="0 0 600 140" style="width:100%; margin-top:20px;">
-        <path class="heartbeat-line" d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90" />
-      </svg>
+      <h2 style="letter-spacing:4px; margin-top:0;">BOARDING CONFIRMED</h2>
+      <p style="color:rgba(255,255,255,0.7); font-size:0.9rem;">It was never a new journey.<br>It just finally began.</p>
+      <div style="margin-top:30px;">
+        <svg viewBox="0 0 600 140" style="width:100%;">
+          <path class="heartbeat-line" d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90" />
+        </svg>
+      </div>
     </div>
   </div>
 
   <script>
-    const FINAL_TEXT = `Dear Yudai:\n\nBefore boarding, we have prepared a special gift for you.\n\nIf you are willing to accept it, it will stay by your side.\n\nNow, please look to your left.`;
+    const FINAL_TEXT = `Dear Most Precious Passenger Yudai:\n\nBefore boarding, we have prepared a special gift for you.\nIt is not a short-lived surprise.\n\nIf you are willing to accept it, it will stay by your side.\nBecause— it has actually been here all along.\n\nNow, please look to your left.\nYour gift is right here.`;
 
-    function startLoading(nextPageId, callback) {
+    // 只有第一頁使用的進度條函式
+    function startLoadingWithProgress(nextPageId) {
       const modal = document.getElementById('loadingModal');
       const bar = document.getElementById('progressBar');
       const percentText = document.getElementById('progressPercent');
-      const loadingText = document.getElementById('loadingText');
       
-      const phrases = ["SYNCHRONIZING...", "AUTHORIZING...", "DECRYPTING...", "FINALIZING..."];
-      loadingText.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-
       modal.style.display = 'flex';
       let progress = 0;
-      bar.style.width = '0%';
-      percentText.innerText = '0%';
-
-      // 1.5秒跑完進度條 (每 15ms 跑 1%)
+      
       const interval = setInterval(() => {
-        progress += 2; // 每次增加 2%
+        progress += 2;
         if (progress > 100) progress = 100;
-        
         bar.style.width = progress + '%';
         percentText.innerText = progress + '%';
 
@@ -169,15 +171,17 @@
           setTimeout(() => {
             modal.style.display = 'none';
             showPage(nextPageId);
-            if (callback) callback();
-          }, 200); // 滿格後停一下下再消失
+          }, 200);
         }
-      }, 30); // 1.5秒總共 1500ms / (100%/2%) = 30ms 
+      }, 30); // 1.5秒跑完
     }
 
-    function showPage(id) {
+    // 一般頁面切換 (直接跳轉)
+    function showPage(id, callback) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
+      window.scrollTo(0,0);
+      if (callback) callback();
     }
 
     function startTypewriter() {
@@ -189,14 +193,12 @@
         if (i < FINAL_TEXT.length) {
           let c = FINAL_TEXT.charAt(i);
           box.innerHTML += c === "\n" ? "<br>" : c;
-          i++; setTimeout(type, 50);
-        } else { btns.style.display = "flex"; }
+          i++; setTimeout(type, c === "," ? 200 : 50);
+        } else {
+          btns.style.display = "flex";
+        }
       }
       type();
-    }
-
-    function finishAction() {
-      // 可以在這裡加煙火或其他效果
     }
   </script>
 </body>
