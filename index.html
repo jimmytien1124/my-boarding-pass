@@ -19,9 +19,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 40%),
-        var(--bg);
+      background: radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 40%), var(--bg);
       color: var(--text);
       font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
       display: flex;
@@ -32,423 +30,144 @@
       padding: 40px 0;
     }
 
-    /* 星空 */
-    .stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle var(--d) infinite;
-      opacity: 0;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 0.6; }
-    }
+    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) infinite; opacity: 0; }
+    @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 0.6; } }
 
     .main-container {
-      width: 90%;
-      max-width: 400px;
-      position: relative;
-      z-index: 10;
-      border: 1px solid rgba(180, 120, 255, 0.2);
-      border-radius: 28px;
-      padding: 30px 20px;
-      background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(10px);
+      width: 90%; max-width: 400px; position: relative; z-index: 10;
+      border: 1px solid rgba(180, 120, 255, 0.2); border-radius: 28px;
+      padding: 30px 20px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px);
       box-shadow: 0 0 40px var(--purple-glow);
       transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
-    .crt-off {
-      animation: crtClose 0.6s forwards ease-in;
-    }
-
+    .crt-off { animation: crtClose 0.6s forwards ease-in; }
     @keyframes crtClose {
       0% { transform: scale(1, 1); opacity: 1; }
       50% { transform: scale(1, 0.005); opacity: 0.8; }
       100% { transform: scale(0, 0); opacity: 0; }
     }
 
-    .page {
-      display: none;
-      text-align: center;
-    }
+    .page { display: none; text-align: center; }
+    .page.active { display: block; animation: fadeIn 0.8s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .page.active {
-      display: block;
-      animation: fadeIn 0.8s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* 登機證 */
+    /* 登機證 (100% 還原) */
     .ticket {
-      background: #e8e9eb;
-      color: #1a1a1a;
-      border-radius: 16px;
-      padding: 24px;
-      text-align: left;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 30px;
+      background: #e8e9eb; color: #1a1a1a; border-radius: 16px; padding: 24px;
+      text-align: left; position: relative; overflow: hidden; margin-bottom: 30px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     }
-
     .ticket::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        135deg,
-        transparent 45%,
-        rgba(0,234,255,0.08) 50%,
-        transparent 55%
-      );
-      background-size: 200% 200%;
-      animation: ticketShine 6s infinite;
-      pointer-events: none;
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 45%, rgba(0,234,255,0.08) 50%, transparent 55%);
+      background-size: 200% 200%; animation: ticketShine 6s infinite; pointer-events: none;
     }
+    @keyframes ticketShine { 0% { background-position: 200% 200%; } 100% { background-position: -200% -200%; } }
+    .ticket-head { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; line-height: 1.45; }
+    .t-label { font-size: 0.65rem; color: #777; text-transform: uppercase; margin-bottom: 2px; }
+    .t-value { font-size: 1.05rem; font-weight: 800; color: #111; margin-bottom: 12px; }
 
-    @keyframes ticketShine {
-      0% { background-position: 200% 200%; }
-      100% { background-position: -200% -200%; }
-    }
-
-    .ticket-head {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-bottom: 15px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 10px;
-      line-height: 1.45;
-    }
-
-    .t-label {
-      font-size: 0.65rem;
-      color: #777;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-
-    .t-value {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: #111;
-      margin-bottom: 12px;
-    }
-
-    /* 按鈕 */
+    /* --- 賽博龐克流光按鈕 (橢圓 999px + 橫向流光) --- */
     button {
-      appearance: none;
-      border: none;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      font-family: inherit;
-      position: relative;
-      overflow: hidden;
-      color: #fff;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(6px);
-      transition: all 0.25s ease;
-      padding: 14px 24px;
+      appearance: none; border: none; border-radius: 999px;
+      font-size: 0.8rem; cursor: pointer; font-family: inherit;
+      position: relative; overflow: hidden; color: #fff;
+      background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(6px);
+      transition: all 0.25s ease; padding: 14px 24px;
     }
-
-    button span {
-      position: relative;
-      z-index: 2;
-    }
+    button span { position: relative; z-index: 5; }
 
     button::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 999px;
-      padding: 1.5px;
-      background: linear-gradient(120deg, transparent, var(--cyan), transparent);
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0.6;
+      content: ""; position: absolute; top: 0; width: 50px; height: 100%;
+      opacity: 0.6; filter: blur(6px); animation: scanHorizontal 2.5s linear infinite;
     }
+    @keyframes scanHorizontal { 0% { left: -70%; } 100% { left: 170%; } }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 12px rgba(0,234,255,0.5), 0 0 30px rgba(0,234,255,0.1);
-    }
+    .scan-btn { border: 1px solid rgba(0,234,255,0.3); }
+    .scan-btn::before { background: linear-gradient(to right, transparent, var(--cyan), transparent); }
 
-    button:active {
-      transform: scale(0.96);
-    }
+    .danger-btn { border: 1px solid rgba(255,77,109,0.4); }
+    .danger-btn::before { background: linear-gradient(to right, transparent, var(--red), transparent); }
 
-    .scan-btn {
-      border: 1px solid rgba(0,234,255,0.3);
-    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(255,255,255,0.1); filter: brightness(1.2); }
+    button:active { transform: scale(0.96); }
 
-    .danger-btn {
-      border: 1px solid rgba(255,77,109,0.4);
-    }
+    #btnGroup { display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0; transition: 1s; margin-top: 25px; width: 100%; flex-wrap: nowrap; }
+    #btnGroup button { flex: 1.2; padding: 12px 8px; white-space: nowrap; min-width: 90px; }
+    #btnGroup .danger-btn { flex: 2; font-size: 0.85rem; padding: 14px 10px; }
 
-    .danger-btn::before {
-      background: linear-gradient(120deg, transparent, var(--red), transparent);
-    }
+    /* 其他樣式還原 */
+    #loader { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; display: none; flex-direction: column; justify-content: center; align-items: center; }
+    .loader-arc { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--cyan); border-radius: 50%; animation: spin 1s infinite linear; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .p-bar-fill { height: 100%; background: var(--cyan); width: 0%; box-shadow: 0 0 10px var(--cyan); }
+    #typewriter { text-align: left; min-height: 240px; line-height: 1.8; font-size: 1rem; color: rgba(255,255,255,0.9); }
+    .warning-box { border: 1px solid var(--red); padding: 25px; border-radius: 16px; background: rgba(255,77,109,0.03); margin-bottom: 25px; }
+    .notice-list { text-align: left; font-family: monospace; font-size: 0.8rem; line-height: 1.7; padding: 0; list-style: none; color: #bbb; margin: 0 0 24px 0; }
+    .notice-list li { margin-bottom: 10px; padding-left: 18px; position: relative; }
+    .notice-list li::before { content: ">"; position: absolute; left: 0; color: var(--cyan); }
 
-    .danger-btn:hover {
-      box-shadow: 0 0 12px rgba(255,77,109,0.6), 0 0 28px rgba(255,77,109,0.15);
-    }
-
-    /* loading */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 100;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .loader-arc {
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(255,255,255,0.1);
-      border-top-color: var(--cyan);
-      border-radius: 50%;
-      animation: spin 1s infinite linear;
-    }
-
-    .p-bar-bg {
-      width: 180px;
-      height: 2px;
-      background: rgba(255,255,255,0.1);
-      margin: 20px 0 8px;
-    }
-
-    .p-bar-fill {
-      height: 100%;
-      background: var(--cyan);
-      width: 0%;
-      box-shadow: 0 0 10px var(--cyan);
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* 打字機 */
-    #typewriter {
-      text-align: left;
-      min-height: 240px;
-      line-height: 1.8;
-      font-size: 1rem;
-      color: rgba(255,255,255,0.9);
-    }
-
-    /* 第三頁按鈕 */
-    #btnGroup {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      opacity: 0;
-      transition: 1s;
-      margin-top: 25px;
-      width: 100%;
-      flex-wrap: wrap;
-    }
-
-    #btnGroup button {
-      padding: 12px 8px;
-      white-space: nowrap;
-      flex: 1.2;
-      font-size: 0.75rem;
-      min-width: 90px;
-    }
-
-    #btnGroup .danger-btn {
-      flex: 2;
-      font-size: 0.85rem;
-      padding: 14px 10px;
-    }
-
-    /* warning box */
-    .warning-box {
-      border: 1px solid var(--red);
-      padding: 25px;
-      border-radius: 16px;
-      background: rgba(255,77,109,0.03);
-      margin-bottom: 25px;
-    }
-
-    /* notice */
-    .notice-title {
-      color: var(--cyan);
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-    }
-
-    .notice-list {
-      text-align: left;
-      font-family: monospace;
-      font-size: 0.8rem;
-      line-height: 1.7;
-      padding: 0;
-      list-style: none;
-      color: #bbb;
-      margin: 0 0 24px 0;
-    }
-
-    .notice-list li {
-      margin-bottom: 10px;
-      padding-left: 18px;
-      position: relative;
-    }
-
-    .notice-list li::before {
-      content: ">";
-      position: absolute;
-      left: 0;
-      color: var(--cyan);
-    }
-
-    /* final */
-    .heart-monitor {
-      width: 100%;
-      margin-top: 40px;
-    }
-
-    .ekg-base {
-      stroke: rgba(0, 234, 255, 0.08);
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
+    /* 完美心電圖 */
+    .heart-monitor { width: 100%; margin-top: 40px; }
+    .ekg-base { stroke: rgba(0, 234, 255, 0.08); stroke-width: 2.5; fill: none; }
     .ekg-active {
-      stroke: var(--cyan);
-      stroke-width: 3;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 140, 1000;
-      filter: drop-shadow(0 0 12px var(--cyan)) drop-shadow(0 0 4px var(--cyan));
-      animation: ekgMove 2.5s linear infinite;
+      stroke: var(--cyan); stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 120, 1000; filter: drop-shadow(0 0 12px var(--cyan));
+      animation: ekgMove 3s linear infinite;
     }
-
-    @keyframes ekgMove {
-      0% { stroke-dashoffset: 1140; }
-      100% { stroke-dashoffset: 0; }
-    }
+    @keyframes ekgMove { 0% { stroke-dashoffset: 1100; } 100% { stroke-dashoffset: 0; } }
   </style>
 </head>
 <body>
-
   <div class="stars" id="stars"></div>
-
   <div id="loader">
     <div class="loader-arc"></div>
-    <div class="p-bar-bg">
+    <div style="width: 180px; height: 2px; background: rgba(255,255,255,0.1); margin: 20px 0 8px;">
       <div class="p-bar-fill" id="pFill"></div>
     </div>
     <div id="pPercent" style="font-size: 0.8rem; color: var(--cyan); font-family: monospace;">0%</div>
   </div>
 
   <div class="main-container" id="mainFrame">
-
     <div id="page1" class="page active">
       <div class="ticket">
         <div class="ticket-head">
-          <span>
-            AIR NEW ZEALAND<br>
-            TRAVELER: YUDAI
-          </span>
-          <span style="text-align:right;">
-            <span style="color:var(--gold)">FIRST CLASS</span><br>
-            SEAT: 1A<br>
-            FLIGHT: AI143
-          </span>
+          <span>AIR NEW ZEALAND<br>TRAVELER: YUDAI</span>
+          <span style="text-align:right;"><span style="color:var(--gold)">FIRST CLASS</span><br>SEAT: 1A<br>FLIGHT: AI143</span>
         </div>
-
-        <div class="t-label">FROM</div>
-        <div class="t-value">OUR STORY</div>
-
-        <div class="t-label">TO</div>
-        <div class="t-value">THE NEXT CHAPTER</div>
-
+        <div class="t-label">FROM</div><div class="t-value">OUR STORY</div>
+        <div class="t-label">TO</div><div class="t-value">THE NEXT CHAPTER</div>
         <div style="display:flex; justify-content: space-between; gap: 14px;">
-          <div>
-            <div class="t-label">DATE</div>
-            <div class="t-value">2025/10/30</div>
-          </div>
-          <div>
-            <div class="t-label">STATUS</div>
-            <div class="t-value">CLEARED</div>
-          </div>
-          <div style="text-align:right;">
-            <div class="t-label">TYPE</div>
-            <div class="t-value">ONE WAY</div>
-          </div>
+          <div><div class="t-label">DATE</div><div class="t-value">2025/10/30</div></div>
+          <div><div class="t-label">STATUS</div><div class="t-value">CLEARED</div></div>
+          <div style="text-align:right;"><div class="t-label">TYPE</div><div class="t-value">ONE WAY</div></div>
         </div>
-
-        <div style="text-align:center; border-top:1px dashed #bbb; margin-top:10px; padding-top:10px; font-size:0.55rem; letter-spacing:2px;">
-          YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY
-        </div>
+        <div style="text-align:center; border-top:1px dashed #bbb; margin-top:10px; padding-top:10px; font-size:0.55rem; letter-spacing:2px;">YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY</div>
       </div>
-
-      <button class="scan-btn" onclick="runLoading()">
-        <span>SCAN TO BOARD</span>
-      </button>
+      <button class="scan-btn" onclick="runLoading()"><span>SCAN TO BOARD</span></button>
     </div>
 
     <div id="page2" class="page">
       <div class="warning-box">
         <h2 style="color: var(--red); letter-spacing: 4px; margin: 0 0 10px;">WARNING</h2>
-        <p style="font-size: 0.9rem; line-height: 1.6; opacity: 0.8; margin: 0;">
-          This is a one-way ticket.<br>
-          There is no return after confirmation.
-        </p>
+        <p style="font-size: 0.9rem; line-height: 1.6; opacity: 0.8; margin: 0;">This is a one-way ticket.<br>There is no return after confirmation.</p>
       </div>
-
-      <button class="scan-btn" onclick="transit('page3', startTypewriter)">
-        <span>CONFIRM BOARDING</span>
-      </button>
+      <button class="scan-btn" onclick="transit('page3', startTypewriter)"><span>CONFIRM BOARDING</span></button>
     </div>
 
     <div id="page3" class="page">
       <div id="typewriter"></div>
-
       <div id="btnGroup">
-        <button class="scan-btn" onclick="transit('pageFinal')">
-          <span>Accept</span>
-        </button>
-        <button class="danger-btn" onclick="transit('pageNotice')">
-          <span>Gift Notice</span>
-        </button>
-        <button class="scan-btn" onclick="transit('pageFinal')">
-          <span>Accept</span>
-        </button>
+        <button class="scan-btn" onclick="transit('pageFinal')"><span>Accept</span></button>
+        <button class="danger-btn" onclick="transit('pageNotice')"><span>Gift Notice</span></button>
+        <button class="scan-btn" onclick="transit('pageFinal')"><span>Accept</span></button>
       </div>
     </div>
 
     <div id="pageNotice" class="page">
-      <h3 class="notice-title">[ GIFT NOTICE ]</h3>
+      <h3 style="color: var(--cyan); letter-spacing: 2px; margin-bottom: 20px;">[ GIFT NOTICE ]</h3>
       <ul class="notice-list">
         <li>This gift is one-way and non-returnable.</li>
         <li>It may not always be perfect, but it will always be sincere.</li>
@@ -461,119 +180,49 @@
         <li>No perfection is needed, only honesty.</li>
         <li>Continue only if you mean it.</li>
       </ul>
-
-      <button class="scan-btn" onclick="transit('page3')">
-        <span>BACK</span>
-      </button>
+      <button class="scan-btn" onclick="transit('page3', () => { document.getElementById('btnGroup').style.opacity='1'; })"><span>BACK</span></button>
     </div>
 
     <div id="pageFinal" class="page">
       <h2 style="letter-spacing: 6px; font-size: 1.3rem; margin-bottom: 8px;">BOARDING CONFIRMED</h2>
-      <p style="opacity:0.6; font-size: 0.85rem; line-height: 1.7; margin-top: 0;">
-        It was never a new journey.<br>
-        It just finally began.
-      </p>
-
+      <p style="opacity:0.6; font-size: 0.85rem; line-height: 1.7; margin-top: 0;">It was never a new journey.<br>It just finally began.</p>
       <svg class="heart-monitor" viewBox="0 0 600 160">
-        <path
-          class="ekg-base"
-          d="M0 80
-             L120 80
-             L140 40
-             L160 120
-             L180 60
-             L200 80
-             L250 80
-
-             L270 80
-             C282 60, 305 55, 320 70
-             C335 55, 358 60, 370 80
-             C370 102, 346 118, 320 138
-             C294 118, 270 102, 270 80
-
-             L390 80
-             L410 50
-             L430 115
-             L450 68
-             L470 80
-             L600 80"
-        />
-        <path
-          class="ekg-active"
-          d="M0 80
-             L120 80
-             L140 40
-             L160 120
-             L180 60
-             L200 80
-             L250 80
-
-             L270 80
-             C282 60, 305 55, 320 70
-             C335 55, 358 60, 370 80
-             C370 102, 346 118, 320 138
-             C294 118, 270 102, 270 80
-
-             L390 80
-             L410 50
-             L430 115
-             L450 68
-             L470 80
-             L600 80"
-        />
+        <path class="ekg-base" d="M0 80 L200 80 L220 40 L240 120 L260 60 L280 80 L300 80 C300 45, 340 45, 340 80 C340 45, 380 45, 380 80 L400 80 L600 80" />
+        <path class="ekg-active" d="M0 80 L200 80 L220 40 L240 120 L260 60 L280 80 L300 80 C300 45, 340 45, 340 80 C340 45, 380 45, 380 80 L400 80 L600 80" />
       </svg>
     </div>
-
   </div>
 
   <script>
     const sC = document.getElementById('stars');
-    if (sC) {
-      for (let i = 0; i < 40; i++) {
-        const s = document.createElement('div');
-        s.className = 'star';
-        s.style.left = Math.random() * 100 + '%';
-        s.style.top = Math.random() * 100 + '%';
-        s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
-        s.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
-        s.style.animationDelay = Math.random() * 5 + 's';
-        sC.appendChild(s);
-      }
+    for (let i = 0; i < 40; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
+      s.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
+      sC.appendChild(s);
     }
 
     function runLoading() {
       const ld = document.getElementById('loader');
-      const fill = document.getElementById('pFill');
-      const txt = document.getElementById('pPercent');
-
       ld.style.display = 'flex';
-      fill.style.width = '0%';
-      txt.innerText = '0%';
-
       let p = 0;
       const inv = setInterval(() => {
         p += Math.floor(Math.random() * 4) + 2;
-        if (p >= 100) {
-          p = 100;
-          clearInterval(inv);
-          setTimeout(() => {
-            ld.style.display = 'none';
-            transit('page2');
-          }, 400);
-        }
-        fill.style.width = p + '%';
-        txt.innerText = p + '%';
+        if (p >= 100) { p = 100; clearInterval(inv); setTimeout(() => { ld.style.display = 'none'; transit('page2'); }, 400); }
+        document.getElementById('pFill').style.width = p + '%';
+        document.getElementById('pPercent').innerText = p + '%';
       }, 40);
     }
 
     function transit(nextId, cb) {
-      const frame = document.getElementById('mainFrame');
-      frame.classList.add('crt-off');
-
+      document.getElementById('mainFrame').classList.add('crt-off');
       setTimeout(() => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(nextId).classList.add('active');
-        frame.classList.remove('crt-off');
+        document.getElementById('mainFrame').classList.remove('crt-off');
         window.scrollTo(0, 0);
         if (cb) cb();
       }, 600);
@@ -592,36 +241,19 @@
 
     function startTypewriter() {
       const box = document.getElementById('typewriter');
-      const btns = document.getElementById('btnGroup');
-      box.innerHTML = "";
-      btns.style.opacity = "0";
-
+      box.innerHTML = ""; document.getElementById('btnGroup').style.opacity = "0";
       let lIdx = 0;
-
       function typeLine() {
         if (lIdx < lines.length) {
+          const div = document.createElement('div'); div.style.marginBottom = "12px"; box.appendChild(div);
           let cIdx = 0;
-          const div = document.createElement('div');
-          div.style.marginBottom = "12px";
-          box.appendChild(div);
-
           function typeChar() {
-            if (cIdx < lines[lIdx].length) {
-              div.innerHTML += lines[lIdx].charAt(cIdx);
-              cIdx++;
-              setTimeout(typeChar, 40);
-            } else {
-              lIdx++;
-              setTimeout(typeLine, 500);
-            }
+            if (cIdx < lines[lIdx].length) { div.innerHTML += lines[lIdx].charAt(cIdx++); setTimeout(typeChar, 40); }
+            else { lIdx++; setTimeout(typeLine, 500); }
           }
-
           typeChar();
-        } else {
-          btns.style.opacity = "1";
-        }
+        } else { document.getElementById('btnGroup').style.opacity = "1"; }
       }
-
       typeLine();
     }
   </script>
