@@ -20,6 +20,8 @@
       --purple-glow-1: rgba(180, 120, 255, 0.28);
       --purple-glow-2: rgba(180, 120, 255, 0.16);
       --purple-inset: rgba(180, 120, 255, 0.08);
+      --glitch-cyan: rgba(0, 234, 255, 0.8);
+      --glitch-purple: rgba(180, 120, 255, 0.9);
     }
 
     body {
@@ -150,6 +152,7 @@
       line-height: 1.7;
     }
 
+    /* 基本按鈕樣式 */
     button {
       appearance: none;
       -webkit-appearance: none;
@@ -169,46 +172,66 @@
       overflow: hidden;
     }
 
-    button:hover {
-      background: rgba(0, 234, 255, 0.10);
-      box-shadow:
-        0 0 10px rgba(0, 234, 255, 0.6),
-        0 0 24px rgba(0, 234, 255, 0.25);
-    }
-
+    /* 故障掃描按鈕核心修改 */
     .scan-btn {
       margin-top: 22px;
       margin-bottom: 4px;
       color: #fff;
       border-color: rgba(255,255,255,0.88);
       background: rgba(255,255,255,0.01);
-      box-shadow:
-        0 0 8px rgba(255,255,255,0.18),
-        0 0 18px rgba(0, 234, 255, 0.08);
     }
 
+    /* 升級：故障 Glitch 流光偽元素 */
     .scan-btn::after {
       content: "";
       position: absolute;
-      top: 10%;
-      bottom: 10%;
-      width: 4px;
-      left: 10%;
+      top: 5%;
+      bottom: 5%;
+      width: 10px; 
+      left: -10px;
       background: linear-gradient(
         to bottom,
         rgba(0, 234, 255, 0) 0%,
-        rgba(0, 234, 255, 0.35) 18%,
-        rgba(0, 234, 255, 0.95) 42%,
-        rgba(0, 234, 255, 1) 50%,
-        rgba(0, 234, 255, 0.95) 58%,
-        rgba(0, 234, 255, 0.35) 82%,
+        var(--glitch-cyan) 20%,
+        var(--glitch-purple) 50%, 
+        var(--glitch-cyan) 80%,
         rgba(0, 234, 255, 0) 100%
       );
       box-shadow:
-        0 0 10px rgba(0,234,255,1),
-        0 0 20px rgba(0,234,255,0.8),
-        0 0 40px rgba(0,234,255,0.45);
-      animation: scanLine 2s ease-in-out infinite alternate;
+        0 0 10px var(--glitch-cyan),
+        0 0 20px var(--glitch-purple),
+        0 0 30px rgba(0, 234, 255, 0.4);
+      filter: blur(1px);
+      animation: glitchSweep 1.2s linear infinite;
+      opacity: 0.9;
+    }
+
+    /* 懸停時的急速閃爍特效 */
+    .scan-btn:hover {
+      background: rgba(0, 234, 255, 0.1);
+      animation: glitchFlicker 0.15s infinite;
+    }
+
+    /* 故障掃描動畫：隨機扭曲與跳動 */
+    @keyframes glitchSweep {
+      0% { left: -10px; transform: skewX(-10deg); opacity: 0; }
+      10% { opacity: 1; }
+      25% { left: 30%; transform: skewX(-20deg); }
+      26% { left: 31%; transform: skewX(15deg); filter: brightness(2) blur(2px); } /* 故障跳動 1 */
+      27% { left: 30%; transform: skewX(-20deg); filter: brightness(1) blur(1px); }
+      50% { left: 60%; transform: skewX(0deg); }
+      51% { left: 61%; transform: scaleX(1.5); filter: contrast(2); } /* 故障跳動 2 */
+      52% { left: 60%; transform: scaleX(1); }
+      80% { opacity: 1; }
+      100% { left: 110%; transform: skewX(-10deg); opacity: 0; }
+    }
+
+    /* 霓虹燈管閃爍動畫 */
+    @keyframes glitchFlicker {
+      0%, 100% { opacity: 1; filter: contrast(1) brightness(1); }
+      30% { opacity: 0.8; filter: contrast(1.2) brightness(1.5); }
+      50% { opacity: 0.9; filter: contrast(0.8) brightness(0.8); }
+      80% { opacity: 1; filter: contrast(1.1) brightness(1.2); }
     }
 
     .danger-btn {
@@ -219,33 +242,22 @@
         0 0 18px rgba(255, 77, 109, 0.12);
     }
 
+    /* 危險按鈕同樣套用故障動畫但換色 */
     .danger-btn::after {
       content: "";
       position: absolute;
-      top: 10%;
-      bottom: 10%;
-      width: 4px;
-      left: 10%;
+      top: 5%;
+      bottom: 5%;
+      width: 10px;
+      left: -10px;
       background: linear-gradient(
         to bottom,
         rgba(255, 77, 109, 0) 0%,
-        rgba(255, 77, 109, 0.35) 18%,
-        rgba(255, 77, 109, 0.95) 42%,
-        rgba(255, 77, 109, 1) 50%,
-        rgba(255, 77, 109, 0.95) 58%,
-        rgba(255, 77, 109, 0.35) 82%,
+        var(--red) 50%,
         rgba(255, 77, 109, 0) 100%
       );
-      box-shadow:
-        0 0 10px rgba(255,77,109,1),
-        0 0 20px rgba(255,77,109,0.8),
-        0 0 40px rgba(255,77,109,0.45);
-      animation: scanLine 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes scanLine {
-      0% { left: 10%; }
-      100% { left: calc(90% - 4px); }
+      box-shadow: 0 0 15px var(--red);
+      animation: glitchSweep 1.2s linear infinite;
     }
 
     .warning-box {
@@ -378,7 +390,7 @@
       color: #ffffff;
       text-shadow:
         0 0 8px rgba(255,255,255,0.6),
-        0 0 18px rgba(0,234,255,0.3);
+        0 0 18px rgba(0, 234, 255, 0.3);
     }
 
     #step4 {
@@ -506,23 +518,10 @@
     }
 
     @keyframes tvClose {
-      0% {
-        transform: scaleY(1);
-        opacity: 1;
-      }
-      55% {
-        transform: scaleY(0.06);
-        opacity: 1;
-      }
-      78% {
-        transform: scaleY(0.02);
-        opacity: 1;
-        filter: brightness(2);
-      }
-      100% {
-        transform: scaleY(0);
-        opacity: 1;
-      }
+      0% { transform: scaleY(1); opacity: 1; }
+      55% { transform: scaleY(0.06); opacity: 1; }
+      78% { transform: scaleY(0.02); opacity: 1; filter: brightness(2); }
+      100% { transform: scaleY(0); opacity: 1; }
     }
 
     @media (max-width: 430px) {
@@ -531,15 +530,9 @@
       .ticket-value { font-size: 1rem; }
       #typewriter { font-size: 1rem; line-height: 1.95; }
       #buttons { gap: 8px; }
-      .choice-btn {
-        min-width: 96px;
-        padding: 11px 14px;
-        font-size: 0.92rem;
-      }
+      .choice-btn { min-width: 96px; padding: 11px 14px; font-size: 0.92rem; }
       .notice-btn { min-width: 122px; }
-      .heartbeat-svg {
-        max-width: 290px;
-      }
+      .heartbeat-svg { max-width: 290px; }
     }
   </style>
 </head>
@@ -647,28 +640,9 @@
           <svg class="heartbeat-svg" viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
             <path
               class="heartbeat-line"
-              d="M20 90
-                 L110 90
-                 L145 90
-                 L165 50
-                 L185 120
-                 L205 65
-                 L225 90
-                 L255 90
-
-                 L270 90
-                 C282 68, 308 60, 325 78
-                 C342 60, 368 68, 380 90
-                 C380 112, 355 126, 325 145
-                 C295 126, 270 112, 270 90
-
-                 L395 90
-                 L425 90
-                 L445 55
-                 L465 118
-                 L485 72
-                 L505 90
-                 L580 90"
+              d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90
+                 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145
+                 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90"
             />
           </svg>
         </div>
@@ -717,10 +691,8 @@ Your gift is right here.`;
         if (callback) callback();
         return;
       }
-
       tv.style.opacity = 1;
       tv.classList.add("tv-off-active");
-
       setTimeout(() => {
         tv.classList.remove("tv-off-active");
         tv.style.opacity = 0;
@@ -733,30 +705,25 @@ Your gift is right here.`;
       const typewriter = document.getElementById("typewriter");
       const buttons = document.getElementById("buttons");
       if (!typewriter || !buttons) return;
-
       clearTimeout(typingTimer);
       typingIndex = 0;
       typewriter.innerHTML = "";
       buttons.style.display = "none";
-
       function typeNext() {
         if (typingIndex < FINAL_TEXT.length) {
           const char = FINAL_TEXT.charAt(typingIndex);
           typewriter.innerHTML += char === "\n" ? "<br>" : char;
           typingIndex++;
-
           let delay = 42;
           if (char === ",") delay = 120;
           if (char === "." || char === "!" || char === "?") delay = 230;
           if (char === "—") delay = 340;
           if (char === "\n") delay = 170;
-
           typingTimer = setTimeout(typeNext, delay);
         } else {
           buttons.style.display = "flex";
         }
       }
-
       typeNext();
     }
 
@@ -764,7 +731,6 @@ Your gift is right here.`;
       if (starsBuilt) return;
       const container = document.getElementById("stars");
       if (!container) return;
-
       for (let i = 0; i < 32; i++) {
         const star = document.createElement("span");
         star.style.top = Math.random() * 100 + "%";
@@ -773,37 +739,20 @@ Your gift is right here.`;
         star.style.animationDuration = (3 + Math.random() * 3) + "s";
         container.appendChild(star);
       }
-
       starsBuilt = true;
     }
 
-    function tvToStep2() {
-      tvTransition("step2");
-    }
-
-    function tvToStep3() {
-      tvTransition("step3", () => {
-        startTypewriter();
-      });
-    }
-
-    function tvToNotice() {
-      tvTransition("stepNotice");
-    }
-
-    function tvBackToStep3() {
-      tvTransition("step3");
-    }
-
+    function tvToStep2() { tvTransition("step2"); }
+    function tvToStep3() { tvTransition("step3", () => { startTypewriter(); }); }
+    function tvToNotice() { tvTransition("stepNotice"); }
+    function tvBackToStep3() { tvTransition("step3"); }
     function tvToSuccess() {
       tvTransition("step4", () => {
         createStars();
         const success = document.getElementById("success");
         if (!success) return;
         success.classList.remove("active");
-        setTimeout(() => {
-          success.classList.add("active");
-        }, 50);
+        setTimeout(() => { success.classList.add("active"); }, 50);
       });
     }
   </script>
