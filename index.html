@@ -30,7 +30,7 @@
             padding: 40px 0;
         }
 
-        /* 1. 補回星空容器樣式 */
+        /* 補回星空容器 */
         .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
         .star {
             position: absolute; background: white; border-radius: 50%;
@@ -43,7 +43,6 @@
             border: 1px solid rgba(180, 120, 255, 0.2); border-radius: 28px;
             padding: 30px 20px; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px);
             box-shadow: 0 0 40px var(--purple-glow);
-            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .crt-off { animation: crtClose 0.6s forwards ease-in; }
@@ -57,7 +56,7 @@
         .page.active { display: block; animation: fadeIn 0.8s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 3. 補回票卡反光 (截圖建議) */
+        /* 補回登機證反光流光 */
         .ticket {
             background: #e8e9eb; color: #1a1a1a; border-radius: 16px; padding: 24px;
             text-align: left; position: relative; overflow: hidden; margin-bottom: 30px;
@@ -68,16 +67,13 @@
             background: linear-gradient(135deg, transparent 45%, rgba(0,234,255,0.08) 50%, transparent 55%);
             background-size: 200% 200%; animation: ticketShine 6s infinite; pointer-events: none;
         }
-        @keyframes ticketShine {
-            0% { background-position: 200% 200%; }
-            100% { background-position: -200% -200%; }
-        }
+        @keyframes ticketShine { 0% { background-position: 200% 200%; } 100% { background-position: -200% -200%; } }
 
         .ticket-head { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; line-height: 1.45; }
         .t-label { font-size: 0.65rem; color: #777; text-transform: uppercase; margin-bottom: 2px; }
         .t-value { font-size: 1.05rem; font-weight: 800; color: #111; margin-bottom: 12px; }
 
-        /* 按鈕流光與橢圓設計 */
+        /* 按鈕流光 */
         button {
             appearance: none; border: none; border-radius: 999px; font-size: 0.8rem;
             cursor: pointer; font-family: inherit; position: relative; overflow: hidden;
@@ -100,7 +96,7 @@
         #btnGroup button { padding: 12px 8px; white-space: nowrap; flex: 1.2; font-size: 0.75rem; min-width: 90px; }
         #btnGroup .danger-btn { flex: 2; font-size: 0.85rem; padding: 14px 10px; }
 
-        /* 心電圖動畫 */
+        /* 心電圖 - 絕對不准再動的原始愛心路徑 */
         .heart-monitor { width: 100%; margin-top: 40px; }
         .ekg-base { stroke: rgba(0, 234, 255, 0.08); stroke-width: 2.5; fill: none; }
         .ekg-active {
@@ -197,14 +193,14 @@
             <h2 style="letter-spacing: 6px; font-size: 1.3rem; margin-bottom: 8px;">BOARDING CONFIRMED</h2>
             <p style="opacity:0.6; font-size: 0.85rem; line-height: 1.7; margin-top: 0;">It was never a new journey.<br>It just finally began.</p>
             <svg class="heart-monitor" viewBox="0 0 600 160">
-                <path class="ekg-base" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 L270 80 C282 60, 305 55, 320 70 C335 55, 358 60, 370 80 C370 102, 346 118, 320 138 C294 118, 270 102, 270 80 L390 80 L410 50 L430 115 L450 68 L470 80 L600 80" />
-                <path class="ekg-active" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 L270 80 C282 60, 305 55, 320 70 C335 55, 358 60, 370 80 C370 102, 346 118, 320 138 C294 118, 270 102, 270 80 L390 80 L410 50 L430 115 L450 68 L470 80 L600 80" />
+                <path class="ekg-base" d="M0 80 L200 80 L220 40 L240 120 L260 60 L280 80 L300 80 C300 45, 340 45, 340 80 C340 45, 380 45, 380 80 L400 80 L600 80" />
+                <path class="ekg-active" d="M0 80 L200 80 L220 40 L240 120 L260 60 L280 80 L300 80 C300 45, 340 45, 340 80 C340 45, 380 45, 380 80 L400 80 L600 80" />
             </svg>
         </div>
     </div>
 
     <script>
-        // 2 & 4. JS 保險寫法
+        // 修正後的星空邏輯
         const sC = document.getElementById('stars');
         if (sC) {
             for (let i = 0; i < 40; i++) {
@@ -219,13 +215,13 @@
             }
         }
 
-        // 5. 穩定節奏的 Loading
+        // 穩定節奏的 Loading
         function runLoading() {
             const ld = document.getElementById('loader');
             ld.style.display = 'flex';
             let p = 0;
             const inv = setInterval(() => {
-                p += 3; // 改為固定步長，節奏更穩
+                p += 3;
                 if (p >= 100) {
                     p = 100;
                     clearInterval(inv);
@@ -236,13 +232,12 @@
             }, 50);
         }
 
-        // 頁面切換邏輯
         function transit(nextId, cb) {
             document.getElementById('mainFrame').classList.add('crt-off');
             setTimeout(() => {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                const nextPage = document.getElementById(nextId);
-                if (nextPage) nextPage.classList.add('active');
+                const next = document.getElementById(nextId);
+                if (next) next.classList.add('active');
                 document.getElementById('mainFrame').classList.remove('crt-off');
                 window.scrollTo(0, 0);
                 if (cb) cb();
