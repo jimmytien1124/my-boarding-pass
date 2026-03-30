@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,18 +12,15 @@
       --text: #f5f7ff;
       --ticket-bg: #f2f2f2;
       --ticket-text: #171717;
-      --gold: #c7a43a;
       --cyan: #00eaff;
       --red: #ff4d6d;
       --purple: rgba(180, 120, 255, 0.4);
-      --glitch-cyan: rgba(0, 234, 255, 0.8);
-      --glitch-purple: rgba(180, 120, 255, 0.9);
     }
 
     body {
       margin: 0; min-height: 100vh;
-      background: radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 28%), var(--bg);
-      color: var(--text); font-family: "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+      background: radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.08), transparent 35%), var(--bg);
+      color: var(--text); font-family: "Helvetica Neue", Arial, sans-serif;
       text-align: center; padding: 16px; overflow-x: hidden;
     }
 
@@ -31,119 +28,70 @@
 
     .page {
       display: none; border: 1px solid var(--purple); border-radius: 24px;
-      box-shadow: 0 0 32px rgba(180, 120, 255, 0.16); padding: 18px 14px 22px;
-      background: rgba(255,255,255,0.01); backdrop-filter: blur(1px);
+      box-shadow: 0 0 40px rgba(180, 120, 255, 0.1); padding: 22px 16px;
+      background: rgba(255,255,255,0.02); backdrop-filter: blur(4px);
     }
-    .page.active { display: block; }
+    .page.active { display: block; animation: fadeIn 0.5s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* 機票詳細設計維持不變... */
-    .ticket {
-      position: relative; overflow: hidden; background: var(--ticket-bg); color: var(--ticket-text);
-      border-radius: 22px; padding: 20px; text-align: left; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-    .ticket-header { display: flex; justify-content: space-between; gap: 14px; font-size: 0.8rem; line-height: 1.4; }
-    .first-class { color: var(--gold); font-weight: bold; }
-    .divider { height: 1px; background: #cfcfcf; margin: 14px 0; }
-    .label { font-size: 0.7rem; color: #777; text-transform: uppercase; margin-bottom: 2px; }
-    .value { font-size: 1.05rem; margin-bottom: 10px; font-weight: 500; }
-    .barcode { border-top: 1px dashed #bbb; margin-top: 10px; padding-top: 10px; text-align: center; font-size: 0.65rem; letter-spacing: 2px; color: #555;}
+    /* 機票設計 */
+    .ticket { background: var(--ticket-bg); color: var(--ticket-text); border-radius: 22px; padding: 20px; text-align: left; }
+    .ticket-header { display: flex; justify-content: space-between; font-size: 0.8rem; }
+    .divider { height: 1px; background: #ddd; margin: 15px 0; }
+    .label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+    .value { font-size: 1.1rem; margin-bottom: 10px; font-weight: 600; }
+    .barcode { border-top: 1px dashed #ccc; margin-top: 15px; padding-top: 10px; text-align: center; font-size: 0.7rem; color: #666; letter-spacing: 2px; }
 
-    /* --- (升級1) 每個按鈕都要有明顯的霓虹槓槓 ---
-       通用按鈕樣式 (含偽元素槓槓設定) 
-    */
+    /* --- 強化版按鈕樣式 --- */
     button {
       appearance: none; -webkit-appearance: none;
-      background: transparent; padding: 13px 26px; border-radius: 999px;
-      font-size: 0.98rem; cursor: pointer; margin-top: 22px;
-      transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-      font-family: inherit; position: relative; overflow: hidden;
+      background: rgba(255, 255, 255, 0.03); padding: 14px 28px; border-radius: 12px;
+      font-size: 0.95rem; font-weight: bold; cursor: pointer; margin-top: 25px;
+      position: relative; overflow: hidden; transition: 0.3s;
+      letter-spacing: 1px; text-transform: uppercase;
     }
+
+    .scan-btn { border: 2px solid var(--cyan); color: var(--cyan); box-shadow: 0 0 15px rgba(0, 234, 255, 0.3), inset 0 0 10px rgba(0, 234, 255, 0.1); }
+    .notice-btn { border: 2px solid var(--red); color: var(--red); box-shadow: 0 0 15px rgba(255, 77, 109, 0.3), inset 0 0 10px rgba(255, 77, 109, 0.1); }
+
+    /* 掃描槓槓加強 */
+    button::before {
+      content: ""; position: absolute; left: 0; width: 100%; height: 30px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
+      animation: scanMove 2s linear infinite; opacity: 0.9;
+    }
+    @keyframes scanMove { 0% { top: -30%; } 100% { top: 120%; } }
     button:active { transform: scale(0.95); }
 
-    /* 預設藍色按鈕樣式 */
-    .scan-btn {
-      border: 2px solid var(--cyan);
-      color: var(--cyan);
-      box-shadow: 0 0 10px rgba(0, 234, 255, 0.2);
+    /* --- 均速流暢心電圖 --- */
+    .heart-svg { width: 100%; height: auto; margin-top: 30px; }
+    .base-line { stroke: rgba(0, 234, 255, 0.1); stroke-width: 3; fill: none; }
+    .active-line {
+      stroke: var(--cyan); stroke-width: 4; fill: none;
+      stroke-linecap: round; stroke-linejoin: round;
+      filter: drop-shadow(0 0 10px var(--cyan));
+      stroke-dasharray: 120, 1000; /* 控制發光段的長度 */
+      animation: pulseFlow 3s linear infinite;
+    }
+    @keyframes pulseFlow {
+      0% { stroke-dashoffset: 1120; }
+      100% { stroke-dashoffset: 0; }
     }
 
-    /* --- (升級2) Gift Notice 按鈕換紅色霓虹 --- 
-    */
-    .notice-btn {
-      border: 2px solid var(--red);
-      color: var(--red);
-      box-shadow: 0 0 10px rgba(255, 77, 109, 0.2);
-    }
-
-    /* --- 通用霓虹槓槓樣式 (偽元素) --- 
-    */
-    button::after {
-      content: "";
-      position: absolute;
-      top: -100%; /* 從按鈕下方開始跑 */
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to top, transparent, rgba(255,255,255,0.06), rgba(255,255,255,0.1), transparent);
-      animation: scanLineVertical 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      pointer-events: none;
-    }
-
-    /* 如果按鈕是藍色，槓槓也帶藍色高光 */
-    .scan-btn::after {
-      background: linear-gradient(to top, transparent, rgba(0, 234, 255, 0.04), rgba(0, 234, 255, 0.12), transparent);
-    }
-
-    /* 如果按鈕是紅色，槓槓也帶紅色高光 */
-    .notice-btn::after {
-      background: linear-gradient(to top, transparent, rgba(255, 77, 109, 0.04), rgba(255, 77, 109, 0.12), transparent);
-    }
-
-    @keyframes scanLineVertical {
-      0% { top: -100%; opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { top: 100%; opacity: 0; }
-    }
-
-    /* --- Gift Notice 頁面樣式補強 (找回來並精製) --- */
-    #stepNotice { text-align: left; }
-    .notice-title { font-size: 1.2rem; color: var(--cyan); margin-bottom: 20px; text-align: center; }
-    .notice-list { list-style: none; padding: 0; font-family: monospace; line-height: 2; font-size: 0.95rem; }
-    .notice-list li::before { content: "> "; color: var(--cyan); }
-
-    /* 最後一頁心電圖動畫微調 (流暢化) */
-    .heartbeat-line {
-      fill: none; stroke: var(--cyan); stroke-width: 4;
-      stroke-dasharray: 600, 600; stroke-dashoffset: 1200;
-      filter: drop-shadow(0 0 4px var(--cyan));
-      
-      /* 修改為 loop 動畫：跑完消失從頭跑 */
-      animation: drawingHeartbeat 3s linear forwards, loopHeartbeat 2.5s linear infinite 3s;
-    }
-
-    @keyframes drawingHeartbeat { to { stroke-dashoffset: 600; } }
-    @keyframes loopHeartbeat { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
-
-    /* 打字機樣式微調... */
-    #typewriter { line-height: 1.9; font-size: 1.05rem; text-align: left; }
-    #buttons { display: none; margin-top: 34px; justify-content: center; gap: 10px; flex-wrap: wrap;}
-    .choice-btn { min-width: 104px; padding: 12px 18px; }
+    #typewriter { line-height: 1.8; font-size: 1.05rem; text-align: left; min-height: 160px; }
+    .notice-list { list-style: none; padding: 0; text-align: left; font-size: 0.95rem; line-height: 2.1; }
+    .notice-list li { margin-bottom: 8px; }
+    .notice-list li::before { content: ">"; color: var(--red); padding-right: 12px; font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <div id="tvOff" style="position:fixed; inset:0; background:black; z-index:999; display:none; justify-content:center; align-items:center;">
-    <div style="color:var(--cyan); font-family:monospace; font-size:1.1rem; letter-spacing:5px;">SYNCING DATA...</div>
-  </div>
-
-  <div id="loadingModal" style="position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:10000; display:none; justify-content:center; align-items:center; backdrop-filter:blur(8px);">
-    <div class="modal-content" style="width:85%; max-width:300px; background:#111; border:1px solid var(--cyan); border-radius:20px; padding:30px 20px;">
-      <div style="width:35px; height:35px; border:3px solid rgba(0, 234, 255, 0.1); border-top:3px solid var(--cyan); border-radius:50%; margin:0 auto 20px; animation:spin 0.8s linear infinite;"></div>
-      <div style="color:var(--cyan); font-size:0.85rem; letter-spacing:2px;">DATA SYNCING...</div>
-      <div style="display:flex; align-items:center; gap:10px; width:100%; margin-top:15px;">
-        <div style="flex:1; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;"><div style="width:0%; height:100%; background:var(--cyan);" id="progressBar"></div></div>
-        <div style="color:var(--cyan); font-family:monospace; font-size:0.85rem;" id="progressPercent">0%</div>
+  <div id="loadingModal" style="position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:10000; display:none; justify-content:center; align-items:center; backdrop-filter:blur(10px);">
+    <div style="width:85%; max-width:300px; text-align:center;">
+      <div style="width:40px; height:40px; border:3px solid rgba(0, 234, 255, 0.1); border-top:3px solid var(--cyan); border-radius:50%; margin:0 auto 20px; animation:spin 0.8s linear infinite;"></div>
+      <div style="color:var(--cyan); letter-spacing:3px; font-size:0.9rem;">ENCRYPTING DATA...</div>
+      <div style="margin-top:20px; height:4px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden;">
+        <div id="progressBar" style="width:0%; height:100%; background:var(--cyan); box-shadow:0 0 10px var(--cyan);"></div>
       </div>
     </div>
   </div>
@@ -152,102 +100,88 @@
     <div id="step1" class="page active">
       <div class="ticket">
         <div class="ticket-header">
-          <div>AIR NEW ZEALAND<br>TRAVELER: YUDAI</div>
-          <div style="text-align:right;"><span class="first-class">FIRST CLASS</span><br>SEAT: 1A<br>FLIGHT: AI143</div>
+          <div>AIR NEW ZEALAND<br>YUDAI</div>
+          <div style="text-align:right;"><b style="color:var(--gold)">FIRST CLASS</b><br>1A | AI143</div>
         </div>
         <div class="divider"></div>
+        <div class="label">DATE</div><div class="value">2025 / 10 / 30</div>
         <div class="label">FROM</div><div class="value">OUR STORY</div>
         <div class="label">TO</div><div class="value">THE NEXT CHAPTER</div>
-        <div class="label">DATE</div><div class="value">2025 / 10 / 30</div>
-        <div class="barcode">YUDAI · AI143 · 1A · FIRST CLASS</div>
+        <div class="barcode">YUDAI · BOARDING PASS · AI143</div>
       </div>
-      <button class="scan-btn" onclick="startLoadingWithProgress('step2')">SCAN TO BOARD</button>
+      <button class="scan-btn" onclick="startLoadingWithProgress('step2')">Scan to Board</button>
     </div>
 
     <div id="step2" class="page">
-      <h2 style="color:var(--red); margin-top:0;">WARNING</h2>
-      <p>This is a one-way ticket.<br>Once boarding is confirmed,<br>there is no return.</p>
-      <button class="scan-btn" onclick="showPage('step3', startTypewriter)">CONFIRM BOARDING</button>
+      <h2 style="color:var(--red); text-shadow: 0 0 10px rgba(255, 77, 109, 0.3);">WARNING</h2>
+      <p style="line-height:1.6;">This is a one-way ticket.<br>There is no return after confirmation.</p>
+      <button class="scan-btn" onclick="showPage('step3', startTypewriter)">Confirm Boarding</button>
     </div>
 
     <div id="step3" class="page">
       <div id="typewriter"></div>
-      <div id="buttons">
-        <button class="choice-btn scan-btn" onclick="showPage('step4')">Accept</button>
-        <button class="choice-btn notice-btn danger-btn notice-btn" onclick="showNoticePage()">Gift Notice</button>
-        <button class="choice-btn scan-btn" onclick="showPage('step4')">Accept</button>
+      <div id="buttons" style="display:none; gap:10px; justify-content:center; flex-wrap: wrap; margin-top:30px;">
+        <button class="scan-btn" onclick="showPage('step4')">Accept</button>
+        <button class="notice-btn" onclick="showNoticePage()">Gift Notice</button>
+        <button class="scan-btn" onclick="showPage('step4')">Accept</button>
       </div>
     </div>
 
     <div id="stepNotice" class="page">
-        <div id="noticeBox" style="text-align:left;">
-            <div class="notice-title">[ GIFT NOTICE ]</div>
-            <ul class="notice-list">
-                <li>This gift is one-way and non-returnable.</li>
-                <li>Care is expected, and given.</li>
-                <li>Honesty is required.</li>
-                <li>Silence is not a solution.</li>
-                <li>Replies shouldn’t take too long.</li>
-                <li style="margin-top:10px; color:#fff;">Continue only if you mean it.</li>
-            </ul>
-            <button class="scan-btn" style="display:block; margin: 20px auto 0;" onclick="hideNoticePage()">Back</button>
-        </div>
+      <h3 style="color:var(--red); margin-top:0;">[ GIFT NOTICE ]</h3>
+      <ul class="notice-list">
+        <li>This gift is one-way and non-returnable.</li>
+        <li>Care is expected, and care will be given.</li>
+        <li>Honesty is required, even when it hurts.</li>
+        <li>Silence is not a solution.</li>
+        <li>Replies shouldn’t take too long.<br><span style="font-size:0.85rem; opacity:0.8; padding-left:22px;">Being left waiting may make this gift a little sad.</span></li>
+        <li style="margin-top:15px; color:#fff; list-style:none;">Continue only if you mean it.</li>
+      </ul>
+      <button class="scan-btn" onclick="hideNoticePage()">Back</button>
     </div>
 
     <div id="step4" class="page">
-      <h2 style="letter-spacing:4px;">BOARDING CONFIRMED</h2>
-      <p style="color:rgba(255,255,255,0.7); font-size:0.9rem;">It was never a new journey.<br>It just finally began.</p>
-      <div style="margin-top:40px;">
-        <svg viewBox="0 0 600 140" style="width:100%;">
-          <path class="heartbeat-line" d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90" />
-        </svg>
-      </div>
+      <h2 style="letter-spacing:3px; margin-bottom: 5px;">BOARDING CONFIRMED</h2>
+      <p style="opacity:0.7; font-size:0.92rem;">It was never a new journey.<br>It just finally began.</p>
+      
+      <svg class="heart-svg" viewBox="0 0 600 160">
+        <path class="base-line" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 C270 50, 330 50, 350 80 C370 50, 430 50, 450 80 L600 80" />
+        <path class="active-line" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 C270 50, 330 50, 350 80 C370 50, 430 50, 450 80 L600 80" />
+      </svg>
     </div>
   </div>
 
   <script>
     const FINAL_TEXT = `Dear Most Precious Passenger Yudai:\n\nBefore boarding, we have prepared a special gift for you.\nIt is not a short-lived surprise.\n\nIf you are willing to accept it, it will stay by your side.\nBecause— it has actually been here all along.\n\nNow, please look to your left.\nYour gift is right here.`;
 
-    // 只有第一頁使用的進度條函式依然保留...
     function startLoadingWithProgress(nextPageId) {
       const modal = document.getElementById('loadingModal');
       const bar = document.getElementById('progressBar');
-      const percentText = document.getElementById('progressPercent');
       modal.style.display = 'flex';
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 2;
-        if (progress > 100) progress = 100;
-        bar.style.width = progress + '%';
-        percentText.innerText = progress + '%';
-        if (progress >= 100) {
-          clearInterval(interval);
-          setTimeout(() => { modal.style.display = 'none'; showPage(nextPageId); }, 200);
-        }
+      let p = 0;
+      const inv = setInterval(() => {
+        p += 2; bar.style.width = p + '%';
+        if(p >= 100) { clearInterval(inv); modal.style.display='none'; showPage(nextPageId); }
       }, 30);
     }
 
-    // 一般頁面切換依然保留...
-    function showPage(id, callback) {
-      document.getElementById('stepNotice').style.display = 'none';
+    function showPage(id, cb) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('stepNotice').style.display = 'none';
       const target = document.getElementById(id);
-      if (target) target.classList.add("active");
-      window.scrollTo(0,0);
-      if (callback) callback();
+      if(target) target.classList.add('active');
+      if(cb) cb();
     }
 
-    // Gift Notice 專用切換依然保留...
-    function showNoticePage() {
-        document.getElementById('stepNotice').style.display = 'block';
-        document.getElementById('step3').classList.remove('active');
+    function showNoticePage() { 
+      document.getElementById('stepNotice').style.display='block'; 
+      document.getElementById('step3').classList.remove('active'); 
     }
-    function hideNoticePage() {
-        document.getElementById('stepNotice').style.display = 'none';
-        document.getElementById('step3').classList.add('active');
+    function hideNoticePage() { 
+      document.getElementById('stepNotice').style.display='none'; 
+      document.getElementById('step3').classList.add('active'); 
     }
 
-    // 打字機依然保留...
     function startTypewriter() {
       const box = document.getElementById('typewriter');
       const btns = document.getElementById('buttons');
@@ -257,11 +191,12 @@
         if (i < FINAL_TEXT.length) {
           let c = FINAL_TEXT.charAt(i);
           box.innerHTML += c === "\n" ? "<br>" : c;
-          i++; setTimeout(type, c === "," ? 200 : 50);
+          i++; setTimeout(type, 45);
         } else { btns.style.display = "flex"; }
       }
       type();
     }
   </script>
+  <style> @keyframes spin { to { transform: rotate(360deg); } } </style>
 </body>
 </html>
