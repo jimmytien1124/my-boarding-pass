@@ -16,7 +16,6 @@
 
     * { box-sizing: border-box; }
 
-    /* 修正：允許垂直捲動，並讓內容從頂部對齊 */
     body {
       margin: 0;
       min-height: 100vh;
@@ -31,7 +30,7 @@
       padding: 40px 0;
     }
 
-    /* 星空容器 */
+    /* 星空 */
     .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
     .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) infinite; opacity: 0; }
     @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 0.6; } }
@@ -44,7 +43,6 @@
       transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
-    /* CRT 轉場特效 */
     .crt-off { animation: crtClose 0.6s forwards ease-in; }
     @keyframes crtClose {
       0% { transform: scale(1, 1); opacity: 1; }
@@ -56,14 +54,12 @@
     .page.active { display: block; animation: fadeIn 0.8s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* --- 登機證樣式 --- */
+    /* 登機證反光 */
     .ticket {
       background: #e8e9eb; color: #1a1a1a; border-radius: 16px; padding: 24px;
       text-align: left; position: relative; overflow: hidden; margin-bottom: 30px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     }
-
-    /* 補回：機票反光流光效果 */
     .ticket::after {
       content: ""; position: absolute; inset: 0;
       background: linear-gradient(135deg, transparent 45%, rgba(0,234,255,0.08) 50%, transparent 55%);
@@ -79,10 +75,10 @@
     .t-label { font-size: 0.65rem; color: #777; text-transform: uppercase; margin-bottom: 2px; }
     .t-value { font-size: 1.05rem; font-weight: 800; color: #111; margin-bottom: 12px; }
 
-    /* --- 帥氣按鈕 CSS --- */
+    /* 按鈕樣式 */
     button {
-      appearance: none; border: none; padding: 14px 28px; border-radius: 999px;
-      font-size: 0.85rem; letter-spacing: 1px; cursor: pointer; font-family: inherit;
+      appearance: none; border: none; border-radius: 999px;
+      font-size: 0.8rem; cursor: pointer; font-family: inherit;
       position: relative; overflow: hidden; color: #fff;
       background: rgba(255,255,255,0.05); backdrop-filter: blur(6px);
       transition: all 0.25s ease;
@@ -94,52 +90,30 @@
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.6;
     }
-    button::after {
-      content: ""; position: absolute; top: 0; left: -120%; width: 120%; height: 100%;
-      background: linear-gradient(110deg, transparent, rgba(0,234,255,0.25), transparent);
-      transition: 0.5s;
-    }
-    button:hover::after { left: 120%; }
-    button:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,234,255,0.5), 0 0 30px rgba(0,234,255,0.1); }
-    button:active { transform: scale(0.96); }
 
-    .scan-btn { border: 1px solid rgba(0,234,255,0.3); }
-    .danger-btn { border: 1px solid rgba(255,77,109,0.4); }
-    .danger-btn::before { background: linear-gradient(120deg, transparent, var(--red), transparent); }
-    .danger-btn::after { background: linear-gradient(110deg, transparent, rgba(255,77,109,0.25), transparent); }
-    .danger-btn:hover { box-shadow: 0 0 12px rgba(255,77,109,0.6), 0 0 28px rgba(255,77,109,0.15); }
-
-    /* 第三頁按鈕組 */
+    /* 第三頁按鈕排版：中間大旁邊小 */
     #btnGroup {
-      display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
-      opacity: 0; transition: 1s; margin-top: 20px;
+      display: flex; justify-content: center; align-items: center; gap: 10px;
+      opacity: 0; transition: 1s; margin-top: 25px; width: 100%;
     }
+    #btnGroup button { padding: 12px 5px; white-space: nowrap; flex: 1.2; font-size: 0.75rem; }
+    #btnGroup button.danger-btn { flex: 2; font-size: 0.85rem; padding: 14px 10px; border: 1px solid rgba(255,77,109,0.4); }
+    #btnGroup button.danger-btn::before { background: linear-gradient(120deg, transparent, var(--red), transparent); }
 
-    #typewriter { text-align: left; min-height: 240px; line-height: 1.8; font-size: 1rem; color: rgba(255,255,255,0.9); }
-    
-    /* Loading 效果 */
-    #loader { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; display: none; flex-direction: column; justify-content: center; align-items: center; }
-    .loader-arc { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--cyan); border-radius: 50%; animation: spin 1s infinite linear; }
-    .p-bar-bg { width: 180px; height: 2px; background: rgba(255,255,255,0.1); margin: 20px 0 8px; }
-    .p-bar-fill { height: 100%; background: var(--cyan); width: 0%; box-shadow: 0 0 10px var(--cyan); }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Notice 列表 */
-    .notice-list { text-align: left; font-family: monospace; font-size: 0.8rem; line-height: 1.7; padding: 0; list-style: none; color: #bbb; }
-    .notice-list li { margin-bottom: 10px; padding-left: 18px; position: relative; }
-    .notice-list li::before { content: ">"; position: absolute; left: 0; color: var(--cyan); }
-
-    /* --- 究極版心電圖動畫 --- */
+    /* 心電圖優化 */
     .heart-monitor { width: 100%; margin-top: 40px; }
     .ekg-base { stroke: rgba(0, 234, 255, 0.08); stroke-width: 2.5; fill: none; }
-    .ekg-active { 
-      stroke: var(--cyan); stroke-width: 3; fill: none; 
-      /* 優化：縮短亮段並強化發光 */
-      stroke-dasharray: 80, 1000; 
-      filter: drop-shadow(0 0 12px var(--cyan)) drop-shadow(0 0 4px var(--cyan)); 
-      animation: ekgMove 2.5s linear infinite; 
+    .ekg-active {
+      stroke: var(--cyan); stroke-width: 3; fill: none;
+      stroke-dasharray: 80, 1000;
+      filter: drop-shadow(0 0 12px var(--cyan)) drop-shadow(0 0 4px var(--cyan));
+      animation: ekgMove 2.5s linear infinite;
     }
     @keyframes ekgMove { 0% { stroke-dashoffset: 1080; } 100% { stroke-dashoffset: 0; } }
+
+    #typewriter { text-align: left; min-height: 240px; line-height: 1.8; font-size: 1rem; }
+    #loader { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; display: none; flex-direction: column; justify-content: center; align-items: center; }
+    .p-bar-fill { height: 100%; background: var(--cyan); width: 0%; box-shadow: 0 0 10px var(--cyan); }
   </style>
 </head>
 <body>
@@ -147,8 +121,8 @@
   <div class="stars" id="stars"></div>
 
   <div id="loader">
-    <div class="loader-arc"></div>
-    <div class="p-bar-bg"><div class="p-bar-fill" id="pFill"></div></div>
+    <div style="width:40px; height:40px; border:3px solid rgba(255,255,255,0.1); border-top-color:var(--cyan); border-radius:50%; animation:spin 1s infinite linear;"></div>
+    <div style="width:180px; height:2px; background:rgba(255,255,255,0.1); margin:20px 0 8px;"><div class="p-bar-fill" id="pFill"></div></div>
     <div id="pPercent" style="font-size: 0.8rem; color: var(--cyan); font-family: monospace;">0%</div>
   </div>
 
@@ -162,75 +136,36 @@
         </div>
         <div class="t-label">FROM</div><div class="t-value">OUR STORY</div>
         <div class="t-label">TO</div><div class="t-value">THE NEXT CHAPTER</div>
-        
-        <div style="display:flex; justify-content: space-between; gap: 16px;">
-          <div>
-            <div class="t-label">DATE</div>
-            <div class="t-value">2025/10/30</div>
-          </div>
-          <div>
-            <div class="t-label">STATUS</div>
-            <div class="t-value">CLEARED</div>
-          </div>
-          <div style="text-align:right;">
-            <div class="t-label">TYPE</div>
-            <div class="t-value">ONE WAY</div>
-          </div>
-        </div>
-
-        <div style="text-align:center; border-top:1px dashed #bbb; margin-top:10px; padding-top:10px; font-size:0.55rem; letter-spacing:2px;">
-          YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY
+        <div style="display:flex; justify-content: space-between;">
+          <div><div class="t-label">DATE</div><div class="t-value">2025/10/30</div></div>
+          <div><div class="t-label">STATUS</div><div class="t-value">CLEARED</div></div>
+          <div style="text-align:right;"><div class="t-label">TYPE</div><div class="t-value">ONE WAY</div></div>
         </div>
       </div>
-      <button class="scan-btn" onclick="runLoading()"><span>SCAN TO BOARD</span></button>
-    </div>
-
-    <div id="page2" class="page">
-      <div style="border: 1px solid var(--red); padding: 25px; border-radius: 16px; background: rgba(255,77,109,0.03); margin-bottom: 25px;">
-        <h2 style="color: var(--red); letter-spacing: 4px; margin: 0 0 10px;">WARNING</h2>
-        <p style="font-size: 0.9rem; line-height: 1.6; opacity: 0.8;">This is a one-way ticket.<br>There is no return after confirmation.</p>
-      </div>
-      <button class="scan-btn" onclick="transit('page3', startTypewriter)"><span>CONFIRM BOARDING</span></button>
+      <button style="padding: 14px 28px;" onclick="runLoading()"><span>SCAN TO BOARD</span></button>
     </div>
 
     <div id="page3" class="page">
       <div id="typewriter"></div>
       <div id="btnGroup">
-        <button class="scan-btn" onclick="transit('pageFinal')"><span>Accept</span></button>
+        <button onclick="transit('pageFinal')"><span>Accept</span></button>
         <button class="danger-btn" onclick="transit('pageNotice')"><span>Gift Notice</span></button>
-        <button class="scan-btn" onclick="transit('pageFinal')"><span>Accept</span></button>
+        <button onclick="transit('pageFinal')"><span>Accept</span></button>
       </div>
     </div>
 
-    <div id="pageNotice" class="page">
-      <h3 style="color: var(--cyan); letter-spacing: 2px;">[ GIFT NOTICE ]</h3>
-      <ul class="notice-list">
-        <li>This gift is one-way and non-returnable.</li>
-        <li>It may not be perfect, but it is sincere.</li>
-        <li>Care is expected, and will be given.</li>
-        <li>Honesty is required, even when it hurts.</li>
-        <li>Replies shouldn't take too long.</li>
-        <li>Occasional photos are appreciated.</li>
-        <li>Silence is not a solution.</li>
-        <li>Continue only if you mean it.</li>
-      </ul>
-      <button class="scan-btn" onclick="transit('page3')"><span>BACK</span></button>
-    </div>
-
     <div id="pageFinal" class="page">
-      <h2 style="letter-spacing: 6px; font-size: 1.3rem;">BOARDING CONFIRMED</h2>
-      <p style="opacity:0.6; font-size: 0.85rem; margin-top: 8px;">It was never a new journey.<br>It just finally began.</p>
-      
+      <h2 style="letter-spacing: 6px;">BOARDING CONFIRMED</h2>
+      <p style="opacity:0.6; font-size: 0.85rem;">It was never a new journey.<br>It just finally began.</p>
       <svg class="heart-monitor" viewBox="0 0 600 160">
-        <path class="ekg-base" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 C270 45, 330 45, 350 80 C370 45, 430 45, 450 80 L600 80" />
-        <path class="ekg-active" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 C270 45, 330 45, 350 80 C370 45, 430 45, 450 80 L600 80" />
+        <path class="ekg-base" d="M0 80 L150 80 L170 40 L190 120 L210 60 L230 80 L280 80 C280 50, 320 50, 320 80 C320 50, 360 50, 360 80 L600 80" />
+        <path class="ekg-active" d="M0 80 L150 80 L170 40 L190 120 L210 60 L230 80 L280 80 C280 50, 320 50, 320 80 C320 50, 360 50, 360 80 L600 80" />
       </svg>
     </div>
 
   </div>
 
   <script>
-    // 修正：加入保險判斷，確保容器存在才生成星空
     const sC = document.getElementById('stars');
     if (sC) {
       for(let i=0; i<40; i++) {
@@ -240,72 +175,48 @@
         s.style.top = Math.random() * 100 + '%';
         s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
         s.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
-        s.style.animationDelay = Math.random() * 5 + 's';
-        sC.appendChild(s);
+        s.appendChild(s); sC.appendChild(s);
       }
     }
 
     function runLoading() {
-      const ld = document.getElementById('loader');
-      const fill = document.getElementById('pFill');
-      const txt = document.getElementById('pPercent');
-      ld.style.display = 'flex';
+      document.getElementById('loader').style.display = 'flex';
       let p = 0;
       const inv = setInterval(() => {
-        p += Math.floor(Math.random() * 4) + 2;
-        if(p >= 100) {
-          p = 100; clearInterval(inv);
-          setTimeout(() => { ld.style.display='none'; transit('page2'); }, 400);
-        }
-        fill.style.width = p + '%';
-        txt.innerText = p + '%';
-      }, 40);
+        p += Math.floor(Math.random() * 5) + 2;
+        if(p >= 100) { p = 100; clearInterval(inv); setTimeout(() => { document.getElementById('loader').style.display='none'; transit('page3', startTypewriter); }, 400); }
+        document.getElementById('pFill').style.width = p + '%';
+        document.getElementById('pPercent').innerText = p + '%';
+      }, 50);
     }
 
     function transit(nextId, cb) {
-      const frame = document.getElementById('mainFrame');
-      frame.classList.add('crt-off');
+      document.getElementById('mainFrame').classList.add('crt-off');
       setTimeout(() => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(nextId).classList.add('active');
-        frame.classList.remove('crt-off');
-        window.scrollTo(0,0); // 切頁時自動滾回頂部
+        document.getElementById('mainFrame').classList.remove('crt-off');
         if(cb) cb();
       }, 600);
     }
 
-    const lines = [
-      "Dear Most Precious Passenger Yudai:",
-      "Before boarding, we have prepared a special gift for you.",
-      "It is not a short-lived surprise,",
-      "nor something that appears for only one day.",
-      "If you are willing to accept it, it will stay by your side.",
-      "Because— it has actually been here all along.",
-      "Now, please look to your left.",
-      "Your gift is right here."
-    ];
-
     function startTypewriter() {
       const box = document.getElementById('typewriter');
-      const btns = document.getElementById('btnGroup');
-      box.innerHTML = ""; btns.style.opacity = "0";
+      const lines = ["Dear Yudai:", "This is a gift from my heart.", "Please look to your left."];
+      box.innerHTML = "";
       let lIdx = 0;
-      function typeL() {
+      function type() {
         if(lIdx < lines.length) {
+          let div = document.createElement('div'); box.appendChild(div);
           let cIdx = 0;
-          let div = document.createElement('div');
-          div.style.marginBottom = "12px";
-          box.appendChild(div);
-          function typeC() {
-            if(cIdx < lines[lIdx].length) {
-              div.innerHTML += lines[lIdx].charAt(cIdx);
-              cIdx++; setTimeout(typeC, 40);
-            } else { lIdx++; setTimeout(typeL, 500); }
+          function char() {
+            if(cIdx < lines[lIdx].length) { div.innerHTML += lines[lIdx][cIdx++]; setTimeout(char, 50); }
+            else { lIdx++; setTimeout(type, 500); }
           }
-          typeC();
-        } else { btns.style.opacity = "1"; }
+          char();
+        } else { document.getElementById('btnGroup').style.opacity = "1"; }
       }
-      typeL();
+      type();
     }
   </script>
 </body>
