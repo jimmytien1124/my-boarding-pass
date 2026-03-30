@@ -30,7 +30,7 @@
             padding: 40px 0;
         }
 
-        /* 補回星空容器 */
+        /* 1. 補回星空容器 */
         .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
         .star {
             position: absolute; background: white; border-radius: 50%;
@@ -56,7 +56,7 @@
         .page.active { display: block; animation: fadeIn 0.8s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 補回登機證反光流光 */
+        /* 2. 登機證反光流光 */
         .ticket {
             background: #e8e9eb; color: #1a1a1a; border-radius: 16px; padding: 24px;
             text-align: left; position: relative; overflow: hidden; margin-bottom: 30px;
@@ -73,7 +73,6 @@
         .t-label { font-size: 0.65rem; color: #777; text-transform: uppercase; margin-bottom: 2px; }
         .t-value { font-size: 1.05rem; font-weight: 800; color: #111; margin-bottom: 12px; }
 
-        /* 按鈕流光 */
         button {
             appearance: none; border: none; border-radius: 999px; font-size: 0.8rem;
             cursor: pointer; font-family: inherit; position: relative; overflow: hidden;
@@ -96,7 +95,7 @@
         #btnGroup button { padding: 12px 8px; white-space: nowrap; flex: 1.2; font-size: 0.75rem; min-width: 90px; }
         #btnGroup .danger-btn { flex: 2; font-size: 0.85rem; padding: 14px 10px; }
 
-        /* 心電圖 - 絕對不准再動的原始愛心路徑 */
+        /* 心電圖樣式 */
         .heart-monitor { width: 100%; margin-top: 40px; }
         .ekg-base { stroke: rgba(0, 234, 255, 0.08); stroke-width: 2.5; fill: none; }
         .ekg-active {
@@ -106,7 +105,6 @@
         }
         @keyframes ekgMove { 0% { stroke-dashoffset: 1120; } 100% { stroke-dashoffset: 0; } }
 
-        /* 其他組件 */
         #loader { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .loader-arc { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--cyan); border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -193,14 +191,20 @@
             <h2 style="letter-spacing: 6px; font-size: 1.3rem; margin-bottom: 8px;">BOARDING CONFIRMED</h2>
             <p style="opacity:0.6; font-size: 0.85rem; line-height: 1.7; margin-top: 0;">It was never a new journey.<br>It just finally began.</p>
             <svg class="heart-monitor" viewBox="0 0 600 160">
-                <path class="ekg-base" d="M0 80 L200 80 L220 40 L240 120 L260 60 L280 80 L300 80 C300 45, 340 45, 340 80 C340 45, 380 45, 380 80 L400 80 L600 80" />
-                <path class="ekg-active" d="M0 80 L200 80 L220 40 L240 120 L260 60 L280 80 L300 80 C300 45, 340 45, 340 80 C340 45, 380 45, 380 80 L400 80 L600 80" />
+                <path
+                    class="ekg-base"
+                    d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 L270 80 C282 60, 305 55, 320 70 C335 55, 358 60, 370 80 C370 102, 346 118, 320 138 C294 118, 270 102, 270 80 L390 80 L410 50 L430 115 L450 68 L470 80 L600 80"
+                />
+                <path
+                    class="ekg-active"
+                    d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 L270 80 C282 60, 305 55, 320 70 C335 55, 358 60, 370 80 C370 102, 346 118, 320 138 C294 118, 270 102, 270 80 L390 80 L410 50 L430 115 L450 68 L470 80 L600 80"
+                />
             </svg>
         </div>
     </div>
 
     <script>
-        // 修正後的星空邏輯
+        // JS 保險寫法
         const sC = document.getElementById('stars');
         if (sC) {
             for (let i = 0; i < 40; i++) {
@@ -215,7 +219,7 @@
             }
         }
 
-        // 穩定節奏的 Loading
+        // 穩定節奏
         function runLoading() {
             const ld = document.getElementById('loader');
             ld.style.display = 'flex';
