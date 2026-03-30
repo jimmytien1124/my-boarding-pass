@@ -12,271 +12,191 @@
       --text: #f5f7ff;
       --ticket-bg: #f2f2f2;
       --ticket-text: #171717;
-      --line: #cfcfcf;
-      --gold: #c7a43a;
       --cyan: #00eaff;
       --red: #ff4d6d;
-      --purple: rgba(180, 120, 255, 0.35);
-      --glitch-cyan: rgba(0, 234, 255, 0.8);
-      --glitch-purple: rgba(180, 120, 255, 0.9);
+      --purple: rgba(180, 120, 255, 0.4);
     }
 
     body {
-      margin: 0;
-      min-height: 100vh;
+      margin: 0; min-height: 100vh;
       background: radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 28%), var(--bg);
-      color: var(--text);
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      text-align: center;
-      overflow-y: auto;
-      padding: 16px;
+      color: var(--text); font-family: "Helvetica Neue", Arial, sans-serif;
+      text-align: center; padding: 16px; overflow-x: hidden;
     }
 
     .container { width: 100%; max-width: 420px; margin: 0 auto; padding-top: 36px; padding-bottom: 120px; }
 
     .page {
-      display: none;
-      border: 1px solid var(--purple);
-      border-radius: 24px;
-      box-shadow: 0 0 32px rgba(180, 120, 255, 0.16);
-      padding: 18px 14px 22px;
-      background: rgba(255,255,255,0.01);
-      backdrop-filter: blur(1px);
+      display: none; border: 1px solid var(--purple); border-radius: 24px;
+      box-shadow: 0 0 32px rgba(180, 120, 255, 0.16); padding: 18px 14px 22px;
+      background: rgba(255,255,255,0.01); backdrop-filter: blur(1px);
     }
-
     .page.active { display: block; }
 
-    /* 機票樣式 */
+    /* 機票與按鈕基本樣式 */
     .ticket {
       position: relative; overflow: hidden; background: var(--ticket-bg); color: var(--ticket-text);
-      border-radius: 22px; padding: 20px; text-align: left;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      border-radius: 22px; padding: 20px; text-align: left; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
-    .ticket::after {
-      content: ""; position: absolute; top: -60%; left: -80%; width: 120%; height: 220%;
-      background: linear-gradient(115deg, transparent 35%, rgba(0, 234, 255, 0.1) 50%, transparent 65%);
-      transform: rotate(18deg); animation: ticketSweep 5s linear infinite; pointer-events: none;
-    }
-    @keyframes ticketSweep { 0% { transform: translateX(-120%) rotate(18deg); } 100% { transform: translateX(180%) rotate(18deg); } }
-
-    .ticket-header { display: flex; justify-content: space-between; font-size: 0.82rem; }
-    .first-class { color: var(--gold); font-weight: 700; }
-    .divider { height: 1px; background: var(--line); margin: 14px 0; }
-    .ticket-label { font-size: 0.72rem; color: #777; text-transform: uppercase; }
-    .ticket-value { font-size: 1.06rem; margin-bottom: 12px; }
-    .barcode { border-top: 1px dashed #bdbdbd; margin-top: 12px; padding-top: 8px; text-align: center; font-size: 0.62rem; color: #666; }
-
-    /* 按鈕樣式 */
+    .divider { height: 1px; background: #cfcfcf; margin: 14px 0; }
     button {
       appearance: none; border: 2px solid var(--cyan); background: transparent; color: var(--cyan);
-      padding: 13px 26px; border-radius: 999px; font-size: 0.98rem; cursor: pointer;
-      font-family: inherit; position: relative; overflow: hidden;
-    }
-    .scan-btn { margin-top: 22px; color: #fff; border-color: rgba(255,255,255,0.8); }
-    .scan-btn::after {
-      content: ""; position: absolute; top: 5%; bottom: 5%; width: 10px; left: -10px;
-      background: linear-gradient(to bottom, transparent, var(--glitch-cyan), transparent);
-      animation: glitchSweep 1.2s linear infinite;
-    }
-    @keyframes glitchSweep { 0% { left: -10px; } 100% { left: 110%; } }
-    .danger-btn { border-color: var(--red); color: var(--red); }
-
-    /* --- 重點：1.5 秒 TV 過場動畫 --- */
-    #tvOff {
-      position: fixed; inset: 0; background: black; z-index: 9999;
-      display: flex; justify-content: center; align-items: center;
-      visibility: hidden; opacity: 0;
+      padding: 13px 26px; border-radius: 999px; font-size: 0.98rem; cursor: pointer; margin-top: 22px;
     }
 
-    /* 掃描雜訊 */
-    #tvOff::before {
-      content: ""; position: absolute; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.15;
+    /* --- 彈出式載入視窗 (Loading Modal) --- */
+    #loadingModal {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+      z-index: 10000; display: none; justify-content: center; align-items: center;
+      backdrop-filter: blur(4px);
     }
 
-    #tvLoadingText {
-      position: relative; color: var(--cyan); font-family: monospace;
-      font-size: 1.1rem; letter-spacing: 5px; text-shadow: 0 0 10px var(--cyan);
-      opacity: 0; z-index: 10000;
+    .modal-content {
+      width: 85%; max-width: 300px; background: #111; border: 1px solid var(--cyan);
+      border-radius: 20px; padding: 30px 20px; box-shadow: 0 0 20px rgba(0, 234, 255, 0.2);
+      text-align: center;
     }
 
-    /* 執行 1.5 秒的動畫 */
-    .tv-off-active {
-      visibility: visible !important;
-      animation: tvCloseWide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    /* 轉圈圈 */
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid rgba(0, 234, 255, 0.1);
+      border-top: 3px solid var(--cyan); border-radius: 50%;
+      margin: 0 auto 20px; animation: spin 0.8s linear infinite;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .tv-off-active #tvLoadingText {
-      animation: loadingBlink 1.5s ease-in-out forwards;
-    }
+    .loading-title { color: var(--cyan); font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 15px; }
 
-    @keyframes loadingBlink {
-      0% { opacity: 0; content: "INITIALIZING..."; }
-      10%, 40% { opacity: 1; filter: blur(0px); }
-      45% { opacity: 0.3; filter: blur(2px); }
-      50%, 90% { opacity: 1; filter: blur(0px); }
-      100% { opacity: 0; }
+    /* 進度條容器 */
+    .progress-container {
+      display: flex; align-items: center; gap: 10px; width: 100%;
     }
-
-    @keyframes tvCloseWide {
-      0% { transform: scaleY(1); opacity: 1; }
-      15% { background: #fff; transform: scaleY(0.015) scaleX(1.05); }
-      25% { background: #000; transform: scaleY(1) scaleX(1); }
-      85% { background: #000; transform: scaleY(1) scaleX(1); opacity: 1; }
-      92% { background: #fff; transform: scaleY(0.01) scaleX(1); }
-      100% { transform: scale(0); opacity: 1; }
+    .progress-bg {
+      flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;
     }
+    .progress-bar {
+      width: 0%; height: 100%; background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan); transition: width 0.1s linear;
+    }
+    .progress-percent { color: var(--cyan); font-family: monospace; font-size: 0.85rem; min-width: 35px; }
 
     /* 心電圖無限循環 */
     .heartbeat-line {
-      fill: none; stroke: #00eaff; stroke-width: 4;
+      fill: none; stroke: var(--cyan); stroke-width: 4;
       stroke-dasharray: 600, 600; stroke-dashoffset: 1200;
       animation: drawingHeartbeat 3s linear forwards, loopHeartbeat 2.5s linear infinite 3s;
     }
     @keyframes drawingHeartbeat { to { stroke-dashoffset: 600; } }
     @keyframes loopHeartbeat { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
 
-    /* 佈局細節 */
-    .warning-box { background: rgba(20, 20, 24, 0.92); border: 2px solid var(--red); border-radius: 22px; padding: 28px 22px; }
-    #finalViewport { height: calc(100vh - 32px); overflow-y: auto; padding: 18px 14px 22px; }
-    #typewriter { font-size: 1.05rem; line-height: 2; text-align: center; }
-    #buttons { display: none; margin-top: 34px; justify-content: center; gap: 10px; }
-    #success { opacity: 0; transform: scale(0.96); transition: 0.8s; }
-    #success.active { opacity: 1; transform: scale(1); }
-    .stars span { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 4s infinite; }
-    @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+    #typewriter { line-height: 2; min-height: 100px; }
   </style>
 </head>
 <body>
+
+  <div id="loadingModal">
+    <div class="modal-content">
+      <div class="spinner"></div>
+      <div class="loading-title" id="loadingText">PROCESSING...</div>
+      <div class="progress-container">
+        <div class="progress-bg">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-percent" id="progressPercent">0%</div>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <div id="step1" class="page active">
       <div class="ticket">
-        <div class="ticket-header">
-          <div>AIR NEW ZEALAND<br>TRAVELER: YUDAI</div>
-          <div class="ticket-right"><span class="first-class">FIRST CLASS</span><br>SEAT: 1A</div>
-        </div>
+        <div>AIR NEW ZEALAND<br>TRAVELER: YUDAI</div>
         <div class="divider"></div>
-        <div class="ticket-label">FROM</div><div class="ticket-value">OUR STORY</div>
-        <div class="ticket-label">TO</div><div class="ticket-value">THE NEXT CHAPTER</div>
-        <div class="ticket-label">DATE</div><div class="ticket-value">2025 / 10 / 30</div>
-        <div class="divider"></div>
-        <div class="barcode">YUDAI · AI143 · 1A · FIRST CLASS</div>
+        <div style="font-size: 0.72rem; color: #777;">FROM</div><div>OUR STORY</div>
+        <div style="font-size: 0.72rem; color: #777;">TO</div><div>THE NEXT CHAPTER</div>
       </div>
-      <button class="scan-btn" onclick="tvToStep2()">SCAN TO BOARD</button>
+      <button onclick="startLoading('step2')">SCAN TO BOARD</button>
     </div>
 
     <div id="step2" class="page">
-      <div class="warning-box">
-        <h2 style="color:var(--red)">WARNING:<br>ONE WAY TICKET</h2>
-        <p>This ticket cannot be refunded.<br>Once boarding is confirmed,<br>there is no return.</p>
-        <button class="scan-btn" onclick="tvToStep3()">CONFIRM BOARDING</button>
-      </div>
+      <h2 style="color:var(--red)">ONE WAY TICKET</h2>
+      <p>Confirm boarding? There is no return.</p>
+      <button onclick="startLoading('step3', startTypewriter)">CONFIRM</button>
     </div>
 
     <div id="step3" class="page">
-      <div id="finalViewport">
-        <div id="typewriter"></div>
-        <div id="buttons">
-          <button class="scan-btn" onclick="tvToSuccess()">Accept</button>
-          <button class="danger-btn" onclick="tvToNotice()">Gift Notice</button>
-          <button class="scan-btn" onclick="tvToSuccess()">Accept</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="stepNotice" class="page">
-      <div style="text-align:left; background:rgba(0,0,0,0.3); padding:20px; border-radius:20px;">
-        <h3 style="color:var(--cyan); text-align:center;">[ GIFT NOTICE ]</h3>
-        <ul style="list-style:none; padding:0; font-family:monospace; font-size:0.9rem; line-height:1.8;">
-          <li>> One-way & non-returnable.</li>
-          <li>> Honesty is required.</li>
-          <li>> Silence is not a solution.</li>
-        </ul>
-        <button class="scan-btn" style="display:block; margin:20px auto 0;" onclick="tvBackToStep3()">Back</button>
+      <div id="typewriter"></div>
+      <div id="buttons" style="display:none; gap:10px; justify-content:center; margin-top:20px;">
+        <button onclick="startLoading('step4', finishAction)">Accept</button>
       </div>
     </div>
 
     <div id="step4" class="page">
-      <div id="stars" style="position:absolute; inset:0;"></div>
-      <div id="success">
-        <h2 style="letter-spacing:4px;">BOARDING CONFIRMED</h2>
-        <p style="color:rgba(255,255,255,0.7)">It was never a new journey.<br>It just finally began.</p>
-        <svg viewBox="0 0 600 140" style="width:100%; margin-top:20px;">
-          <path class="heartbeat-line" d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90" />
-        </svg>
-      </div>
+      <h2>BOARDING CONFIRMED</h2>
+      <svg viewBox="0 0 600 140" style="width:100%; margin-top:20px;">
+        <path class="heartbeat-line" d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90" />
+      </svg>
     </div>
   </div>
 
-  <div id="tvOff">
-    <div id="tvLoadingText">SYNCING DATA...</div>
-  </div>
-
   <script>
-    const FINAL_TEXT = `Dear Most Precious Passenger Yudai:\n\nBefore boarding, we have prepared a special gift for you.\nIt is not a short-lived surprise.\n\nIf you are willing to accept it, it will stay by your side.\nBecause— it has actually been here all along.\n\nNow, please look to your left.\nYour gift is right here.`;
+    const FINAL_TEXT = `Dear Yudai:\n\nBefore boarding, we have prepared a special gift for you.\n\nIf you are willing to accept it, it will stay by your side.\n\nNow, please look to your left.`;
 
-    function showPage(pageId) {
-      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-      document.getElementById(pageId).classList.add("active");
-      window.scrollTo(0,0);
+    function startLoading(nextPageId, callback) {
+      const modal = document.getElementById('loadingModal');
+      const bar = document.getElementById('progressBar');
+      const percentText = document.getElementById('progressPercent');
+      const loadingText = document.getElementById('loadingText');
+      
+      const phrases = ["SYNCHRONIZING...", "AUTHORIZING...", "DECRYPTING...", "FINALIZING..."];
+      loadingText.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+
+      modal.style.display = 'flex';
+      let progress = 0;
+      bar.style.width = '0%';
+      percentText.innerText = '0%';
+
+      // 1.5秒跑完進度條 (每 15ms 跑 1%)
+      const interval = setInterval(() => {
+        progress += 2; // 每次增加 2%
+        if (progress > 100) progress = 100;
+        
+        bar.style.width = progress + '%';
+        percentText.innerText = progress + '%';
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            modal.style.display = 'none';
+            showPage(nextPageId);
+            if (callback) callback();
+          }, 200); // 滿格後停一下下再消失
+        }
+      }, 30); // 1.5秒總共 1500ms / (100%/2%) = 30ms 
     }
 
-    function tvTransition(nextPageId, callback) {
-      const tv = document.getElementById("tvOff");
-      const loader = document.getElementById("tvLoadingText");
-      const phrases = ["SYNCING DATA...", "SCANNING BIOMETRICS...", "AUTHORIZING...", "DECRYPTING..."];
-      loader.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-
-      tv.classList.add("tv-off-active");
-
-      // 在 1.5 秒的動畫中段切換內容
-      setTimeout(() => {
-        showPage(nextPageId);
-        if (callback) callback();
-      }, 750);
-
-      setTimeout(() => {
-        tv.classList.remove("tv-off-active");
-      }, 1500);
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
     }
 
     function startTypewriter() {
-      const typewriter = document.getElementById("typewriter");
-      const buttons = document.getElementById("buttons");
-      typewriter.innerHTML = ""; buttons.style.display = "none";
+      const box = document.getElementById('typewriter');
+      const btns = document.getElementById('buttons');
+      box.innerHTML = ""; btns.style.display = "none";
       let i = 0;
       function type() {
         if (i < FINAL_TEXT.length) {
           let c = FINAL_TEXT.charAt(i);
-          typewriter.innerHTML += c === "\n" ? "<br>" : c;
-          i++; setTimeout(type, c === "," ? 200 : 50);
-        } else { buttons.style.display = "flex"; }
+          box.innerHTML += c === "\n" ? "<br>" : c;
+          i++; setTimeout(type, 50);
+        } else { btns.style.display = "flex"; }
       }
       type();
     }
 
-    function createStars() {
-      const container = document.getElementById("stars");
-      if (container.children.length > 0) return;
-      for (let i = 0; i < 30; i++) {
-        const s = document.createElement("span");
-        s.style.top = Math.random() * 100 + "%";
-        s.style.left = Math.random() * 100 + "%";
-        s.style.animationDelay = Math.random() * 3 + "s";
-        container.appendChild(s);
-      }
-    }
-
-    function tvToStep2() { tvTransition("step2"); }
-    function tvToStep3() { tvTransition("step3", startTypewriter); }
-    function tvToNotice() { tvTransition("stepNotice"); }
-    function tvBackToStep3() { tvTransition("step3", () => document.getElementById("buttons").style.display = "flex"); }
-    function tvToSuccess() { 
-      tvTransition("step4", () => {
-        createStars();
-        setTimeout(() => document.getElementById("success").classList.add("active"), 100);
-      }); 
+    function finishAction() {
+      // 可以在這裡加煙火或其他效果
     }
   </script>
 </body>
