@@ -17,9 +17,6 @@
       --cyan: #00eaff;
       --red: #ff4d6d;
       --purple: rgba(180, 120, 255, 0.35);
-      --purple-glow-1: rgba(180, 120, 255, 0.28);
-      --purple-glow-2: rgba(180, 120, 255, 0.16);
-      --purple-inset: rgba(180, 120, 255, 0.08);
       --glitch-cyan: rgba(0, 234, 255, 0.8);
       --glitch-purple: rgba(180, 120, 255, 0.9);
     }
@@ -27,10 +24,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 28%),
-        radial-gradient(circle at 50% 80%, rgba(255, 77, 109, 0.04), transparent 30%),
-        var(--bg);
+      background: radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 28%), var(--bg);
       color: var(--text);
       font-family: "Helvetica Neue", Arial, sans-serif;
       text-align: center;
@@ -38,23 +32,13 @@
       padding: 16px;
     }
 
-    .container {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      padding-top: 36px;
-      padding-bottom: 120px;
-    }
+    .container { width: 100%; max-width: 420px; margin: 0 auto; padding-top: 36px; padding-bottom: 120px; }
 
     .page {
       display: none;
       border: 1px solid var(--purple);
       border-radius: 24px;
-      box-shadow:
-        0 0 12px var(--purple-glow-1),
-        0 0 32px var(--purple-glow-2),
-        0 0 60px rgba(180, 120, 255, 0.08),
-        inset 0 0 10px var(--purple-inset);
+      box-shadow: 0 0 32px rgba(180, 120, 255, 0.16);
       padding: 18px 14px 22px;
       background: rgba(255,255,255,0.01);
       backdrop-filter: blur(1px);
@@ -62,359 +46,165 @@
 
     .page.active { display: block; }
 
+    /* 機票樣式 */
     .ticket {
-      position: relative;
-      overflow: hidden;
-      background: var(--ticket-bg);
-      color: var(--ticket-text);
-      border-radius: 22px;
-      padding: 20px;
-      text-align: left;
-      box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        0 0 18px rgba(0, 234, 255, 0.08);
+      position: relative; overflow: hidden; background: var(--ticket-bg); color: var(--ticket-text);
+      border-radius: 22px; padding: 20px; text-align: left;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
-
     .ticket::after {
-      content: "";
-      position: absolute;
-      top: -60%;
-      left: -80%;
-      width: 120%;
-      height: 220%;
-      background: linear-gradient(
-        115deg,
-        transparent 35%,
-        rgba(0, 234, 255, 0.13) 48%,
-        rgba(255,255,255,0.14) 50%,
-        rgba(0, 234, 255, 0.10) 52%,
-        transparent 65%
-      );
-      transform: rotate(18deg);
-      animation: ticketSweep 5s linear infinite;
-      pointer-events: none;
+      content: ""; position: absolute; top: -60%; left: -80%; width: 120%; height: 220%;
+      background: linear-gradient(115deg, transparent 35%, rgba(0, 234, 255, 0.1) 50%, transparent 65%);
+      transform: rotate(18deg); animation: ticketSweep 5s linear infinite; pointer-events: none;
     }
+    @keyframes ticketSweep { 0% { transform: translateX(-120%) rotate(18deg); } 100% { transform: translateX(180%) rotate(18deg); } }
 
-    @keyframes ticketSweep {
-      0% { transform: translateX(-120%) rotate(18deg); }
-      100% { transform: translateX(180%) rotate(18deg); }
-    }
+    .ticket-header { display: flex; justify-content: space-between; font-size: 0.82rem; }
+    .first-class { color: var(--gold); font-weight: 700; }
+    .divider { height: 1px; background: var(--line); margin: 14px 0; }
+    .ticket-label { font-size: 0.72rem; color: #777; text-transform: uppercase; }
+    .ticket-value { font-size: 1.06rem; margin-bottom: 12px; }
+    .barcode { border-top: 1px dashed #bdbdbd; margin-top: 12px; padding-top: 8px; text-align: center; font-size: 0.62rem; color: #666; }
 
-    .ticket-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      font-size: 0.82rem;
-      line-height: 1.55;
-    }
-
-    .ticket-right { text-align: right; }
-
-    .first-class {
-      color: var(--gold);
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .divider {
-      height: 1px;
-      background: var(--line);
-      margin: 14px 0;
-    }
-
-    .ticket-label {
-      font-size: 0.72rem;
-      color: #777;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
-
-    .ticket-value {
-      font-size: 1.06rem;
-      margin-bottom: 12px;
-      letter-spacing: 0.6px;
-    }
-
-    .ticket-meta {
-      font-size: 0.92rem;
-      line-height: 1.8;
-    }
-
-    .barcode {
-      border-top: 1px dashed #bdbdbd;
-      margin-top: 12px;
-      padding-top: 8px;
-      text-align: center;
-      font-size: 0.62rem;
-      letter-spacing: 2px;
-      color: #666;
-      line-height: 1.7;
-    }
-
-    /* 基本按鈕樣式 */
+    /* 按鈕樣式 */
     button {
-      appearance: none;
-      -webkit-appearance: none;
-      border: 2px solid var(--cyan);
-      background: transparent;
-      color: var(--cyan);
-      padding: 13px 26px;
-      border-radius: 999px;
-      font-size: 0.98rem;
-      cursor: pointer;
-      transition: 0.2s ease;
-      box-shadow:
-        0 0 6px rgba(0, 234, 255, 0.35),
-        0 0 18px rgba(0, 234, 255, 0.12);
-      font-family: inherit;
-      position: relative;
-      overflow: hidden;
+      appearance: none; border: 2px solid var(--cyan); background: transparent; color: var(--cyan);
+      padding: 13px 26px; border-radius: 999px; font-size: 0.98rem; cursor: pointer;
+      font-family: inherit; position: relative; overflow: hidden;
     }
-
-    /* 故障掃描按鈕 */
-    .scan-btn {
-      margin-top: 22px;
-      margin-bottom: 4px;
-      color: #fff;
-      border-color: rgba(255,255,255,0.88);
-      background: rgba(255,255,255,0.01);
-    }
-
+    .scan-btn { margin-top: 22px; color: #fff; border-color: rgba(255,255,255,0.8); }
     .scan-btn::after {
-      content: "";
-      position: absolute;
-      top: 5%;
-      bottom: 5%;
-      width: 10px; 
-      left: -10px;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 234, 255, 0) 0%,
-        var(--glitch-cyan) 20%,
-        var(--glitch-purple) 50%, 
-        var(--glitch-cyan) 80%,
-        rgba(0, 234, 255, 0) 100%
-      );
-      box-shadow: 0 0 10px var(--glitch-cyan), 0 0 20px var(--glitch-purple);
+      content: ""; position: absolute; top: 5%; bottom: 5%; width: 10px; left: -10px;
+      background: linear-gradient(to bottom, transparent, var(--glitch-cyan), transparent);
       animation: glitchSweep 1.2s linear infinite;
     }
+    @keyframes glitchSweep { 0% { left: -10px; } 100% { left: 110%; } }
+    .danger-btn { border-color: var(--red); color: var(--red); }
 
-    .scan-btn:hover {
-      animation: glitchFlicker 0.15s infinite;
-    }
-
-    @keyframes glitchSweep {
-      0% { left: -10px; transform: skewX(-10deg); opacity: 0; }
-      10% { opacity: 1; }
-      25% { left: 30%; transform: skewX(-20deg); }
-      26% { left: 31%; transform: skewX(15deg); filter: brightness(2); }
-      50% { left: 60%; }
-      100% { left: 110%; opacity: 0; }
-    }
-
-    @keyframes glitchFlicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.8; filter: brightness(1.2); }
-    }
-
-    .danger-btn {
-      border-color: var(--red);
-      color: var(--red);
-    }
-
-    .danger-btn::after {
-      content: "";
-      position: absolute;
-      top: 5%;
-      bottom: 5%;
-      width: 10px;
-      left: -10px;
-      background: linear-gradient(to bottom, transparent, var(--red), transparent);
-      animation: glitchSweep 1.2s linear infinite;
-    }
-
-    /* --- 改進：更真實的 TV 關機與雜訊效果 --- */
+    /* --- 重點：1.5 秒 TV 過場動畫 --- */
     #tvOff {
-      position: fixed;
-      inset: 0;
-      background: black;
-      z-index: 999;
-      pointer-events: none;
-      opacity: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+      position: fixed; inset: 0; background: black; z-index: 9999;
+      display: flex; justify-content: center; align-items: center;
+      visibility: hidden; opacity: 0;
     }
 
-    /* 雜訊背景層 */
+    /* 掃描雜訊 */
     #tvOff::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      content: ""; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       opacity: 0.15;
-      pointer-events: none;
     }
 
-    /* 換頁提示文字 */
     #tvLoadingText {
-      position: absolute;
-      color: var(--cyan);
-      font-family: monospace;
-      font-size: 0.8rem;
-      letter-spacing: 4px;
-      text-shadow: 0 0 8px var(--cyan);
-      opacity: 0;
+      position: relative; color: var(--cyan); font-family: monospace;
+      font-size: 1.1rem; letter-spacing: 5px; text-shadow: 0 0 10px var(--cyan);
+      opacity: 0; z-index: 10000;
     }
 
+    /* 執行 1.5 秒的動畫 */
     .tv-off-active {
-      animation: tvClose 0.65s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      visibility: visible !important;
+      animation: tvCloseWide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
     .tv-off-active #tvLoadingText {
-      animation: loadingFade 0.65s forwards;
+      animation: loadingBlink 1.5s ease-in-out forwards;
     }
 
-    @keyframes loadingFade {
-      0% { opacity: 0; transform: translateY(10px); }
-      30%, 70% { opacity: 1; transform: translateY(0); }
+    @keyframes loadingBlink {
+      0% { opacity: 0; content: "INITIALIZING..."; }
+      10%, 40% { opacity: 1; filter: blur(0px); }
+      45% { opacity: 0.3; filter: blur(2px); }
+      50%, 90% { opacity: 1; filter: blur(0px); }
       100% { opacity: 0; }
     }
 
-    @keyframes tvClose {
-      0% { transform: scaleY(1); opacity: 1; background: #000; }
-      40% { transform: scaleY(0.01) scaleX(1); background: #fff; box-shadow: 0 0 20px #fff; }
-      70% { transform: scaleY(0.01) scaleX(0.2); background: #fff; }
-      90% { transform: scale(0.01); background: #fff; }
-      100% { transform: scale(0); opacity: 1; background: #fff; }
+    @keyframes tvCloseWide {
+      0% { transform: scaleY(1); opacity: 1; }
+      15% { background: #fff; transform: scaleY(0.015) scaleX(1.05); }
+      25% { background: #000; transform: scaleY(1) scaleX(1); }
+      85% { background: #000; transform: scaleY(1) scaleX(1); opacity: 1; }
+      92% { background: #fff; transform: scaleY(0.01) scaleX(1); }
+      100% { transform: scale(0); opacity: 1; }
     }
 
-    .warning-box {
-      background: rgba(20, 20, 24, 0.92);
-      border: 2px solid var(--red);
-      border-radius: 22px;
-      padding: 28px 22px;
-    }
-
-    .warning-title { color: var(--red); font-size: 1.45rem; margin: 0 0 18px; }
-    .warning-text { font-size: 1rem; line-height: 1.9; color: #ededf0; }
-    #step3 { padding: 0; overflow: hidden; }
-    #finalViewport { height: calc(100vh - 32px); overflow-y: auto; padding: 18px 14px 22px; border-radius: 24px; }
-    #final { width: 100%; max-width: 420px; margin: 0 auto; padding-top: 36px; padding-bottom: 120px; text-align: center; }
-    #typewriter { font-size: 1.06rem; line-height: 2; letter-spacing: 0.4px; }
-    #buttons { display: none; margin-top: 34px; padding-bottom: 84px; justify-content: center; gap: 10px; }
-    .choice-btn { min-width: 104px; padding: 12px 18px; }
-    #noticeBox { background: rgba(10, 10, 14, 0.96); border: 1px solid rgba(0, 234, 255, 0.25); border-radius: 22px; padding: 28px 22px; }
-    .notice-title { font-size: 1.2rem; color: var(--cyan); margin-bottom: 20px; }
-    .notice-list { list-style: none; padding: 0; text-align: left; font-family: monospace; line-height: 1.9; font-size: 0.95rem; }
-    .notice-list li::before { content: ">"; padding-right: 8px; color: var(--cyan); }
-    #step4 { position: relative; overflow: hidden; min-height: 520px; }
-    #success { opacity: 0; transform: scale(0.96); transition: 0.8s; }
-    #success.active { opacity: 1; transform: scale(1); }
-    .stars { position: absolute; inset: 0; }
-    .stars span { position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,0.4); border-radius: 50%; animation: twinkle 4s infinite; }
-    @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-    .heartbeat-wrap { margin-top: 10px; }
-    .heartbeat-svg { width: 100%; max-width: 320px; }
-
-    /* --- 升級：最後一頁心電圖無限循環動畫 --- */
+    /* 心電圖無限循環 */
     .heartbeat-line {
-      fill: none;
-      stroke: #00eaff;
-      stroke-width: 4;
-      /* 定義虛線：一段實線，一段透明線，總長度需要能覆蓋整個圖案 */
-      stroke-dasharray: 600, 600; 
-      /* 初始化偏移量，讓線條從「完全透明」開始繪製 */
-      stroke-dashoffset: 1200; 
-      /* 運用 animation 讓偏移量不斷減少，實現無限循環移動 */
+      fill: none; stroke: #00eaff; stroke-width: 4;
+      stroke-dasharray: 600, 600; stroke-dashoffset: 1200;
       animation: drawingHeartbeat 3s linear forwards, loopHeartbeat 2.5s linear infinite 3s;
     }
+    @keyframes drawingHeartbeat { to { stroke-dashoffset: 600; } }
+    @keyframes loopHeartbeat { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
 
-    /* 動畫 1：首次繪製（從無到有） */
-    @keyframes drawingHeartbeat {
-      to { stroke-dashoffset: 600; } /* 繪製出一整段實線 */
-    }
-
-    /* 動畫 2：首次繪製完成後，線條開始無限循環向左移動（視覺看起來像向右跑） */
-    @keyframes loopHeartbeat {
-      from { stroke-dashoffset: 600; }
-      to { stroke-dashoffset: 0; } /* 偏移量減少一個完整週期 */
-    }
-
-    @media (max-width: 430px) {
-      .ticket { padding: 18px; }
-      #buttons { gap: 8px; }
-      .choice-btn { min-width: 96px; }
-    }
+    /* 佈局細節 */
+    .warning-box { background: rgba(20, 20, 24, 0.92); border: 2px solid var(--red); border-radius: 22px; padding: 28px 22px; }
+    #finalViewport { height: calc(100vh - 32px); overflow-y: auto; padding: 18px 14px 22px; }
+    #typewriter { font-size: 1.05rem; line-height: 2; text-align: center; }
+    #buttons { display: none; margin-top: 34px; justify-content: center; gap: 10px; }
+    #success { opacity: 0; transform: scale(0.96); transition: 0.8s; }
+    #success.active { opacity: 1; transform: scale(1); }
+    .stars span { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 4s infinite; }
+    @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
   </style>
 </head>
 <body>
   <div class="container">
-
     <div id="step1" class="page active">
       <div class="ticket">
         <div class="ticket-header">
           <div>AIR NEW ZEALAND<br>TRAVELER: YUDAI</div>
-          <div class="ticket-right"><span class="first-class">FIRST CLASS</span><br>SEAT: 1A<br>FLIGHT: AI143</div>
+          <div class="ticket-right"><span class="first-class">FIRST CLASS</span><br>SEAT: 1A</div>
         </div>
         <div class="divider"></div>
         <div class="ticket-label">FROM</div><div class="ticket-value">OUR STORY</div>
         <div class="ticket-label">TO</div><div class="ticket-value">THE NEXT CHAPTER</div>
         <div class="ticket-label">DATE</div><div class="ticket-value">2025 / 10 / 30</div>
         <div class="divider"></div>
-        <div class="ticket-meta">STATUS: CLEARED<br>TYPE: ONE WAY</div>
-        <div class="barcode">YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY</div>
+        <div class="barcode">YUDAI · AI143 · 1A · FIRST CLASS</div>
       </div>
       <button class="scan-btn" onclick="tvToStep2()">SCAN TO BOARD</button>
     </div>
 
     <div id="step2" class="page">
       <div class="warning-box">
-        <h2 class="warning-title">WARNING:<br>ONE WAY TICKET</h2>
-        <p class="warning-text">This ticket cannot be refunded.<br>Once boarding is confirmed,<br>there is no return.</p>
+        <h2 style="color:var(--red)">WARNING:<br>ONE WAY TICKET</h2>
+        <p>This ticket cannot be refunded.<br>Once boarding is confirmed,<br>there is no return.</p>
         <button class="scan-btn" onclick="tvToStep3()">CONFIRM BOARDING</button>
       </div>
     </div>
 
     <div id="step3" class="page">
       <div id="finalViewport">
-        <div id="final">
-          <div id="typewriter"></div>
-          <div id="buttons">
-            <button class="choice-btn scan-btn" onclick="tvToSuccess()">Accept</button>
-            <button class="choice-btn danger-btn" onclick="tvToNotice()">Gift Notice</button>
-            <button class="choice-btn scan-btn" onclick="tvToSuccess()">Accept</button>
-          </div>
+        <div id="typewriter"></div>
+        <div id="buttons">
+          <button class="scan-btn" onclick="tvToSuccess()">Accept</button>
+          <button class="danger-btn" onclick="tvToNotice()">Gift Notice</button>
+          <button class="scan-btn" onclick="tvToSuccess()">Accept</button>
         </div>
       </div>
     </div>
 
     <div id="stepNotice" class="page">
-      <div id="noticeBox">
-        <div class="notice-title">[ GIFT NOTICE ]</div>
-        <ul class="notice-list">
-          <li>This gift is one-way and non-returnable.</li>
-          <li>Care is expected, and care will be given.</li>
-          <li>Honesty is required, even when it hurts.</li>
-          <li>Silence is not a solution.</li>
-          <li style="margin-top:10px; color:#fff;">Continue only if you mean it.</li>
+      <div style="text-align:left; background:rgba(0,0,0,0.3); padding:20px; border-radius:20px;">
+        <h3 style="color:var(--cyan); text-align:center;">[ GIFT NOTICE ]</h3>
+        <ul style="list-style:none; padding:0; font-family:monospace; font-size:0.9rem; line-height:1.8;">
+          <li>> One-way & non-returnable.</li>
+          <li>> Honesty is required.</li>
+          <li>> Silence is not a solution.</li>
         </ul>
-        <button class="scan-btn" onclick="tvBackToStep3()">Back</button>
+        <button class="scan-btn" style="display:block; margin:20px auto 0;" onclick="tvBackToStep3()">Back</button>
       </div>
     </div>
 
     <div id="step4" class="page">
-      <div class="stars" id="stars"></div>
+      <div id="stars" style="position:absolute; inset:0;"></div>
       <div id="success">
-        <div style="font-size: 1.7rem; letter-spacing: 4px; margin-bottom: 18px;">BOARDING CONFIRMED</div>
-        <div style="font-size: 0.95rem; color: rgba(255,255,255,0.75); margin-bottom: 30px;">It was never a new journey.<br>It just finally began.</div>
-        <div class="heartbeat-wrap">
-          <svg class="heartbeat-svg" viewBox="0 0 600 140">
-            <path class="heartbeat-line" d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90" />
-          </svg>
-        </div>
+        <h2 style="letter-spacing:4px;">BOARDING CONFIRMED</h2>
+        <p style="color:rgba(255,255,255,0.7)">It was never a new journey.<br>It just finally began.</p>
+        <svg viewBox="0 0 600 140" style="width:100%; margin-top:20px;">
+          <path class="heartbeat-line" d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90" />
+        </svg>
       </div>
     </div>
   </div>
@@ -424,19 +214,7 @@
   </div>
 
   <script>
-    const FINAL_TEXT = `Dear Most Precious Passenger Yudai:
-
-Before boarding, we have prepared a special gift for you.
-It is not a short-lived surprise.
-
-If you are willing to accept it, it will stay by your side.
-Because— it has actually been here all along.
-
-Now, please look to your left.
-Your gift is right here.`;
-
-    let typingIndex = 0;
-    let typingTimer = null;
+    const FINAL_TEXT = `Dear Most Precious Passenger Yudai:\n\nBefore boarding, we have prepared a special gift for you.\nIt is not a short-lived surprise.\n\nIf you are willing to accept it, it will stay by your side.\nBecause— it has actually been here all along.\n\nNow, please look to your left.\nYour gift is right here.`;
 
     function showPage(pageId) {
       document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
@@ -446,35 +224,34 @@ Your gift is right here.`;
 
     function tvTransition(nextPageId, callback) {
       const tv = document.getElementById("tvOff");
-      tv.classList.add("tv-off-active");
-      
       const loader = document.getElementById("tvLoadingText");
       const phrases = ["SYNCING DATA...", "SCANNING BIOMETRICS...", "AUTHORIZING...", "DECRYPTING..."];
       loader.innerText = phrases[Math.floor(Math.random() * phrases.length)];
 
+      tv.classList.add("tv-off-active");
+
+      // 在 1.5 秒的動畫中段切換內容
       setTimeout(() => {
-        tv.classList.remove("tv-off-active");
         showPage(nextPageId);
         if (callback) callback();
-      }, 650);
+      }, 750);
+
+      setTimeout(() => {
+        tv.classList.remove("tv-off-active");
+      }, 1500);
     }
 
     function startTypewriter() {
       const typewriter = document.getElementById("typewriter");
       const buttons = document.getElementById("buttons");
-      typewriter.innerHTML = "";
-      buttons.style.display = "none";
-      typingIndex = 0;
-
+      typewriter.innerHTML = ""; buttons.style.display = "none";
+      let i = 0;
       function type() {
-        if (typingIndex < FINAL_TEXT.length) {
-          let char = FINAL_TEXT.charAt(typingIndex);
-          typewriter.innerHTML += char === "\n" ? "<br>" : char;
-          typingIndex++;
-          setTimeout(type, char === "," ? 150 : 40);
-        } else {
-          buttons.style.display = "flex";
-        }
+        if (i < FINAL_TEXT.length) {
+          let c = FINAL_TEXT.charAt(i);
+          typewriter.innerHTML += c === "\n" ? "<br>" : c;
+          i++; setTimeout(type, c === "," ? 200 : 50);
+        } else { buttons.style.display = "flex"; }
       }
       type();
     }
@@ -494,7 +271,7 @@ Your gift is right here.`;
     function tvToStep2() { tvTransition("step2"); }
     function tvToStep3() { tvTransition("step3", startTypewriter); }
     function tvToNotice() { tvTransition("stepNotice"); }
-    function tvBackToStep3() { tvTransition("step3", () => { document.getElementById("buttons").style.display = "flex"; }); }
+    function tvBackToStep3() { tvTransition("step3", () => document.getElementById("buttons").style.display = "flex"); }
     function tvToSuccess() { 
       tvTransition("step4", () => {
         createStars();
