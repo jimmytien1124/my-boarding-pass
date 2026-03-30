@@ -172,7 +172,7 @@
       overflow: hidden;
     }
 
-    /* 故障掃描按鈕核心修改 */
+    /* 故障掃描按鈕 */
     .scan-btn {
       margin-top: 22px;
       margin-bottom: 4px;
@@ -181,7 +181,6 @@
       background: rgba(255,255,255,0.01);
     }
 
-    /* 升級：故障 Glitch 流光偽元素 */
     .scan-btn::after {
       content: "";
       position: absolute;
@@ -197,52 +196,33 @@
         var(--glitch-cyan) 80%,
         rgba(0, 234, 255, 0) 100%
       );
-      box-shadow:
-        0 0 10px var(--glitch-cyan),
-        0 0 20px var(--glitch-purple),
-        0 0 30px rgba(0, 234, 255, 0.4);
-      filter: blur(1px);
+      box-shadow: 0 0 10px var(--glitch-cyan), 0 0 20px var(--glitch-purple);
       animation: glitchSweep 1.2s linear infinite;
-      opacity: 0.9;
     }
 
-    /* 懸停時的急速閃爍特效 */
     .scan-btn:hover {
-      background: rgba(0, 234, 255, 0.1);
       animation: glitchFlicker 0.15s infinite;
     }
 
-    /* 故障掃描動畫：隨機扭曲與跳動 */
     @keyframes glitchSweep {
       0% { left: -10px; transform: skewX(-10deg); opacity: 0; }
       10% { opacity: 1; }
       25% { left: 30%; transform: skewX(-20deg); }
-      26% { left: 31%; transform: skewX(15deg); filter: brightness(2) blur(2px); } /* 故障跳動 1 */
-      27% { left: 30%; transform: skewX(-20deg); filter: brightness(1) blur(1px); }
-      50% { left: 60%; transform: skewX(0deg); }
-      51% { left: 61%; transform: scaleX(1.5); filter: contrast(2); } /* 故障跳動 2 */
-      52% { left: 60%; transform: scaleX(1); }
-      80% { opacity: 1; }
-      100% { left: 110%; transform: skewX(-10deg); opacity: 0; }
+      26% { left: 31%; transform: skewX(15deg); filter: brightness(2); }
+      50% { left: 60%; }
+      100% { left: 110%; opacity: 0; }
     }
 
-    /* 霓虹燈管閃爍動畫 */
     @keyframes glitchFlicker {
-      0%, 100% { opacity: 1; filter: contrast(1) brightness(1); }
-      30% { opacity: 0.8; filter: contrast(1.2) brightness(1.5); }
-      50% { opacity: 0.9; filter: contrast(0.8) brightness(0.8); }
-      80% { opacity: 1; filter: contrast(1.1) brightness(1.2); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; filter: brightness(1.2); }
     }
 
     .danger-btn {
       border-color: var(--red);
       color: var(--red);
-      box-shadow:
-        0 0 6px rgba(255, 77, 109, 0.35),
-        0 0 18px rgba(255, 77, 109, 0.12);
     }
 
-    /* 危險按鈕同樣套用故障動畫但換色 */
     .danger-btn::after {
       content: "";
       position: absolute;
@@ -250,259 +230,11 @@
       bottom: 5%;
       width: 10px;
       left: -10px;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 77, 109, 0) 0%,
-        var(--red) 50%,
-        rgba(255, 77, 109, 0) 100%
-      );
-      box-shadow: 0 0 15px var(--red);
+      background: linear-gradient(to bottom, transparent, var(--red), transparent);
       animation: glitchSweep 1.2s linear infinite;
     }
 
-    .warning-box {
-      background: rgba(20, 20, 24, 0.92);
-      border: 2px solid var(--red);
-      border-radius: 22px;
-      padding: 28px 22px;
-      box-shadow:
-        0 0 8px rgba(255, 77, 109, 0.95),
-        0 0 20px rgba(255, 77, 109, 0.55),
-        0 0 40px rgba(255, 77, 109, 0.18);
-    }
-
-    .warning-title {
-      color: var(--red);
-      font-size: 1.45rem;
-      line-height: 1.4;
-      letter-spacing: 1.2px;
-      margin: 0 0 18px;
-      text-shadow: 0 0 10px rgba(255, 77, 109, 0.28);
-    }
-
-    .warning-text {
-      margin: 0;
-      font-size: 1rem;
-      line-height: 1.9;
-      color: #ededf0;
-    }
-
-    #step3 {
-      padding: 0;
-      overflow: hidden;
-    }
-
-    #finalViewport {
-      height: calc(100vh - 32px);
-      overflow-y: auto;
-      padding: 18px 14px 22px;
-      border-radius: 24px;
-    }
-
-    #final {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      padding-top: 36px;
-      padding-bottom: 120px;
-      text-align: center;
-    }
-
-    #typewriter {
-      font-size: 1.06rem;
-      line-height: 2;
-      letter-spacing: 0.4px;
-      white-space: normal;
-      text-shadow:
-        0 0 2px rgba(255,255,255,0.55),
-        0 0 10px rgba(0, 234, 255, 0.14);
-    }
-
-    #buttons {
-      display: none;
-      margin-top: 34px;
-      padding-bottom: 84px;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: nowrap;
-    }
-
-    .choice-btn {
-      min-width: 104px;
-      padding: 12px 18px;
-      font-size: 0.96rem;
-    }
-
-    .notice-btn {
-      min-width: 132px;
-    }
-
-    #noticeBox {
-      background: rgba(10, 10, 14, 0.96);
-      border: 1px solid rgba(0, 234, 255, 0.25);
-      border-radius: 22px;
-      padding: 28px 22px;
-      box-shadow:
-        0 0 12px rgba(0,234,255,0.12),
-        0 0 30px rgba(180,120,255,0.15),
-        inset 0 0 12px rgba(0,234,255,0.05);
-    }
-
-    .notice-title {
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      color: var(--cyan);
-      margin-bottom: 20px;
-      text-shadow:
-        0 0 6px rgba(0,234,255,0.5),
-        0 0 18px rgba(0,234,255,0.2);
-    }
-
-    .notice-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      text-align: left;
-      font-family: monospace;
-      line-height: 1.9;
-      font-size: 0.95rem;
-    }
-
-    .notice-list li {
-      position: relative;
-      padding-left: 18px;
-      margin-bottom: 14px;
-      color: #e8faff;
-    }
-
-    .notice-list li::before {
-      content: ">";
-      position: absolute;
-      left: 0;
-      color: var(--cyan);
-      text-shadow: 0 0 6px rgba(0,234,255,0.6);
-    }
-
-    .final-line {
-      margin-top: 18px;
-      font-size: 1rem;
-      color: #ffffff;
-      text-shadow:
-        0 0 8px rgba(255,255,255,0.6),
-        0 0 18px rgba(0, 234, 255, 0.3);
-    }
-
-    #step4 {
-      position: relative;
-      overflow: hidden;
-      min-height: 520px;
-    }
-
-    #success {
-      position: relative;
-      z-index: 5;
-      padding-top: 60px;
-      padding-bottom: 50px;
-      opacity: 0;
-      transform: scale(0.96);
-      transition: 0.8s;
-    }
-
-    #success.active {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .success-text {
-      font-size: 1.7rem;
-      letter-spacing: 4px;
-      text-shadow:
-        0 0 8px rgba(255,255,255,0.18),
-        0 0 16px rgba(0,234,255,0.10);
-      margin-bottom: 18px;
-    }
-
-    .success-subtext {
-      font-size: 0.95rem;
-      line-height: 1.8;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 30px;
-    }
-
-    .stars {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .stars span {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: rgba(255,255,255,0.4);
-      border-radius: 50%;
-      opacity: 0;
-      animation: twinkle 4s infinite ease-in-out;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
-    }
-
-    .heartbeat-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 10px;
-      position: relative;
-      z-index: 10;
-    }
-
-    .heartbeat-svg {
-      width: 100%;
-      max-width: 320px;
-      height: auto;
-      overflow: visible;
-    }
-
-    .heartbeat-line {
-      fill: none;
-      stroke: #00eaff;
-      stroke-width: 4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 1200;
-      stroke-dashoffset: 1200;
-      filter:
-        drop-shadow(0 0 4px rgba(0,234,255,0.9))
-        drop-shadow(0 0 10px rgba(0,234,255,0.45));
-      animation:
-        drawHeartbeat 2.4s ease forwards,
-        heartbeatGlow 2.2s ease-in-out infinite 2.4s;
-    }
-
-    @keyframes drawHeartbeat {
-      to { stroke-dashoffset: 0; }
-    }
-
-    @keyframes heartbeatGlow {
-      0%, 100% {
-        opacity: 0.75;
-        filter:
-          drop-shadow(0 0 4px rgba(0,234,255,0.7))
-          drop-shadow(0 0 10px rgba(0,234,255,0.28));
-      }
-      50% {
-        opacity: 1;
-        filter:
-          drop-shadow(0 0 6px rgba(0,234,255,1))
-          drop-shadow(0 0 18px rgba(0,234,255,0.55));
-      }
-    }
-
+    /* --- 改進：更真實的 TV 關機與雜訊效果 --- */
     #tvOff {
       position: fixed;
       inset: 0;
@@ -510,29 +242,111 @@
       z-index: 999;
       pointer-events: none;
       opacity: 0;
-      transform-origin: center center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* 雜訊背景層 */
+    #tvOff::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    /* 換頁提示文字 */
+    #tvLoadingText {
+      position: absolute;
+      color: var(--cyan);
+      font-family: monospace;
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      text-shadow: 0 0 8px var(--cyan);
+      opacity: 0;
     }
 
     .tv-off-active {
-      animation: tvClose 0.62s forwards;
+      animation: tvClose 0.65s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+
+    .tv-off-active #tvLoadingText {
+      animation: loadingFade 0.65s forwards;
+    }
+
+    @keyframes loadingFade {
+      0% { opacity: 0; transform: translateY(10px); }
+      30%, 70% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; }
     }
 
     @keyframes tvClose {
-      0% { transform: scaleY(1); opacity: 1; }
-      55% { transform: scaleY(0.06); opacity: 1; }
-      78% { transform: scaleY(0.02); opacity: 1; filter: brightness(2); }
-      100% { transform: scaleY(0); opacity: 1; }
+      0% { transform: scaleY(1); opacity: 1; background: #000; }
+      40% { transform: scaleY(0.01) scaleX(1); background: #fff; box-shadow: 0 0 20px #fff; }
+      70% { transform: scaleY(0.01) scaleX(0.2); background: #fff; }
+      90% { transform: scale(0.01); background: #fff; }
+      100% { transform: scale(0); opacity: 1; background: #fff; }
+    }
+
+    .warning-box {
+      background: rgba(20, 20, 24, 0.92);
+      border: 2px solid var(--red);
+      border-radius: 22px;
+      padding: 28px 22px;
+    }
+
+    .warning-title { color: var(--red); font-size: 1.45rem; margin: 0 0 18px; }
+    .warning-text { font-size: 1rem; line-height: 1.9; color: #ededf0; }
+    #step3 { padding: 0; overflow: hidden; }
+    #finalViewport { height: calc(100vh - 32px); overflow-y: auto; padding: 18px 14px 22px; border-radius: 24px; }
+    #final { width: 100%; max-width: 420px; margin: 0 auto; padding-top: 36px; padding-bottom: 120px; text-align: center; }
+    #typewriter { font-size: 1.06rem; line-height: 2; letter-spacing: 0.4px; }
+    #buttons { display: none; margin-top: 34px; padding-bottom: 84px; justify-content: center; gap: 10px; }
+    .choice-btn { min-width: 104px; padding: 12px 18px; }
+    #noticeBox { background: rgba(10, 10, 14, 0.96); border: 1px solid rgba(0, 234, 255, 0.25); border-radius: 22px; padding: 28px 22px; }
+    .notice-title { font-size: 1.2rem; color: var(--cyan); margin-bottom: 20px; }
+    .notice-list { list-style: none; padding: 0; text-align: left; font-family: monospace; line-height: 1.9; font-size: 0.95rem; }
+    .notice-list li::before { content: ">"; padding-right: 8px; color: var(--cyan); }
+    #step4 { position: relative; overflow: hidden; min-height: 520px; }
+    #success { opacity: 0; transform: scale(0.96); transition: 0.8s; }
+    #success.active { opacity: 1; transform: scale(1); }
+    .stars { position: absolute; inset: 0; }
+    .stars span { position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,0.4); border-radius: 50%; animation: twinkle 4s infinite; }
+    @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+    .heartbeat-wrap { margin-top: 10px; }
+    .heartbeat-svg { width: 100%; max-width: 320px; }
+
+    /* --- 升級：最後一頁心電圖無限循環動畫 --- */
+    .heartbeat-line {
+      fill: none;
+      stroke: #00eaff;
+      stroke-width: 4;
+      /* 定義虛線：一段實線，一段透明線，總長度需要能覆蓋整個圖案 */
+      stroke-dasharray: 600, 600; 
+      /* 初始化偏移量，讓線條從「完全透明」開始繪製 */
+      stroke-dashoffset: 1200; 
+      /* 運用 animation 讓偏移量不斷減少，實現無限循環移動 */
+      animation: drawingHeartbeat 3s linear forwards, loopHeartbeat 2.5s linear infinite 3s;
+    }
+
+    /* 動畫 1：首次繪製（從無到有） */
+    @keyframes drawingHeartbeat {
+      to { stroke-dashoffset: 600; } /* 繪製出一整段實線 */
+    }
+
+    /* 動畫 2：首次繪製完成後，線條開始無限循環向左移動（視覺看起來像向右跑） */
+    @keyframes loopHeartbeat {
+      from { stroke-dashoffset: 600; }
+      to { stroke-dashoffset: 0; } /* 偏移量減少一個完整週期 */
     }
 
     @media (max-width: 430px) {
       .ticket { padding: 18px; }
-      .ticket-header { font-size: 0.76rem; }
-      .ticket-value { font-size: 1rem; }
-      #typewriter { font-size: 1rem; line-height: 1.95; }
       #buttons { gap: 8px; }
-      .choice-btn { min-width: 96px; padding: 11px 14px; font-size: 0.92rem; }
-      .notice-btn { min-width: 122px; }
-      .heartbeat-svg { max-width: 290px; }
+      .choice-btn { min-width: 96px; }
     }
   </style>
 </head>
@@ -542,51 +356,24 @@
     <div id="step1" class="page active">
       <div class="ticket">
         <div class="ticket-header">
-          <div>
-            AIR NEW ZEALAND<br>
-            TRAVELER: YUDAI
-          </div>
-          <div class="ticket-right">
-            <span class="first-class">FIRST CLASS</span><br>
-            SEAT: 1A<br>
-            FLIGHT: AI143
-          </div>
+          <div>AIR NEW ZEALAND<br>TRAVELER: YUDAI</div>
+          <div class="ticket-right"><span class="first-class">FIRST CLASS</span><br>SEAT: 1A<br>FLIGHT: AI143</div>
         </div>
-
         <div class="divider"></div>
-
-        <div class="ticket-label">FROM</div>
-        <div class="ticket-value">OUR STORY</div>
-
-        <div class="ticket-label">TO</div>
-        <div class="ticket-value">THE NEXT CHAPTER</div>
-
-        <div class="ticket-label">DATE</div>
-        <div class="ticket-value">2025 / 10 / 30</div>
-
+        <div class="ticket-label">FROM</div><div class="ticket-value">OUR STORY</div>
+        <div class="ticket-label">TO</div><div class="ticket-value">THE NEXT CHAPTER</div>
+        <div class="ticket-label">DATE</div><div class="ticket-value">2025 / 10 / 30</div>
         <div class="divider"></div>
-
-        <div class="ticket-meta">
-          STATUS: CLEARED<br>
-          TYPE: ONE WAY
-        </div>
-
-        <div class="barcode">
-          YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY
-        </div>
+        <div class="ticket-meta">STATUS: CLEARED<br>TYPE: ONE WAY</div>
+        <div class="barcode">YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY</div>
       </div>
-
       <button class="scan-btn" onclick="tvToStep2()">SCAN TO BOARD</button>
     </div>
 
     <div id="step2" class="page">
       <div class="warning-box">
         <h2 class="warning-title">WARNING:<br>ONE WAY TICKET</h2>
-        <p class="warning-text">
-          This ticket cannot be refunded.<br>
-          Once boarding is confirmed,<br>
-          there is no return.
-        </p>
+        <p class="warning-text">This ticket cannot be refunded.<br>Once boarding is confirmed,<br>there is no return.</p>
         <button class="scan-btn" onclick="tvToStep3()">CONFIRM BOARDING</button>
       </div>
     </div>
@@ -595,10 +382,9 @@
       <div id="finalViewport">
         <div id="final">
           <div id="typewriter"></div>
-
           <div id="buttons">
             <button class="choice-btn scan-btn" onclick="tvToSuccess()">Accept</button>
-            <button class="choice-btn notice-btn danger-btn" onclick="tvToNotice()">Gift Notice</button>
+            <button class="choice-btn danger-btn" onclick="tvToNotice()">Gift Notice</button>
             <button class="choice-btn scan-btn" onclick="tvToSuccess()">Accept</button>
           </div>
         </div>
@@ -608,152 +394,112 @@
     <div id="stepNotice" class="page">
       <div id="noticeBox">
         <div class="notice-title">[ GIFT NOTICE ]</div>
-
         <ul class="notice-list">
           <li>This gift is one-way and non-returnable.</li>
-          <li>It may not always be perfect,<br>but it will always be sincere.</li>
-          <li>Care is expected,<br>and care will be given in return.</li>
-          <li>Honesty is required,<br>even when it may hurt.</li>
-          <li>Replies shouldn’t take too long.<br>Being left waiting may make this gift a little sad.</li>
-          <li>Occasional photos are appreciated.<br>They tend to make this gift very happy.</li>
-          <li>If something feels wrong,<br>communication is required.</li>
+          <li>Care is expected, and care will be given.</li>
+          <li>Honesty is required, even when it hurts.</li>
           <li>Silence is not a solution.</li>
-          <li>No perfection is needed,<br>only honesty.</li>
-          <li class="final-line">Continue only if you mean it.</li>
+          <li style="margin-top:10px; color:#fff;">Continue only if you mean it.</li>
         </ul>
-
         <button class="scan-btn" onclick="tvBackToStep3()">Back</button>
       </div>
     </div>
 
     <div id="step4" class="page">
       <div class="stars" id="stars"></div>
-
       <div id="success">
-        <div class="success-text">BOARDING CONFIRMED</div>
-        <div class="success-subtext">
-          It was never a new journey.<br>
-          It just finally began.
-        </div>
-
+        <div style="font-size: 1.7rem; letter-spacing: 4px; margin-bottom: 18px;">BOARDING CONFIRMED</div>
+        <div style="font-size: 0.95rem; color: rgba(255,255,255,0.75); margin-bottom: 30px;">It was never a new journey.<br>It just finally began.</div>
         <div class="heartbeat-wrap">
-          <svg class="heartbeat-svg" viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
-            <path
-              class="heartbeat-line"
-              d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90
-                 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145
-                 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90"
-            />
+          <svg class="heartbeat-svg" viewBox="0 0 600 140">
+            <path class="heartbeat-line" d="M20 90 L110 90 L145 90 L165 50 L185 120 L205 65 L225 90 L255 90 L270 90 C282 68, 308 60, 325 78 C342 60, 368 68, 380 90 C380 112, 355 126, 325 145 C295 126, 270 112, 270 90 L395 90 L425 90 L445 55 L465 118 L485 72 L505 90 L580 90" />
           </svg>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="tvOff"></div>
+  <div id="tvOff">
+    <div id="tvLoadingText">SYNCING DATA...</div>
+  </div>
 
   <script>
     const FINAL_TEXT = `Dear Most Precious Passenger Yudai:
 
-Before boarding,
-we have prepared a special gift for you.
+Before boarding, we have prepared a special gift for you.
+It is not a short-lived surprise.
 
-It is not a short-lived surprise,
-nor something that appears for only one day.
+If you are willing to accept it, it will stay by your side.
+Because— it has actually been here all along.
 
-If you are willing to accept it,
-it will stay by your side.
-
-Because—
-
-it has actually been here all along.
-
-Now,
-please look to your left.
-
+Now, please look to your left.
 Your gift is right here.`;
 
     let typingIndex = 0;
     let typingTimer = null;
-    let starsBuilt = false;
 
     function showPage(pageId) {
-      document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
-      const target = document.getElementById(pageId);
-      if (target) target.classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.getElementById(pageId).classList.add("active");
+      window.scrollTo(0,0);
     }
 
     function tvTransition(nextPageId, callback) {
       const tv = document.getElementById("tvOff");
-      if (!tv) {
-        showPage(nextPageId);
-        if (callback) callback();
-        return;
-      }
-      tv.style.opacity = 1;
       tv.classList.add("tv-off-active");
+      
+      const loader = document.getElementById("tvLoadingText");
+      const phrases = ["SYNCING DATA...", "SCANNING BIOMETRICS...", "AUTHORIZING...", "DECRYPTING..."];
+      loader.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+
       setTimeout(() => {
         tv.classList.remove("tv-off-active");
-        tv.style.opacity = 0;
         showPage(nextPageId);
         if (callback) callback();
-      }, 620);
+      }, 650);
     }
 
     function startTypewriter() {
       const typewriter = document.getElementById("typewriter");
       const buttons = document.getElementById("buttons");
-      if (!typewriter || !buttons) return;
-      clearTimeout(typingTimer);
-      typingIndex = 0;
       typewriter.innerHTML = "";
       buttons.style.display = "none";
-      function typeNext() {
+      typingIndex = 0;
+
+      function type() {
         if (typingIndex < FINAL_TEXT.length) {
-          const char = FINAL_TEXT.charAt(typingIndex);
+          let char = FINAL_TEXT.charAt(typingIndex);
           typewriter.innerHTML += char === "\n" ? "<br>" : char;
           typingIndex++;
-          let delay = 42;
-          if (char === ",") delay = 120;
-          if (char === "." || char === "!" || char === "?") delay = 230;
-          if (char === "—") delay = 340;
-          if (char === "\n") delay = 170;
-          typingTimer = setTimeout(typeNext, delay);
+          setTimeout(type, char === "," ? 150 : 40);
         } else {
           buttons.style.display = "flex";
         }
       }
-      typeNext();
+      type();
     }
 
     function createStars() {
-      if (starsBuilt) return;
       const container = document.getElementById("stars");
-      if (!container) return;
-      for (let i = 0; i < 32; i++) {
-        const star = document.createElement("span");
-        star.style.top = Math.random() * 100 + "%";
-        star.style.left = Math.random() * 100 + "%";
-        star.style.animationDelay = Math.random() * 4 + "s";
-        star.style.animationDuration = (3 + Math.random() * 3) + "s";
-        container.appendChild(star);
+      if (container.children.length > 0) return;
+      for (let i = 0; i < 30; i++) {
+        const s = document.createElement("span");
+        s.style.top = Math.random() * 100 + "%";
+        s.style.left = Math.random() * 100 + "%";
+        s.style.animationDelay = Math.random() * 3 + "s";
+        container.appendChild(s);
       }
-      starsBuilt = true;
     }
 
     function tvToStep2() { tvTransition("step2"); }
-    function tvToStep3() { tvTransition("step3", () => { startTypewriter(); }); }
+    function tvToStep3() { tvTransition("step3", startTypewriter); }
     function tvToNotice() { tvTransition("stepNotice"); }
-    function tvBackToStep3() { tvTransition("step3"); }
-    function tvToSuccess() {
+    function tvBackToStep3() { tvTransition("step3", () => { document.getElementById("buttons").style.display = "flex"; }); }
+    function tvToSuccess() { 
       tvTransition("step4", () => {
         createStars();
-        const success = document.getElementById("success");
-        if (!success) return;
-        success.classList.remove("active");
-        setTimeout(() => { success.classList.add("active"); }, 50);
-      });
+        setTimeout(() => document.getElementById("success").classList.add("active"), 100);
+      }); 
     }
   </script>
 </body>
