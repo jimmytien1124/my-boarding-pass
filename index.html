@@ -415,7 +415,7 @@
       font-size: 0.95rem;
       line-height: 1.8;
       color: rgba(255,255,255,0.75);
-      margin-bottom: 18px;
+      margin-bottom: 30px;
     }
 
     .stars {
@@ -440,48 +440,54 @@
       50% { opacity: 1; transform: scale(1.2); }
     }
 
-    .dot-heart {
-      margin-top: 24px;
-      font-family: monospace;
-      font-size: 22px;
-      line-height: 1.15;
-      letter-spacing: 2px;
-      white-space: pre;
+    .heartbeat-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
       position: relative;
       z-index: 10;
+    }
 
-      background: linear-gradient(
-        90deg,
-        rgba(0,234,255,0.2),
-        rgba(0,234,255,1),
-        rgba(0,234,255,0.2)
-      );
-      background-size: 200% 100%;
-      background-position: 0% 50%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .heartbeat-svg {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      overflow: visible;
+    }
 
-      text-shadow:
-        0 0 8px rgba(0,234,255,0.4),
-        0 0 20px rgba(0,234,255,0.25);
-
-      opacity: 0;
+    .heartbeat-line {
+      fill: none;
+      stroke: #00eaff;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+      filter:
+        drop-shadow(0 0 4px rgba(0,234,255,0.9))
+        drop-shadow(0 0 10px rgba(0,234,255,0.45));
       animation:
-        heartFadeIn 1.2s ease forwards,
-        heartFlow 5s ease-in-out infinite;
-      animation-delay: 0.6s, 1.2s;
+        drawHeartbeat 2.4s ease forwards,
+        heartbeatGlow 2.2s ease-in-out infinite 2.4s;
     }
 
-    @keyframes heartFlow {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes drawHeartbeat {
+      to { stroke-dashoffset: 0; }
     }
 
-    @keyframes heartFadeIn {
-      to {
+    @keyframes heartbeatGlow {
+      0%, 100% {
+        opacity: 0.75;
+        filter:
+          drop-shadow(0 0 4px rgba(0,234,255,0.7))
+          drop-shadow(0 0 10px rgba(0,234,255,0.28));
+      }
+      50% {
         opacity: 1;
-        transform: scale(1);
+        filter:
+          drop-shadow(0 0 6px rgba(0,234,255,1))
+          drop-shadow(0 0 18px rgba(0,234,255,0.55));
       }
     }
 
@@ -531,9 +537,8 @@
         font-size: 0.92rem;
       }
       .notice-btn { min-width: 122px; }
-      .dot-heart {
-        font-size: 20px;
-        letter-spacing: 1px;
+      .heartbeat-svg {
+        max-width: 290px;
       }
     }
   </style>
@@ -638,13 +643,35 @@
           It just finally began.
         </div>
 
-        <pre class="dot-heart">..     ..
-.... .... 
-......... 
- .......  
-  .....   
-   ...    
-    .     </pre>
+        <div class="heartbeat-wrap">
+          <svg class="heartbeat-svg" viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+            <path
+              class="heartbeat-line"
+              d="M20 90
+                 L110 90
+                 L145 90
+                 L165 50
+                 L185 120
+                 L205 65
+                 L225 90
+                 L255 90
+
+                 L270 90
+                 C282 68, 308 60, 325 78
+                 C342 60, 368 68, 380 90
+                 C380 112, 355 126, 325 145
+                 C295 126, 270 112, 270 90
+
+                 L395 90
+                 L425 90
+                 L445 55
+                 L465 118
+                 L485 72
+                 L505 90
+                 L580 90"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   </div>
