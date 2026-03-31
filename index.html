@@ -308,6 +308,9 @@
     letter-spacing: 2px;
     font-family: inherit;
     overflow: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     box-shadow:
         0 0 0 1px rgba(0,0,0,0.25) inset,
         inset 0 0 0 1px rgba(255,255,255,0.03),
@@ -489,12 +492,25 @@
 }
 
 .warning-icon {
-    font-size: 1.1rem;
-    line-height: 1;
-    color: #ff5f6d;
-    text-shadow: 0 0 8px rgba(255,95,109,0.35);
+    position: relative;
+    width: 26px;
+    height: 24px;
+    background: #ff4d6d;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    box-shadow: 0 0 10px rgba(255,77,109,0.55);
 }
 
+.warning-icon::after {
+    content: "!";
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: 800;
+    color: #160406;
+    line-height: 1;
+}
 .warning-text {
     font-size: 0.72rem;
     letter-spacing: 2px;
@@ -737,7 +753,7 @@
           <div class="warning-box">
               <div class="warning-row">
     <div class="warning-badge">
-        <div class="warning-icon">⚠</div>
+        <div class="warning-icon"></div>
         <div class="warning-text">WARNING</div>
     </div>
 </div>
