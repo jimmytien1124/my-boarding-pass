@@ -15,6 +15,78 @@
         }
 
         * { box-sizing: border-box; }
+        /* WARNING HUD 標籤 */
+.hud-warning {
+    display: inline-block;
+    position: relative;
+    padding: 6px 16px;
+    margin-bottom: 14px;
+    color: #ff5f6d;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    background: rgba(255, 0, 40, 0.06);
+    clip-path: polygon(
+        10px 0,
+        calc(100% - 10px) 0,
+        100% 10px,
+        100% calc(100% - 10px),
+        calc(100% - 10px) 100%,
+        10px 100%,
+        0 calc(100% - 10px),
+        0 10px
+    );
+    text-shadow: 0 0 8px rgba(255, 95, 109, 0.35);
+}
+
+.hud-warning::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    clip-path: inherit;
+    background:
+        linear-gradient(#ff5f6d,#ff5f6d) top left / 18px 2px no-repeat,
+        linear-gradient(#ff5f6d,#ff5f6d) top left / 2px 14px no-repeat,
+
+        linear-gradient(#ff5f6d,#ff5f6d) top right / 18px 2px no-repeat,
+        linear-gradient(#ff5f6d,#ff5f6d) top right / 2px 14px no-repeat,
+
+        linear-gradient(#ff5f6d,#ff5f6d) bottom left / 18px 2px no-repeat,
+        linear-gradient(#ff5f6d,#ff5f6d) bottom left / 2px 14px no-repeat,
+
+        linear-gradient(#ff5f6d,#ff5f6d) bottom right / 18px 2px no-repeat,
+        linear-gradient(#ff5f6d,#ff5f6d) bottom right / 2px 14px no-repeat;
+    opacity: 0.95;
+    pointer-events: none;
+}
+
+/* WARNING 頁只出現一次的 glitch */
+.glitch-once {
+    animation: glitchFlash 0.35s ease;
+}
+
+@keyframes glitchFlash {
+    0% {
+        transform: translate(0);
+        filter: none;
+    }
+    20% {
+        transform: translate(-2px, 1px);
+        filter: drop-shadow(2px 0 rgba(255,77,109,0.8)) drop-shadow(-2px 0 rgba(0,234,255,0.8));
+    }
+    40% {
+        transform: translate(2px, -1px);
+        filter: drop-shadow(-2px 0 rgba(255,77,109,0.75)) drop-shadow(2px 0 rgba(0,234,255,0.75));
+    }
+    60% {
+        transform: translate(-1px, 1px);
+        filter: drop-shadow(1px 0 rgba(255,77,109,0.7)) drop-shadow(-1px 0 rgba(0,234,255,0.7));
+    }
+    100% {
+        transform: translate(0);
+        filter: none;
+    }
+}
 
         body {
             margin: 0;
@@ -459,15 +531,17 @@
         </div>
 
         <div id="page2" class="page">
-            <div class="warning-box">
-                <h2 style="color: var(--red); letter-spacing: 4px; margin: 0 0 10px;">WARNING</h2>
-                <p style="font-size: 0.9rem; line-height: 1.6; opacity: 0.8; margin: 0;">
-                    This is a one-way ticket.<br>
-                    There is no return after confirmation.
-                </p>
-            </div>
-            <button class="scan-btn" onclick="transit('page3', startTypewriter)"><span>CONFIRM BOARDING</span></button>
+    <div class="warning-box">
+        <div class="hud-warning">
+            <span>WARNING</span>
         </div>
+        <p style="font-size: 0.9rem; line-height: 1.6; opacity: 0.8; margin: 0;">
+            This is a one-way ticket.<br>
+            There is no return after confirmation.
+        </p>
+    </div>
+    <button class="scan-btn" onclick="transit('page3', startTypewriter)"><span>CONFIRM BOARDING</span></button>
+</div>
 
         <div id="page3" class="page">
             <div id="typewriter"></div>
@@ -551,16 +625,25 @@
         }
 
         function transit(nextId, cb) {
-            const frame = document.getElementById('mainFrame');
-            frame.classList.add('crt-off');
-            setTimeout(() => {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById(nextId).classList.add('active');
-                frame.classList.remove('crt-off');
-                window.scrollTo(0, 0);
-                if (cb) cb();
-            }, 600);
-        }
+    const frame = document.getElementById('mainFrame');
+
+    if (nextId === 'page2') {
+        frame.classList.add('glitch-once');
+        setTimeout(() => {
+            frame.classList.remove('glitch-once');
+        }, 350);
+    }
+
+    frame.classList.add('crt-off');
+
+    setTimeout(() => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(nextId).classList.add('active');
+        frame.classList.remove('crt-off');
+        window.scrollTo(0, 0);
+        if (cb) cb();
+    }, 600);
+}
 
         const lines = [
             "Dear Most Precious Passenger Yudai:",
