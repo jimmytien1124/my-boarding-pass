@@ -194,61 +194,61 @@
             font-weight: 500;
         }
 
-        button::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 999px;
-            padding: 1.5px;
-            background: linear-gradient(
-                135deg,
-                rgba(255,255,255,0.10),
-                rgba(0,234,255,0.9),
-                rgba(255,255,255,0.10)
-            );
-            -webkit-mask:
-                linear-gradient(#000 0 0) content-box,
-                linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.95;
-            pointer-events: none;
-        }
+.scan-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    padding: 1.5px;
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.10),
+        rgba(0,234,255,0.9),
+        rgba(255,255,255,0.10)
+    );
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.95;
+    pointer-events: none;
+}
 
-        button::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                115deg,
-                transparent 20%,
-                rgba(0,234,255,0.14) 48%,
-                rgba(255,255,255,0.12) 50%,
-                rgba(0,234,255,0.14) 52%,
-                transparent 80%
-            );
-            transform: translateX(-140%);
-            transition: transform 0.55s ease;
-            pointer-events: none;
-        }
+.scan-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        115deg,
+        transparent 20%,
+        rgba(0,234,255,0.14) 48%,
+        rgba(255,255,255,0.12) 50%,
+        rgba(0,234,255,0.14) 52%,
+        transparent 80%
+    );
+    transform: translateX(-140%);
+    transition: transform 0.55s ease;
+    pointer-events: none;
+}
 
-        button:hover::after {
-            transform: translateX(140%);
-        }
+.scan-btn:hover::after {
+    transform: translateX(140%);
+}
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                0 0 10px rgba(0,234,255,0.35),
-                0 0 24px rgba(0,234,255,0.12),
-                inset 0 0 6px rgba(0,234,255,0.10);
-            filter: brightness(1.06);
-        }
+.scan-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 10px rgba(0,234,255,0.35),
+        0 0 24px rgba(0,234,255,0.12),
+        inset 0 0 6px rgba(0,234,255,0.10);
+    filter: brightness(1.06);
+}
 
-        button:active {
-            transform: scale(0.97);
-            filter: brightness(1.12);
-        }
+.scan-btn:active {
+    transform: scale(0.97);
+    filter: brightness(1.12);
+}
 
         button span {
             position: relative;
@@ -296,7 +296,7 @@
     --glow: rgba(101,246,255,0.28);
 
     appearance: none;
-    border: none;
+    border: 1.5px solid rgba(101,246,255,0.18);
     cursor: pointer;
     position: relative;
     min-width: 220px;
@@ -309,8 +309,10 @@
     font-family: inherit;
     overflow: visible;
     box-shadow:
+        0 0 0 1px rgba(0,0,0,0.25) inset,
         inset 0 0 0 1px rgba(255,255,255,0.03),
-        inset 0 -10px 20px rgba(0,0,0,0.2);
+        inset 0 -10px 20px rgba(0,0,0,0.2),
+        0 0 12px rgba(101,246,255,0.08);
 }
 
 .hud-capsule::before,
@@ -318,25 +320,25 @@
     content: "";
     position: absolute;
     top: 50%;
-    width: 26px;
-    height: 54px;
+    width: 22px;
+    height: 52px;
     transform: translateY(-50%);
-    border: 3px solid var(--line);
-    opacity: 0.9;
+    border: 2px solid var(--line);
+    opacity: 0.95;
     filter: drop-shadow(0 0 6px var(--glow));
     pointer-events: none;
 }
 
 .hud-capsule::before {
-    left: -10px;
+    left: -2px;
     border-right: none;
-    border-radius: 28px 0 0 28px;
+    border-radius: 999px 0 0 999px;
 }
 
 .hud-capsule::after {
-    right: -10px;
+    right: -2px;
     border-left: none;
-    border-radius: 0 28px 28px 0;
+    border-radius: 0 999px 999px 0;
 }
 
 .hud-capsule span {
