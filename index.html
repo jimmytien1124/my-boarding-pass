@@ -174,7 +174,7 @@
             margin-bottom: 12px;
         }
 
-        /* 第一頁原本的玻璃按鈕保留 */
+        /* 第一頁玻璃按鈕 */
         button {
             appearance: none;
             border: none;
@@ -263,44 +263,42 @@
                 inset 0 0 8px rgba(0,234,255,0.06);
         }
 
-        .danger-btn {
-            color: #ffeef2;
+        .scan-btn-wrap {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(0,234,255,0.14);
+            background: rgba(255,255,255,0.015);
             box-shadow:
-                0 0 8px rgba(255,77,109,0.22),
-                0 0 18px rgba(255,77,109,0.08),
-                inset 0 0 8px rgba(255,77,109,0.05);
+                0 0 0 1px rgba(255,255,255,0.02) inset,
+                0 0 20px rgba(0,234,255,0.06);
         }
 
-        .danger-btn::before {
-            background: linear-gradient(
-                135deg,
-                rgba(255,255,255,0.08),
-                rgba(255,77,109,0.95),
-                rgba(255,255,255,0.08)
-            );
-        }
-
-        .danger-btn::after {
-            background: linear-gradient(
-                115deg,
-                transparent 20%,
-                rgba(255,77,109,0.13) 48%,
-                rgba(255,255,255,0.10) 50%,
-                rgba(255,77,109,0.13) 52%,
-                transparent 80%
-            );
-        }
-
-        .danger-btn:hover {
+        /* HUD 按鈕外框 */
+        .hud-btn-wrap {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.015);
             box-shadow:
-                0 0 10px rgba(255,77,109,0.35),
-                0 0 24px rgba(255,77,109,0.12),
-                inset 0 0 6px rgba(255,77,109,0.10);
+                0 0 0 1px rgba(255,255,255,0.02) inset,
+                0 0 18px rgba(0,0,0,0.18);
         }
 
-        /* =========================
-           HUD BUTTONS (page2 開始用)
-           ========================= */
+        .hud-btn-wrap.red {
+            border-color: rgba(255,95,130,0.18);
+        }
+
+        .hud-btn-wrap.cyan {
+            border-color: rgba(101,246,255,0.18);
+        }
+
+        /* HUD 按鈕本體 */
         .hud-btn {
             appearance: none;
             border: none;
@@ -432,6 +430,14 @@
             opacity: 0.55;
         }
 
+        .warning-box {
+            border: 1px solid var(--red);
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(255,77,109,0.03);
+            margin-bottom: 25px;
+        }
+
         .warning-row {
             display: flex;
             justify-content: center;
@@ -484,22 +490,24 @@
 
         .warning-triangle {
             position: relative;
-            width: 0;
-            height: 0;
-            border-left: 18px solid transparent;
-            border-right: 18px solid transparent;
-            border-bottom: 32px solid #ff5f6d;
+            width: 40px;
+            height: 34px;
+            background: #ff5f6d;
+            clip-path: path("M20 2 Q22 2 23 4 L37 28 Q38 30 36 32 Q35 33 33 33 L7 33 Q5 33 4 32 Q2 30 3 28 L17 4 Q18 2 20 2 Z");
             filter: drop-shadow(0 0 8px rgba(255,95,109,0.42));
+            flex-shrink: 0;
         }
 
         .warning-triangle::after {
             content: "!";
             position: absolute;
-            left: -4px;
-            top: 8px;
+            left: 50%;
+            top: 52%;
+            transform: translate(-50%, -50%);
             font-size: 18px;
             font-weight: 800;
             color: #140305;
+            line-height: 1;
         }
 
         .loader-hud {
@@ -571,41 +579,6 @@
             to { transform: rotate(360deg); }
         }
 
-        #btnGroup {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 1s ease;
-            margin-top: 28px;
-            width: 100%;
-            flex-wrap: nowrap;
-        }
-
-        #btnGroup button {
-            min-width: 92px;
-            white-space: nowrap;
-            flex: 1.05;
-        }
-
-        #btnGroup .hud-red {
-            flex: 1.35;
-        }
-
-        @media (max-width: 390px) {
-            #btnGroup {
-                flex-wrap: wrap;
-            }
-
-            #btnGroup button,
-            #btnGroup .hud-red {
-                flex: unset;
-                min-width: 120px;
-            }
-        }
-
         #loader {
             position: fixed;
             inset: 0;
@@ -639,12 +612,44 @@
             color: rgba(255,255,255,0.9);
         }
 
-        .warning-box {
-            border: 1px solid var(--red);
-            padding: 25px;
-            border-radius: 16px;
-            background: rgba(255,77,109,0.03);
-            margin-bottom: 25px;
+        #btnGroup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            margin-top: 28px;
+            width: 100%;
+            flex-wrap: nowrap;
+        }
+
+        #btnGroup .hud-btn-wrap {
+            display: inline-flex;
+            justify-content: center;
+            flex: 1.05;
+        }
+
+        #btnGroup .hud-btn-wrap.red {
+            flex: 1.35;
+        }
+
+        #btnGroup .hud-btn {
+            min-width: 92px;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 390px) {
+            #btnGroup {
+                flex-wrap: wrap;
+            }
+
+            #btnGroup .hud-btn-wrap,
+            #btnGroup .hud-btn-wrap.red {
+                flex: unset;
+                min-width: 120px;
+            }
         }
 
         .notice-list {
@@ -732,7 +737,10 @@
                   YUDAI · AI143 · 1A · FIRST CLASS · ONE WAY
               </div>
           </div>
-          <button class="scan-btn" onclick="runLoading()"><span>SCAN TO BOARD</span></button>
+
+          <div class="scan-btn-wrap">
+              <button class="scan-btn" onclick="runLoading()"><span>SCAN TO BOARD</span></button>
+          </div>
       </div>
 
       <div id="page2" class="page">
@@ -749,34 +757,43 @@
                   There is no return after confirmation.
               </p>
 
-              <button class="hud-btn hud-red" onclick="transit('page3', startTypewriter)">
-                  <i class="hud-ticks-left"></i>
-                  <span>CONFIRM BOARDING</span>
-                  <i class="hud-ticks-right"></i>
-              </button>
+              <div class="hud-btn-wrap red">
+                  <button class="hud-btn hud-red" onclick="transit('page3', startTypewriter)">
+                      <i class="hud-ticks-left"></i>
+                      <span>CONFIRM BOARDING</span>
+                      <i class="hud-ticks-right"></i>
+                  </button>
+              </div>
           </div>
       </div>
 
       <div id="page3" class="page">
           <div id="typewriter"></div>
+
           <div id="btnGroup">
-              <button class="hud-btn hud-cyan" onclick="transit('pageFinal')">
-                  <i class="hud-ticks-left"></i>
-                  <span>Accept</span>
-                  <i class="hud-ticks-right"></i>
-              </button>
+              <div class="hud-btn-wrap cyan">
+                  <button class="hud-btn hud-cyan" onclick="transit('pageFinal')">
+                      <i class="hud-ticks-left"></i>
+                      <span>Accept</span>
+                      <i class="hud-ticks-right"></i>
+                  </button>
+              </div>
 
-              <button class="hud-btn hud-red" onclick="transit('pageNotice')">
-                  <i class="hud-ticks-left"></i>
-                  <span>Gift Notice</span>
-                  <i class="hud-ticks-right"></i>
-              </button>
+              <div class="hud-btn-wrap red">
+                  <button class="hud-btn hud-red" onclick="transit('pageNotice')">
+                      <i class="hud-ticks-left"></i>
+                      <span>Gift Notice</span>
+                      <i class="hud-ticks-right"></i>
+                  </button>
+              </div>
 
-              <button class="hud-btn hud-cyan" onclick="transit('pageFinal')">
-                  <i class="hud-ticks-left"></i>
-                  <span>Accept</span>
-                  <i class="hud-ticks-right"></i>
-              </button>
+              <div class="hud-btn-wrap cyan">
+                  <button class="hud-btn hud-cyan" onclick="transit('pageFinal')">
+                      <i class="hud-ticks-left"></i>
+                      <span>Accept</span>
+                      <i class="hud-ticks-right"></i>
+                  </button>
+              </div>
           </div>
       </div>
 
@@ -794,11 +811,14 @@
               <li>No perfection is needed, only honesty.</li>
               <li>Continue only if you mean it.</li>
           </ul>
-          <button class="hud-btn hud-cyan" onclick="transit('page3', () => { const g = document.getElementById('btnGroup'); g.style.opacity='1'; g.style.pointerEvents='auto'; })">
-              <i class="hud-ticks-left"></i>
-              <span>BACK</span>
-              <i class="hud-ticks-right"></i>
-          </button>
+
+          <div class="hud-btn-wrap cyan">
+              <button class="hud-btn hud-cyan" onclick="transit('page3', () => { const g = document.getElementById('btnGroup'); g.style.opacity='1'; g.style.pointerEvents='auto'; })">
+                  <i class="hud-ticks-left"></i>
+                  <span>BACK</span>
+                  <i class="hud-ticks-right"></i>
+              </button>
+          </div>
       </div>
 
       <div id="pageFinal" class="page">
