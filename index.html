@@ -762,13 +762,84 @@
     justify-content: center;
     margin-top: 24px;
 }
+.heart-monitor {
+    width: 100%;
+    margin-top: 40px;
+}
+
+.ekg-base,
+.ekg-active {
+    fill: none !important;
+    vector-effect: non-scaling-stroke;
+}
+
+.ekg-base {
+    stroke: rgba(0, 234, 255, 0.08);
+    stroke-width: 2.5;
+}
+
+.ekg-active {
+    stroke: var(--cyan);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 140 1000;
+    stroke-dashoffset: 1140;
+    filter: drop-shadow(0 0 12px var(--cyan));
+    animation: ekgMove 2.5s linear infinite;
+}
+
+@keyframes ekgMove {
+    0% { stroke-dashoffset: 1140; }
+    100% { stroke-dashoffset: 0; }
+}
+.accept-flash {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    background:
+        radial-gradient(circle at center, rgba(0,234,255,0.18), transparent 45%),
+        repeating-linear-gradient(
+            180deg,
+            rgba(0,234,255,0.12) 0px,
+            rgba(0,234,255,0.12) 2px,
+            transparent 2px,
+            transparent 8px
+        );
+    opacity: 0;
+}
+
+.accept-flash.active {
+    animation: acceptFlash 1.2s ease forwards;
+}
+
+@keyframes acceptFlash {
+    0% {
+        opacity: 0;
+        transform: scale(1.02);
+        filter: brightness(1);
+    }
+    20% {
+        opacity: 0.95;
+        filter: brightness(1.4);
+    }
+    45% {
+        opacity: 0.7;
+        filter: brightness(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
     </style>
 </head>
 <body>
 
   <div class="stars" id="stars"></div>
   <div class="accept-flash" id="acceptFlash"></div>
-<div class="accept-status" id="acceptStatus">ACCESS GRANTED</div>
   <div id="loader">
       <div class="loader-hud">
           <div class="loader-core"></div>
@@ -883,10 +954,10 @@
               It was never a new journey.<br>
               It just finally began.
           </p>
-          <svg class="heart-monitor" viewBox="0 0 600 160">
-              <path class="ekg-base" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 L270 80 C282 60, 305 55, 320 70 C335 55, 358 60, 370 80 C370 102, 346 118, 320 138 C294 118, 270 102, 270 80 L390 80 L410 50 L430 115 L450 68 L470 80 L600 80" />
-              <path class="ekg-active" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 L270 80 C282 60, 305 55, 320 70 C335 55, 358 60, 370 80 C370 102, 346 118, 320 138 C294 118, 270 102, 270 80 L390 80 L410 50 L430 115 L450 68 L470 80 L600 80" />
-          </svg>
+          <svg class="heart-monitor" viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+    <path class="ekg-base" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 L270 80 C282 60, 305 55, 320 70 C335 55, 358 60, 370 80 C370 102, 346 118, 320 138 C294 118, 270 102, 270 80 L390 80 L410 50 L430 115 L450 68 L470 80 L600 80"/>
+    <path class="ekg-active" d="M0 80 L120 80 L140 40 L160 120 L180 60 L200 80 L250 80 L270 80 C282 60, 305 55, 320 70 C335 55, 358 60, 370 80 C370 102, 346 118, 320 138 C294 118, 270 102, 270 80 L390 80 L410 50 L430 115 L450 68 L470 80 L600 80"/>
+</svg>
       </div>
   </div>
 
@@ -961,15 +1032,12 @@ function runLoadingTo(targetPage, cb) {
 }
       function runAcceptEffect() {
     const flash = document.getElementById('acceptFlash');
-    const status = document.getElementById('acceptStatus');
     const frame = document.getElementById('mainFrame');
 
     flash.classList.remove('active');
-    status.classList.remove('active');
     frame.classList.remove('glitch-once');
 
     void flash.offsetWidth;
-    void status.offsetWidth;
     void frame.offsetWidth;
 
     flash.classList.add('active');
@@ -980,14 +1048,8 @@ function runLoadingTo(targetPage, cb) {
     }, 180);
 
     setTimeout(() => {
-        status.classList.add('active');
-    }, 220);
-
-    setTimeout(() => {
         transit('pageFinal', () => {
             flash.classList.remove('active');
-            status.classList.remove('active');
-            status.style.animation = '';
         });
     }, 1800);
 }
