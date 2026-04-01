@@ -46,7 +46,16 @@
             animation: twinkle var(--d) infinite;
             opacity: 0;
         }
-
+@keyframes statusBlink {
+    0%, 100% { 
+        opacity: 1; 
+        filter: brightness(1);
+    }
+    50% { 
+        opacity: 0.92; 
+        filter: brightness(1.15);
+    }
+}
         @keyframes twinkle {
             0%, 100% { opacity: 0; }
             50% { opacity: 0.6; }
@@ -717,7 +726,7 @@
 }
 
 .accept-flash.active {
-    animation: acceptFlash 0.9s ease forwards;
+    animation: acceptFlash 1.2s ease forwards;
 }
 
 @keyframes acceptFlash {
@@ -740,7 +749,7 @@
         filter: brightness(1);
     }
 }
-        .accept-status {
+      .accept-status {
     position: fixed;
     left: 50%;
     top: 50%;
@@ -748,22 +757,27 @@
     z-index: 1000;
     pointer-events: none;
     color: var(--cyan);
-    font-family: monospace;
+    font-family: 'Courier New', Courier, monospace;
     font-size: 0.95rem;
     letter-spacing: 4px;
+    font-weight: bold;
     text-transform: uppercase;
-    padding: 10px 18px;
+    padding: 10px 18px 10px 12px;
     border: 1px solid rgba(0,234,255,0.35);
+    border-left: 3px solid var(--cyan);
     background: rgba(0, 12, 18, 0.72);
     box-shadow:
         0 0 12px rgba(0,234,255,0.18),
         inset 0 0 12px rgba(0,234,255,0.08);
+    text-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
     opacity: 0;
     white-space: nowrap;
 }
 
 .accept-status.active {
-    animation: acceptStatusAnim 0.95s ease forwards;
+    animation:
+        acceptStatusAnim 0.7s ease forwards,
+        statusBlink 2s infinite ease-in-out 0.7s;
 }
 
 @keyframes acceptStatusAnim {
@@ -788,9 +802,12 @@
             0 0 18px rgba(0,234,255,0.35);
     }
     100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(1.04);
-        filter: blur(1px);
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        filter: blur(0);
+        text-shadow:
+            0 0 8px rgba(0,234,255,0.7),
+            0 0 18px rgba(0,234,255,0.35);
     }
 }
     </style>
@@ -980,8 +997,10 @@ function runLoadingTo(targetPage, cb) {
     const txt = document.getElementById('pPercent');
     const frame = document.getElementById('mainFrame');
 
-    frame.classList.add('glitch-once');
-    setTimeout(() => frame.classList.remove('glitch-once'), 350);
+    if (targetPage !== 'page2') {
+        frame.classList.add('glitch-once');
+        setTimeout(() => frame.classList.remove('glitch-once'), 350);
+    }
 
     ld.style.display = 'flex';
     fill.style.width = '0%';
@@ -1027,10 +1046,13 @@ function runLoadingTo(targetPage, cb) {
     }, 220);
 
     setTimeout(() => {
-        transit('pageFinal');
-    }, 1400);
+        transit('pageFinal', () => {
+            flash.classList.remove('active');
+            status.classList.remove('active');
+            status.style.animation = '';
+        });
+    }, 1800);
 }
-
       function transit(nextId, cb) {
           const frame = document.getElementById('mainFrame');
 
