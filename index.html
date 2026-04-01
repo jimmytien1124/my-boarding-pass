@@ -679,7 +679,31 @@
             left: 0;
             color: var(--cyan);
         }
+.notice-status {
+    margin: 0 auto 25px;
+    width: fit-content;
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    font-weight: bold;
+    font-size: 0.82rem;
+    padding: 8px 14px 8px 12px;
+    border: 1px solid rgba(0,234,255,0.22);
+    border-left: 3px solid var(--cyan);
+    background: rgba(0, 12, 18, 0.45);
+    box-shadow:
+        0 0 10px rgba(0,234,255,0.10),
+        inset 0 0 8px rgba(0,234,255,0.05);
+    text-shadow: 0 0 8px rgba(0, 234, 255, 0.45);
+}
 
+.back-btn {
+    --line: rgba(125, 220, 255, 0.55);
+    --glow: rgba(125,220,255,0.14);
+    color: rgba(235,245,255,0.88);
+    opacity: 0.88;
+}
         .heart-monitor {
             width: 100%;
             margin-top: 40px;
@@ -898,20 +922,14 @@
                       <i class="capsule-bottom-bar"></i>
                   </button>
               </div>
-
-              <div class="hud-capsule-wrap">
-                  <button class="hud-capsule cyan" onclick="runLoadingTo('page2')">
-                      <i class="capsule-top-bar"></i>
-                      <i class="scan-line"></i>
-                      <span>BACK</span>
-                      <i class="capsule-bottom-bar"></i>
-                  </button>
-              </div>
-          </div>
+            </div>
       </div>
 
       <div id="pageNotice" class="page">
-          <h3 style="color: var(--cyan); letter-spacing: 2px; margin-bottom: 20px;">[ GIFT NOTICE ]</h3>
+         <h3 style="color: var(--cyan); letter-spacing: 2px; margin-bottom: 10px;">[ GIFT NOTICE ]</h3>
+        <div class="notice-status">
+    PASSENGER VERIFIED
+</div>
           <ul class="notice-list">
               <li>This gift is one-way and non-returnable.</li>
               <li>It may not always be perfect, but it will always be sincere.</li>
@@ -926,17 +944,17 @@
           </ul>
 
           <div class="hud-capsule-wrap">
-              <button class="hud-capsule cyan" onclick="runLoadingTo('page3', () => {
-    const g = document.getElementById('btnGroup');
-    g.style.opacity = '1';
-    g.style.pointerEvents = 'auto';
-})">
-                  <i class="capsule-top-bar"></i>
-                  <i class="scan-line"></i>
-                  <span>BACK</span>
-                  <i class="capsule-bottom-bar"></i>
-              </button>
-          </div>
+    <button class="hud-capsule back-btn" onclick="runLoadingTo('page3', () => {
+        const g = document.getElementById('btnGroup');
+        g.style.opacity = '1';
+        g.style.pointerEvents = 'auto';
+    })">
+        <i class="capsule-top-bar"></i>
+        <i class="scan-line"></i>
+        <span>BACK</span>
+        <i class="capsule-bottom-bar"></i>
+    </button>
+</div>
       </div>
 
       <div id="pageFinal" class="page">
