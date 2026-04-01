@@ -902,28 +902,37 @@
       </div>
 
       <div id="page3" class="page">
-          <div id="typewriter"></div>
+    <div id="typewriter"></div>
 
-          <div id="btnGroup">
-              <div class="hud-capsule-wrap">
-                  <button class="hud-capsule cyan" onclick="runAcceptEffect()">
-                      <i class="capsule-top-bar"></i>
-                      <i class="scan-line"></i>
-                      <span>ACCEPT</span>
-                      <i class="capsule-bottom-bar"></i>
-                  </button>
-              </div>
+    <div id="btnGroup">
+        <div class="hud-capsule-wrap">
+            <button class="hud-capsule cyan" onclick="runAcceptEffect()">
+                <i class="capsule-top-bar"></i>
+                <i class="scan-line"></i>
+                <span>ACCEPT</span>
+                <i class="capsule-bottom-bar"></i>
+            </button>
+        </div>
 
-              <div class="hud-capsule-wrap">
-                  <button class="hud-capsule red" onclick="transit('pageNotice')">
-                      <i class="capsule-top-bar"></i>
-                      <i class="scan-line"></i>
-                      <span>GIFT NOTICE</span>
-                      <i class="capsule-bottom-bar"></i>
-                  </button>
-              </div>
-            </div>
-      </div>
+        <div class="hud-capsule-wrap">
+            <button class="hud-capsule red" onclick="transit('pageNotice')">
+                <i class="capsule-top-bar"></i>
+                <i class="scan-line"></i>
+                <span>GIFT NOTICE</span>
+                <i class="capsule-bottom-bar"></i>
+            </button>
+        </div>
+
+        <div class="hud-capsule-wrap">
+            <button class="hud-capsule cyan" onclick="runLoadingTo('page2')">
+                <i class="capsule-top-bar"></i>
+                <i class="scan-line"></i>
+                <span>BACK</span>
+                <i class="capsule-bottom-bar"></i>
+            </button>
+        </div>
+    </div>
+</div>
 
       <div id="pageNotice" class="page">
          <h3 style="color: var(--cyan); letter-spacing: 2px; margin-bottom: 10px;">[ GIFT NOTICE ]</h3>
