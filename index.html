@@ -445,318 +445,7 @@ button span {
         filter: brightness(1);
     }
 }
-/* ===== EXOSHELL BUTTON SYSTEM ===== */
-.exo-btn {
-    --btn-color: var(--cyan);
-    --btn-glow: rgba(0, 234, 255, 0.32);
-    --btn-bg: rgba(0, 0, 0, 0.56);
-    --btn-text: #ebfcff;
-
-    appearance: none;
-    position: relative;
-    width: 100%;
-    max-width: 290px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    border-radius: 0;
-    cursor: pointer;
-    overflow: visible;
-    box-shadow: none;
-    color: inherit;
-    font-family: inherit;
-    transition: transform 0.22s ease, filter 0.22s ease;
-}
-
-/* 左側節點 */
-.exo-btn::before {
-    content: "";
-    position: absolute;
-    left: -28px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--btn-color);
-    box-shadow:
-        0 0 10px var(--btn-glow),
-        0 0 20px var(--btn-glow);
-}
-
-/* 左邊接線 */
-.exo-btn::after {
-    content: "";
-    position: absolute;
-    left: -14px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 1px;
-    background: var(--btn-color);
-    box-shadow: 0 0 8px var(--btn-glow);
-    opacity: 0.8;
-}
-
-/* 外骨骼主體 */
-.exo-body {
-    position: relative;
-    display: block;
-    width: 100%;
-    min-height: 66px;
-    padding: 20px 24px;
-    color: var(--btn-text);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-align: center;
-    line-height: 1;
-
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.00)),
-        repeating-linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0.15) 0px,
-            rgba(0, 0, 0, 0.15) 1px,
-            transparent 1px,
-            transparent 2px
-        ),
-        var(--btn-bg);
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    clip-path: polygon(
-        0 0,
-        82% 0,
-        100% 0,
-        100% 58%,
-        92% 100%,
-        0 100%,
-        0 72%,
-        0 24%
-    );
-
-    box-shadow:
-        inset 0 0 15px rgba(0, 234, 255, 0.05),
-        inset 0 0 0 1px rgba(255,255,255,0.03),
-        inset 0 -18px 22px rgba(0,0,0,0.22),
-        0 0 18px rgba(0,0,0,0.22);
-}
-
-/* 內部慢掃描 */
-.exo-body::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(
-            180deg,
-            transparent 0%,
-            rgba(255,255,255,0.035) 45%,
-            rgba(255,255,255,0.055) 50%,
-            rgba(255,255,255,0.035) 55%,
-            transparent 100%
-        );
-    transform: translateY(-120%);
-    animation: exoSweep 4.6s linear infinite;
-    pointer-events: none;
-    clip-path: inherit;
-}
-
-/* 微弱內光 */
-.exo-body::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-    opacity: 0.55;
-    pointer-events: none;
-    clip-path: inherit;
-}
-
-/* 文字 */
-.exo-label {
-    position: relative;
-    z-index: 3;
-    display: inline-block;
-}
-
-/* 斷裂框線碎片 */
-.frame {
-    position: absolute;
-    pointer-events: none;
-    background: var(--btn-color);
-    box-shadow: 0 0 10px var(--btn-glow);
-    opacity: 0.92;
-}
-
-.frame.f1 {
-    left: 0;
-    top: 0;
-    width: 56px;
-    height: 2px;
-}
-
-.frame.f2 {
-    left: 0;
-    top: 0;
-    width: 2px;
-    height: 26px;
-}
-
-.frame.f3 {
-    right: 10px;
-    top: 0;
-    width: 48px;
-    height: 2px;
-    transform: skewX(-40deg);
-    transform-origin: right center;
-}
-
-.frame.f4 {
-    right: 0;
-    bottom: 0;
-    width: 60px;
-    height: 2px;
-}
-
-.frame.f5 {
-    right: 0;
-    bottom: 0;
-    width: 2px;
-    height: 18px;
-}
-
-/* 小角落亂碼 */
-.exo-code {
-    position: absolute;
-    right: -8px;
-    top: -14px;
-    font-size: 0.48rem;
-    letter-spacing: 1px;
-    color: rgba(255,255,255,0.46);
-    font-family: monospace;
-    text-transform: uppercase;
-    pointer-events: none;
-    text-shadow: 0 0 6px var(--btn-glow);
-}
-
-/* 點擊能量脈衝 */
-.energy-burst {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0;
-    clip-path: inherit;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255,255,255,0.95) 50%,
-        transparent 100%
-    );
-    transform: scaleX(0.15);
-    transform-origin: center;
-}
-
-/* hover */
-.exo-btn:hover {
-    transform: translateX(4px);
-    filter: brightness(1.05);
-}
-
-.exo-btn:hover .exo-body {
-    box-shadow:
-        inset 0 0 15px rgba(0, 234, 255, 0.08),
-        inset 0 0 0 1px rgba(255,255,255,0.04),
-        inset 0 -18px 22px rgba(0,0,0,0.22),
-        0 0 18px var(--btn-glow);
-}
-
-.exo-btn:hover .exo-label {
-    animation: chromaShift 0.12s steps(2) 1;
-}
-
-/* active */
-.exo-btn:active {
-    transform: scale(0.985);
-}
-
-.exo-btn:active .energy-burst {
-    animation: energyPulse 0.28s ease-out 1;
-}
-
-.exo-btn:active .exo-body {
-    filter: brightness(1.22);
-}
-
-/* 紅色版 */
-.exo-btn.red {
-    --btn-color: var(--red);
-    --btn-glow: rgba(255, 77, 109, 0.35);
-    --btn-bg: rgba(32, 0, 10, 0.56);
-    --btn-text: #fff1f5;
-}
-
-/* 動畫 */
-@keyframes exoSweep {
-    0%   { transform: translateY(-120%); opacity: 0; }
-    20%  { opacity: 0.35; }
-    50%  { transform: translateY(0%); opacity: 0.55; }
-    80%  { opacity: 0.2; }
-    100% { transform: translateY(120%); opacity: 0; }
-}
-
-@keyframes chromaShift {
-    0% {
-        text-shadow: 0 0 0 transparent, 0 0 0 transparent;
-        transform: translateX(0);
-    }
-    25% {
-        text-shadow: 2px 0 0 rgba(255,0,80,0.9), -2px 0 0 rgba(0,234,255,0.9);
-        transform: translateX(-1px);
-    }
-    50% {
-        text-shadow: -2px 0 0 rgba(255,0,80,0.9), 2px 0 0 rgba(0,234,255,0.9);
-        transform: translateX(1px);
-    }
-    100% {
-        text-shadow: 0 0 0 transparent, 0 0 0 transparent;
-        transform: translateX(0);
-    }
-}
-
-@keyframes energyPulse {
-    0% {
-        opacity: 0;
-        transform: scaleX(0.15);
-        filter: brightness(1.2);
-    }
-    30% {
-        opacity: 1;
-        transform: scaleX(1);
-        filter: brightness(1.85);
-    }
-    100% {
-        opacity: 0;
-        transform: scaleX(1.25);
-        filter: brightness(1);
-    }
-}
 /* ===== 高級中空 HUD 階層按鈕 (FUI 質感) ===== */
-#btnGroup {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 22px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 1s ease;
-    margin-top: 35px;
-    width: 100%;
-}
-
 .hud-menu-btn {
     --btn-color: var(--cyan);
     --btn-glow: rgba(0, 234, 255, 0.4);
@@ -1194,6 +883,139 @@ button span {
         transform: scaleX(1);
     }
 }
+/* ===== CLEAN EXO BUTTON SYSTEM ===== */
+#btnGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 40px;
+    width: 100%;
+    padding-left: 30px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+}
+
+.exo-btn {
+    --btn-color: var(--cyan);
+    --btn-glow: rgba(0, 234, 255, 0.4);
+    --btn-bg: rgba(0, 234, 255, 0.05);
+
+    all: unset;
+    display: block;
+    position: relative;
+    width: 260px;
+    height: 54px;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.exo-btn::before {
+    content: "";
+    position: absolute;
+    left: -35px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: var(--bg);
+    border: 2px solid var(--btn-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--btn-color);
+    z-index: 5;
+}
+
+.exo-btn::after {
+    content: "";
+    position: absolute;
+    left: -23px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 23px;
+    height: 1.5px;
+    background: var(--btn-color);
+    box-shadow: 0 0 8px var(--btn-color);
+}
+
+.exo-body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--btn-bg);
+    border: 1px solid rgba(0, 234, 255, 0.3);
+    border-radius: 27px 0 0 27px;
+    clip-path: polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.exo-body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.18),
+        transparent
+    );
+    transform: translateX(-100%);
+    animation: exoSweepLite 3s linear infinite;
+}
+
+.exo-body::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 3px;
+    background: var(--btn-color);
+    box-shadow: 0 0 10px var(--btn-color);
+}
+
+.exo-label {
+    color: var(--btn-color);
+    font-weight: 800;
+    letter-spacing: 5px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    text-shadow: 0 0 5px var(--btn-glow);
+    z-index: 2;
+    position: relative;
+}
+
+.exo-btn:hover {
+    transform: translateX(10px);
+    filter: brightness(1.06);
+}
+
+.exo-btn:hover .exo-body {
+    background: rgba(0, 234, 255, 0.15);
+    border-color: var(--btn-color);
+    box-shadow: inset 0 0 20px rgba(0, 234, 255, 0.2);
+}
+
+.exo-btn:active {
+    transform: translateX(10px) scale(0.95);
+}
+
+.exo-btn.red {
+    --btn-color: var(--red);
+    --btn-glow: rgba(255, 77, 109, 0.4);
+    --btn-bg: rgba(255, 77, 109, 0.05);
+}
+
+@keyframes exoSweepLite {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
     </style>
 </head>
 <body>
@@ -1277,45 +1099,24 @@ button span {
     <div id="typewriter"></div>
 
     <div id="btnGroup">
-        <button class="exo-btn" onclick="runAcceptEffect()">
-            <span class="frame f1"></span>
-            <span class="frame f2"></span>
-            <span class="frame f3"></span>
-            <span class="frame f4"></span>
-            <span class="frame f5"></span>
-            <span class="exo-code">0xA17F</span>
-            <span class="exo-body">
-                <span class="exo-label">Accept</span>
-                <span class="energy-burst"></span>
-            </span>
-        </button>
+    <button class="exo-btn" onclick="runAcceptEffect()">
+        <span class="exo-body">
+            <span class="exo-label">Accept</span>
+        </span>
+    </button>
 
-        <button class="exo-btn red" onclick="transit('pageNotice')">
-            <span class="frame f1"></span>
-            <span class="frame f2"></span>
-            <span class="frame f3"></span>
-            <span class="frame f4"></span>
-            <span class="frame f5"></span>
-            <span class="exo-code">0xC904</span>
-            <span class="exo-body">
-                <span class="exo-label">Gift Notice</span>
-                <span class="energy-burst"></span>
-            </span>
-        </button>
+    <button class="exo-btn red" onclick="transit('pageNotice')">
+        <span class="exo-body">
+            <span class="exo-label">Gift Notice</span>
+        </span>
+    </button>
 
-        <button class="exo-btn" onclick="runLoadingTo('page2')">
-            <span class="frame f1"></span>
-            <span class="frame f2"></span>
-            <span class="frame f3"></span>
-            <span class="frame f4"></span>
-            <span class="frame f5"></span>
-            <span class="exo-code">0x2B11</span>
-            <span class="exo-body">
-                <span class="exo-label">Back</span>
-                <span class="energy-burst"></span>
-            </span>
-        </button>
-    </div>
+    <button class="exo-btn" onclick="runLoadingTo('page2')">
+        <span class="exo-body">
+            <span class="exo-label">Back</span>
+        </span>
+    </button>
+</div>
 </div>
 <div id="pageNotice" class="page">
     <h3 style="color: var(--cyan); letter-spacing: 2px; margin-bottom: 10px;">[ GIFT NOTICE ]</h3>
@@ -1343,15 +1144,8 @@ button span {
             g.style.opacity = '1';
             g.style.pointerEvents = 'auto';
         })">
-            <span class="frame f1"></span>
-            <span class="frame f2"></span>
-            <span class="frame f3"></span>
-            <span class="frame f4"></span>
-            <span class="frame f5"></span>
-            <span class="exo-code">0x5E21</span>
             <span class="exo-body">
                 <span class="exo-label">Back</span>
-                <span class="energy-burst"></span>
             </span>
         </button>
     </div>
@@ -1528,17 +1322,6 @@ function runLoadingTo(targetPage, cb) {
 
           typeLine();
       }
-    const codes = document.querySelectorAll('.exo-code');
-
-setInterval(() => {
-    codes.forEach(code => {
-        const value = Math.floor(Math.random() * 65535)
-            .toString(16)
-            .toUpperCase()
-            .padStart(4, '0');
-        code.textContent = '0x' + value;
-    });
-}, 900);
   </script>
 </body>
 </html>
