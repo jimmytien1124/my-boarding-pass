@@ -191,7 +191,9 @@
             font-size: 0.82rem;
             font-weight: 500;
         }
-button span {
+.scan-btn span,
+.panel-confirm-btn span,
+.exo-btn span {
     position: relative;
     z-index: 5;
 }
@@ -899,60 +901,67 @@ button span {
 
 .exo-btn {
     --btn-color: var(--cyan);
-    --btn-glow: rgba(0, 234, 255, 0.4);
-    --btn-bg: rgba(0, 234, 255, 0.05);
+    --btn-glow: rgba(0, 234, 255, 0.38);
 
     all: unset;
     display: block;
     position: relative;
     width: 260px;
-    height: 54px;
+    height: 56px;
     cursor: pointer;
-    transition: transform 0.2s ease, filter 0.2s ease;
+    transition: transform 0.22s ease, filter 0.22s ease;
 }
 
 .exo-btn::before {
     content: "";
     position: absolute;
-    left: -35px;
+    left: -34px;
     top: 50%;
     transform: translateY(-50%);
     width: 12px;
     height: 12px;
-    background: var(--bg);
+    background: #05070a;
     border: 2px solid var(--btn-color);
     border-radius: 50%;
-    box-shadow: 0 0 10px var(--btn-color);
-    z-index: 5;
+    box-shadow:
+        0 0 10px var(--btn-color),
+        0 0 20px var(--btn-glow);
+    z-index: 3;
 }
 
 .exo-btn::after {
     content: "";
     position: absolute;
-    left: -23px;
+    left: -22px;
     top: 50%;
     transform: translateY(-50%);
-    width: 23px;
-    height: 1.5px;
+    width: 22px;
+    height: 2px;
     background: var(--btn-color);
-    box-shadow: 0 0 8px var(--btn-color);
+    box-shadow: 0 0 10px var(--btn-color);
 }
 
 .exo-body {
     position: relative;
     width: 100%;
     height: 100%;
-    background: var(--btn-bg);
-    border: 1px solid rgba(0, 234, 255, 0.3);
-    border-radius: 27px 0 0 27px;
-    clip-path: polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+
+    background: rgba(0, 0, 0, 0.58);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+        0 0 12px var(--btn-glow),
+        0 0 30px rgba(255,255,255,0.03),
+        inset 0 0 18px rgba(255,255,255,0.04);
+
+    border-radius: 28px 0 0 28px;
+    clip-path: polygon(0 0, 84% 0, 100% 100%, 0 100%);
 }
 
 .exo-body::before {
@@ -961,9 +970,11 @@ button span {
     inset: 0;
     background: linear-gradient(
         90deg,
-        transparent,
-        rgba(255,255,255,0.18),
-        transparent
+        transparent 0%,
+        rgba(255,255,255,0.10) 46%,
+        rgba(255,255,255,0.22) 50%,
+        rgba(255,255,255,0.10) 54%,
+        transparent 100%
     );
     transform: translateX(-100%);
     animation: exoSweepLite 3s linear infinite;
@@ -973,48 +984,174 @@ button span {
     content: "";
     position: absolute;
     right: 0;
-    top: 20%;
-    height: 60%;
-    width: 3px;
+    top: 22%;
+    width: 2px;
+    height: 56%;
     background: var(--btn-color);
-    box-shadow: 0 0 10px var(--btn-color);
+    box-shadow:
+        0 0 8px var(--btn-color),
+        0 0 16px var(--btn-glow);
 }
 
 .exo-label {
-    color: var(--btn-color);
-    font-weight: 800;
-    letter-spacing: 5px;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    text-shadow: 0 0 5px var(--btn-glow);
-    z-index: 2;
     position: relative;
+    z-index: 2;
+    color: var(--btn-color);
+    font-size: 0.86rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 6px var(--btn-glow);
 }
 
 .exo-btn:hover {
-    transform: translateX(10px);
-    filter: brightness(1.06);
+    transform: translateX(6px);
+    filter: brightness(1.08);
 }
 
 .exo-btn:hover .exo-body {
-    background: rgba(0, 234, 255, 0.15);
-    border-color: var(--btn-color);
-    box-shadow: inset 0 0 20px rgba(0, 234, 255, 0.2);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow:
+        0 0 16px var(--btn-glow),
+        0 0 34px rgba(255,255,255,0.05),
+        inset 0 0 18px rgba(255,255,255,0.08);
 }
 
 .exo-btn:active {
-    transform: translateX(10px) scale(0.95);
+    transform: translateX(6px) scale(0.97);
 }
 
 .exo-btn.red {
     --btn-color: var(--red);
-    --btn-glow: rgba(255, 77, 109, 0.4);
-    --btn-bg: rgba(255, 77, 109, 0.05);
+    --btn-glow: rgba(255, 77, 109, 0.38);
 }
 
 @keyframes exoSweepLite {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
+}
+/* ===== OUTER HUD SHELL ===== */
+.warning-shell {
+    position: relative;
+    padding: 18px;
+    border-radius: 26px;
+    background:
+        linear-gradient(145deg,
+            rgba(0,234,255,0.06),
+            rgba(255,77,109,0.06)
+        );
+    box-shadow:
+        0 0 60px rgba(0,234,255,0.08),
+        0 0 80px rgba(255,77,109,0.08);
+}
+
+/* 外框輪廓 */
+.warning-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 26px;
+    border: 1px solid rgba(0,234,255,0.18);
+    box-shadow:
+        0 0 20px rgba(0,234,255,0.25),
+        inset 0 0 12px rgba(0,234,255,0.08);
+    pointer-events: none;
+}
+
+/* 第二層紅色輪廓 */
+.warning-shell::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,77,109,0.22);
+    box-shadow:
+        0 0 18px rgba(255,77,109,0.18);
+    pointer-events: none;
+}
+/* ===== SIDE ENERGY RAIL ===== */
+.warning-shell .rail-left,
+.warning-shell .rail-right {
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    width: 4px;
+
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        var(--cyan),
+        var(--cyan),
+        transparent
+    );
+
+    box-shadow:
+        0 0 12px var(--cyan),
+        0 0 25px var(--cyan),
+        0 0 40px rgba(0,234,255,0.4);
+
+    opacity: 0.9;
+}
+
+.warning-shell .rail-left {
+    left: -6px;
+}
+
+.warning-shell .rail-right {
+    right: -6px;
+}
+
+/* 紅色脈衝流 */
+.warning-shell .rail-left::after,
+.warning-shell .rail-right::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    background: var(--red);
+    box-shadow: 0 0 10px var(--red);
+    animation: railFlow 2s linear infinite;
+}
+
+@keyframes railFlow {
+    0% { top: -20%; opacity: 0; }
+    20% { opacity: 1; }
+    100% { top: 120%; opacity: 0; }
+}
+.warning-shell .rail-left::before,
+.warning-shell .rail-right::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(255,255,255,0.8),
+        transparent
+    );
+    animation: railScan 2.5s linear infinite;
+}
+
+@keyframes railScan {
+    0% { top: -30%; }
+    100% { top: 130%; }
+}
+.warning-panel {
+    animation: panelPulse 3s ease-in-out infinite;
+}
+
+@keyframes panelPulse {
+    0%,100% {
+        box-shadow:
+            0 0 28px rgba(255,77,109,0.10),
+            inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+    50% {
+        box-shadow:
+            0 0 40px rgba(255,77,109,0.25),
+            inset 0 0 10px rgba(255,77,109,0.08);
+    }
 }
     </style>
 </head>
@@ -1058,39 +1195,47 @@ button span {
       </div>
 
 <div id="page2" class="page">
-    <div class="warning-panel">
-        <div class="panel-corner tl"></div>
-        <div class="panel-corner tr"></div>
-        <div class="panel-corner bl"></div>
-        <div class="panel-corner br"></div>
+    <div class="warning-shell">
+        <div class="rail-left"></div>
+		<div class="rail-right"></div>
+        <div class="warning-panel">
 
-        <div class="panel-top">
-            <div class="panel-title">BOARDING WARNING</div>
-            <div class="panel-status">ACCESS DENIED</div>
-        </div>
+            <div class="panel-corner tl"></div>
+            <div class="panel-corner tr"></div>
+            <div class="panel-corner bl"></div>
+            <div class="panel-corner br"></div>
 
-        <div class="panel-warning-icon-wrap">
-            <div class="panel-warning-icon"></div>
-        </div>
-		<div class="scan-line"></div>
-        <p class="panel-message">
-            This is a one-way ticket.<br>
-            There is no return after confirmation.
-        </p>
+            <div class="panel-top">
+                <div class="panel-title">BOARDING WARNING</div>
+                <div class="panel-status">ACCESS DENIED</div>
+            </div>
 
-<div class="panel-bars">
-    <span class="bar1"></span>
-    <span class="bar2"></span>
-    <span class="bar3"></span>
-</div>
+            <div class="panel-warning-icon-wrap">
+                <div class="panel-warning-icon"></div>
+            </div>
 
-        <div class="panel-confirm-wrap">
-            <button class="panel-confirm-btn" onclick="transit('page3', startTypewriter)">
-                <span class="panel-confirm-dot"></span>
-                <span class="panel-confirm-line"></span>
-                <span class="panel-confirm-text">CONFIRM BOARDING</span>
-                <span class="panel-confirm-arrow"></span>
-            </button>
+            <div class="scan-line"></div>
+
+            <p class="panel-message">
+                This is a one-way ticket.<br>
+                There is no return after confirmation.
+            </p>
+
+            <div class="panel-bars">
+                <span class="bar1"></span>
+                <span class="bar2"></span>
+                <span class="bar3"></span>
+            </div>
+
+            <div class="panel-confirm-wrap">
+                <button class="panel-confirm-btn" onclick="transit('page3', startTypewriter)">
+                    <span class="panel-confirm-dot"></span>
+                    <span class="panel-confirm-line"></span>
+                    <span class="panel-confirm-text">CONFIRM BOARDING</span>
+                    <span class="panel-confirm-arrow"></span>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
