@@ -803,6 +803,160 @@
         filter: brightness(1);
     }
 }
+/* ===== 高級中空 HUD 階層按鈕 (FUI 質感) ===== */
+#btnGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+    margin-top: 35px;
+    width: 100%;
+}
+
+.hud-menu-btn {
+    --btn-color: var(--cyan);
+    --btn-glow: rgba(0, 234, 255, 0.4);
+
+    appearance: none;
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    overflow: visible;
+
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    transition: filter 0.22s ease;
+}
+
+/* 左側發光圓點節點 */
+.hud-menu-btn::before {
+    content: "";
+    position: absolute;
+    left: -32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border: 2.5px solid var(--btn-color);
+    border-radius: 50%;
+    background: #000;
+    box-shadow: 0 0 12px var(--btn-color);
+    z-index: 10;
+}
+
+/* 左邊接線 */
+.hud-menu-btn::after {
+    content: "";
+    position: absolute;
+    left: -18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 1.5px;
+    background: var(--btn-color);
+    box-shadow: 0 0 8px var(--btn-glow);
+    opacity: 0.9;
+}
+
+/* 主體 */
+.hud-menu-btn .hud-body {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 16px 20px;
+    color: var(--btn-color);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-align: center;
+
+    background:
+        linear-gradient(90deg, rgba(0,234,255,0.05) 0%, transparent 55%);
+    border: 1.5px solid rgba(0, 234, 255, 0.22);
+
+    clip-path: polygon(0 0, 92% 0, 100% 30%, 100% 100%, 8% 100%, 0 70%);
+    transition:
+        transform 0.22s ease,
+        background 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+/* 左上角支架 */
+.hud-menu-btn .hud-body::before {
+    content: "";
+    position: absolute;
+    top: -1.5px;
+    left: -1.5px;
+    width: 20px;
+    height: 20px;
+    border-top: 3px solid var(--btn-color);
+    border-left: 3px solid var(--btn-color);
+    background: transparent;
+    box-shadow: -2px -2px 8px var(--btn-glow);
+}
+
+/* 右側能量條 */
+.hud-menu-btn .hud-body::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 2px;
+    background: var(--btn-color);
+    box-shadow: 0 0 8px var(--btn-glow);
+}
+
+/* 紅色版 */
+.hud-menu-btn.red {
+    --btn-color: var(--red);
+    --btn-glow: rgba(255, 77, 109, 0.4);
+}
+
+.hud-menu-btn.red .hud-body {
+    color: #fff1f4;
+    background: linear-gradient(90deg, rgba(255,77,109,0.05) 0%, transparent 55%);
+    border-color: rgba(255, 77, 109, 0.24);
+}
+
+/* hover */
+.hud-menu-btn:hover {
+    filter: brightness(1.15);
+}
+
+.hud-menu-btn:hover .hud-body {
+    background: rgba(0, 234, 255, 0.08);
+    border-color: var(--btn-color);
+    box-shadow: inset 0 0 15px rgba(0, 234, 255, 0.08);
+    transform: translateX(8px);
+}
+
+.hud-menu-btn.red:hover .hud-body {
+    background: rgba(255, 77, 109, 0.08);
+    box-shadow: inset 0 0 15px rgba(255, 77, 109, 0.08);
+}
+
+/* active */
+.hud-menu-btn:active .hud-body {
+    transform: translateX(8px) scale(0.98);
+}
+
+.hud-menu-btn:active::before {
+    transform: translateY(-50%) scale(1.08);
+}
+這個直接貼CSS嗎
     </style>
 </head>
 <body>
@@ -858,18 +1012,9 @@
                   There is no return after confirmation.
               </p>
 
-              <div class="notice-back-wrap">
-    <button class="exo-btn red" onclick="transit('page3', startTypewriter)">
-        <span class="frame f1"></span>
-        <span class="frame f2"></span>
-        <span class="frame f3"></span>
-        <span class="frame f4"></span>
-        <span class="frame f5"></span>
-        <span class="exo-code">0xD3AF</span>
-        <span class="exo-body">
-            <span class="exo-label">Confirm Boarding</span>
-            <span class="energy-burst"></span>
-        </span>
+           <div class="notice-back-wrap">
+    <button class="hud-menu-btn red" onclick="transit('page3', startTypewriter)">
+        <span class="hud-body">Confirm Boarding</span>
     </button>
 </div>
           </div>
