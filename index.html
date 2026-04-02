@@ -223,21 +223,6 @@ button {
     opacity: 0.95;
     pointer-events: none;
 }
-    background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.10),
-        rgba(0,234,255,0.9),
-        rgba(255,255,255,0.10)
-    );
-    -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0.95;
-    pointer-events: none;
-}
-
         .scan-btn::after {
             content: "";
             position: absolute;
@@ -1069,6 +1054,42 @@ button {
             0 0 28px rgba(255,77,109,0.35),
             inset 0 0 18px rgba(255,77,109,0.12);
     }
+}
+#pageNotice {
+    text-align: left;
+}
+
+.notice-status {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 6px 12px;
+    border: 1px solid rgba(0,234,255,0.28);
+    border-radius: 999px;
+    color: var(--cyan);
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    box-shadow: 0 0 12px rgba(0,234,255,0.12);
+}
+
+.notice-list {
+    margin: 0 0 28px 0;
+    padding-left: 18px;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.8;
+    font-size: 0.92rem;
+}
+
+.notice-list li {
+    margin-bottom: 8px;
+}
+
+.notice-back-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+.scan-btn {
+    border: 1px solid rgba(0,234,255,0.35);
 }
     </style>
 </head>
