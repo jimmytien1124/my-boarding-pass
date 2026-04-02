@@ -1056,7 +1056,6 @@ button {
 }
 
 @media (max-width: 900px) {
-	@media (max-width: 900px) {
     .hud-top-meta {
         font-size: 0.56rem;
         gap: 10px;
@@ -1233,42 +1232,6 @@ button {
         opacity: 0.45;
     }
 }
-    .hud-top-meta {
-        font-size: 0.56rem;
-        gap: 10px;
-    }
-
-    .hud-frame {
-		animation: hudBreath 6s ease-in-out infinite;
-        min-height: auto;
-        padding: 22px 18px 22px;
-    }
-
-    .hud-content-row {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    .secure-line {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .hud-confirm-btn {
-        height: 72px;
-        font-size: 0.94rem;
-    }
-
-    .hud-btn-arrows i {
-        width: 10px;
-        height: 30px;
-    }
-
-    .hud-light.left-cyan,
-    .hud-light.right-cyan {
-        height: 120px;
-    }
-}
 		@keyframes hudBreath {
     0%, 100% {
         box-shadow:
@@ -1434,11 +1397,60 @@ button {
     word-break: break-word;
 }
 		@media (max-width: 900px) {
+			.hud-top-meta {
+    font-size: 0.56rem;
+    gap: 10px;
+}
+
+.hud-frame {
+    min-height: auto;
+    padding: 22px 18px 22px;
+}
+
+.hud-content-row {
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.secure-line {
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.hud-confirm-btn {
+    height: 72px;
+    font-size: 0.94rem;
+}
+
+.hud-btn-arrows i {
+    width: 10px;
+    height: 30px;
+}
+
+.hud-light.left-cyan,
+.hud-light.right-cyan {
+    height: 120px;
+}
+
     .main-container {
         width: min(96vw, 1100px);
         padding: 10px 10px 16px;
         border-radius: 18px;
     }
+
+    .hud-top-meta {
+        font-size: 0.56rem;
+        gap: 10px;
+        line-height: 1.45;
+    }
+
+   .main-container {
+        width: min(96vw, 1100px);
+        padding: 10px 10px 16px;
+        border-radius: 18px;
+}
+    .hud-header {
+    flex-wrap: wrap;
 }
     </style>
 </head>
