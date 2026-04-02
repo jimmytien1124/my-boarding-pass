@@ -819,31 +819,16 @@
 .hud-menu-btn {
     --btn-color: var(--cyan);
     --btn-glow: rgba(0, 234, 255, 0.4);
-	all: unset;
+    all: unset;
     display: block;
     position: relative;
     width: 100%;
     max-width: 280px;
     cursor: pointer;
-    appearance: none;
-    position: relative;
-    width: 100%;
-    max-width: 280px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
     overflow: visible;
-
-    border-radius: 0;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-
     transition: filter 0.22s ease;
 }
 
-/* 左側發光圓點節點 */
 .hud-menu-btn::before {
     content: "";
     position: absolute;
@@ -859,7 +844,6 @@
     z-index: 10;
 }
 
-/* 左邊接線 */
 .hud-menu-btn::after {
     content: "";
     position: absolute;
@@ -873,7 +857,6 @@
     opacity: 0.9;
 }
 
-/* 主體 */
 .hud-menu-btn .hud-body {
     pointer-events: none;
     position: relative;
@@ -886,46 +869,38 @@
     letter-spacing: 4px;
     text-transform: uppercase;
     text-align: center;
-
-    background:
-        linear-gradient(90deg, rgba(0,234,255,0.05) 0%, transparent 55%);
+    background: linear-gradient(90deg, rgba(0,234,255,0.05) 0%, transparent 55%);
     border: 1.5px solid rgba(0, 234, 255, 0.22);
-
-    clip-path: polygon(0 0, 92% 0, 100% 30%, 100% 100%, 8% 100%, 0 70%);
-    transition:
-        transform 0.22s ease,
-        background 0.22s ease,
-        border-color 0.22s ease,
-        box-shadow 0.22s ease;
+    clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 50%, calc(100% - 28px) 100%, 0 100%);
+    border-radius: 18px 0 0 18px;
+    transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
-/* 左上角支架 */
 .hud-menu-btn .hud-body::before {
     content: "";
     position: absolute;
     top: -1.5px;
     left: -1.5px;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-top: 3px solid var(--btn-color);
     border-left: 3px solid var(--btn-color);
+    border-top-left-radius: 14px;
     background: transparent;
     box-shadow: -2px -2px 8px var(--btn-glow);
 }
 
-/* 右側能量條 */
 .hud-menu-btn .hud-body::after {
     content: "";
     position: absolute;
-    right: 0;
-    top: 20%;
-    height: 60%;
+    right: 8px;
+    top: 24%;
+    height: 52%;
     width: 2px;
     background: var(--btn-color);
     box-shadow: 0 0 8px var(--btn-glow);
 }
 
-/* 紅色版 */
 .hud-menu-btn.red {
     --btn-color: var(--red);
     --btn-glow: rgba(255, 77, 109, 0.4);
@@ -937,7 +912,6 @@
     border-color: rgba(255, 77, 109, 0.24);
 }
 
-/* hover */
 .hud-menu-btn:hover {
     filter: brightness(1.15);
 }
@@ -954,7 +928,6 @@
     box-shadow: inset 0 0 15px rgba(255, 77, 109, 0.08);
 }
 
-/* active */
 .hud-menu-btn:active .hud-body {
     transform: translateX(8px) scale(0.98);
 }
