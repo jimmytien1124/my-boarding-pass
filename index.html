@@ -819,7 +819,12 @@
 .hud-menu-btn {
     --btn-color: var(--cyan);
     --btn-glow: rgba(0, 234, 255, 0.4);
-
+	all: unset;
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    cursor: pointer;
     appearance: none;
     position: relative;
     width: 100%;
@@ -870,6 +875,7 @@
 
 /* 主體 */
 .hud-menu-btn .hud-body {
+    pointer-events: none;
     position: relative;
     display: block;
     width: 100%;
