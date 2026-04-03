@@ -1599,6 +1599,43 @@ button {
         warnPulse 1.8s ease-in-out infinite,
         glitchFlash 0.25s ease;
 }
+		.hud-warning-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 18px 0 10px;
+
+    animation: warnFloatWrap 3.6s ease-in-out infinite;
+}
+
+@keyframes warnFloatWrap {
+    0%,100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+		.hud-warning-icon {
+    animation:
+        warnPulse 1.8s ease-in-out infinite,
+        iconGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes iconGlow {
+    0%,100% {
+        box-shadow:
+            0 0 10px rgba(255,77,109,0.25),
+            0 0 24px rgba(255,77,109,0.14),
+            inset 0 0 10px rgba(255,77,109,0.08);
+    }
+    50% {
+        box-shadow:
+            0 0 18px rgba(255,77,109,0.45),
+            0 0 40px rgba(255,77,109,0.25),
+            inset 0 0 14px rgba(255,77,109,0.12);
+    }
+}
     </style>
 </head>
 <body>
