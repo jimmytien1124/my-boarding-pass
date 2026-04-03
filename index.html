@@ -982,7 +982,7 @@ button {
     letter-spacing: 0.8px;
 }
 .secure-line span {
-	opacity: 0.5;
+	opacity: 0.35;
     letter-spacing: 3px;
     color: rgba(255,255,255,0.5);
 	font-weight: 500;
@@ -1624,7 +1624,7 @@ button {
     }
 }
 		.hud-warning-icon {
-    filter: contrast(1.15) saturate(1.1);
+    filter: contrast(1.2) saturate(1.15);
 }
 		.hud-warning-icon.glitch {
     animation: glitchFlash 0.25s ease;
@@ -1696,15 +1696,16 @@ button {
 
       <div class="hud-header">
         <div class="hud-title">★ DIGITAL BOARDING PASS</div>
-        <div class="hud-denied">ACCESS DENIED</div>
+        <div class="hud-denied">AWAITING CONFIRMATION</div>
       </div>
-		<div class="hud-warning-wrap float">
-        <div class="hud-warning-icon"></div>
+	<div class="hud-warning-wrap">     
+		<div class="hud-warning-icon"></div>
       </div>
 
       <div class="hud-message">
         This is a one-way ticket.<br>
-        There is no return after confirmation.
+		Once you confirm,<br>
+    	there is no going back.
       </div>
 
       <div class="hud-content-row">
