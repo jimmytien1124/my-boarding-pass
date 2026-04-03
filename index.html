@@ -809,6 +809,9 @@ button {
 }
 
 .hud-warning-icon {
+	animation:
+    warnPulse 1.8s ease-in-out infinite,
+    floatUp 3.2s ease-in-out infinite;
 	transform: translateZ(0);
     will-change: transform;
     position: relative;
@@ -826,7 +829,6 @@ button {
         0 0 10px rgba(255,77,109,0.25),
         0 0 24px rgba(255,77,109,0.14),
         inset 0 0 10px rgba(255,77,109,0.08);
-    animation: warnPulse 1.8s ease-in-out infinite;
 }
 
 .hud-warning-icon::before {
@@ -880,10 +882,6 @@ button {
 @keyframes floatUp {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-4px); }
-}
-/* 👇 放這裡最乾淨 */
-.hud-warning-wrap.float {
-    animation: floatUp 3.2s ease-in-out infinite;
 }
 @keyframes scanLine {
     0% {
@@ -1676,8 +1674,8 @@ button {
   <div class="hud-board">
 
     <div class="hud-top-meta">
-      <span>EAST DISTRICT, HSINCHU CITY, TAIWAN</span>
-      <span>THU, APR 2, 2026, 10:00 PM CST</span>
+      <span>EMOTIONAL SYSTEM / PRIVATE CHANNEL</span>
+<span>ACCESS LEVEL: RESTRICTED</span>
     </div>
 
     <div class="hud-frame">
