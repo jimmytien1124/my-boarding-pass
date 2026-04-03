@@ -809,46 +809,54 @@ button {
 }
 
 .hud-warning-icon {
+	transform: translateZ(0);
+    will-change: transform;
     position: relative;
-    width: 90px;
-    height: 78px;
+    width: 96px;
+    height: 82px;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    border: 2px solid rgba(255,77,109,0.9);
+    
+    backdrop-filter: blur(4px); /* ✅ 加在這裡 */
+
     background:
-        radial-gradient(circle at 50% 65%, rgba(255,77,109,0.18), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+        linear-gradient(180deg, rgba(255,90,120,0.10), rgba(255,40,80,0.02)),
+        radial-gradient(circle at 50% 68%, rgba(255,77,109,0.22), transparent 58%);
+    border: 2px solid rgba(255,90,120,0.95);
     box-shadow:
-        0 0 18px rgba(255,77,109,0.35),
-        0 0 40px rgba(255,77,109,0.18),
-        inset 0 0 12px rgba(255,77,109,0.08);
+        0 0 10px rgba(255,77,109,0.25),
+        0 0 24px rgba(255,77,109,0.14),
+        inset 0 0 10px rgba(255,77,109,0.08);
     animation: warnPulse 1.8s ease-in-out infinite;
 }
 
 .hud-warning-icon::before {
+	will-change: transform;
+	letter-spacing: 2px;
     content: "!";
     position: absolute;
     left: 50%;
-    top: 58%;
+    top: 56%;
     transform: translate(-50%, -50%);
-    font-size: 2.2rem;
+    font-size: 2.25rem;
     font-weight: 900;
-    color: #ffe6eb;
+    color: #fff3f6;
     text-shadow:
-        0 0 10px rgba(255,77,109,0.5),
-        0 0 20px rgba(255,77,109,0.25);
+        0 0 8px rgba(255,120,150,0.45),
+        0 0 18px rgba(255,77,109,0.18);
+    z-index: 3;
 }
-
 .hud-warning-icon::after {
     content: "";
     position: absolute;
     left: 50%;
-    bottom: 12%;
+    top: 56%;
     transform: translateX(-50%);
-    width: 60%;
+    width: 62%;
     height: 3px;
-    background: linear-gradient(90deg, transparent, #ff4d6d, transparent);
-    box-shadow: 0 0 10px rgba(255,77,109,0.5);
+    background: linear-gradient(90deg, transparent, rgba(255,77,109,0.95), transparent);
+    box-shadow: 0 0 10px rgba(255,77,109,0.35);
     animation: scanLine 2.2s linear infinite;
+    z-index: 2;
 }
 
 @keyframes warnPulse {
@@ -868,6 +876,15 @@ button {
     }
 }
 
+/* ✅ 這段要「獨立出來」 */
+@keyframes floatUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+/* 👇 放這裡最乾淨 */
+.hud-warning-wrap.float {
+    animation: floatUp 3.2s ease-in-out infinite;
+}
 @keyframes scanLine {
     0% {
         transform: translate(-50%, 0);
@@ -967,9 +984,13 @@ button {
     letter-spacing: 0.8px;
 }
 .secure-line span {
-    letter-spacing: 2px;
+	opacity: 0.5;
+    letter-spacing: 3px;
     color: rgba(255,255,255,0.5);
 	font-weight: 500;
+}
+.secure-line {
+    opacity: 1;
 }
 .red-bars {
     display: flex;
@@ -1171,10 +1192,6 @@ button {
 
     .hud-warning-wrap {
         margin: 18px 0 10px;
-    }
-
-    .hud-warning-icon {
-        transform: scale(0.92);
     }
 
     .hud-message {
@@ -1401,7 +1418,7 @@ button {
     height: 12px;
     border-radius: 999px;
     overflow: hidden;
-	opacity: 0.42;
+	opacity: 0.55;
 }
 
 .red-bars span::before {
@@ -1455,11 +1472,6 @@ button {
     word-break: break-word;
 }
 		@media (max-width: 900px) {
-	.hud-warning-icon {
-	filter: saturate(1.2) contrast(1.1);
-    width: 74px;
-    height: 64px;
-}
 	.hud-warning-icon.glitch {
     animation: glitchFlash 0.25s ease;
 }
@@ -1517,7 +1529,7 @@ button {
     }
 
     .hud-warning-wrap {
-        margin: 18px 0 10px;
+        margin: 24px 0 14px;
     }
 
     .hud-message {
@@ -1613,6 +1625,12 @@ button {
         opacity: 0.6;
     }
 }
+		.hud-warning-icon {
+    filter: contrast(1.15) saturate(1.1);
+}
+		.hud-warning-icon.glitch {
+    animation: glitchFlash 0.25s ease;
+}
     </style>
 </head>
 <body>
@@ -1682,21 +1700,7 @@ button {
         <div class="hud-title">★ DIGITAL BOARDING PASS</div>
         <div class="hud-denied">ACCESS DENIED</div>
       </div>
-
-      <div class="hud-subrow">
-        <div class="hud-code-group">
-          <span>0xF9A1</span>
-          <span>0x1C7E</span>
-        </div>
-
-        <div class="hud-system">
-          <div class="hud-system-title">SYSTEM INFO</div>
-          <div class="hud-system-mini"><span>PASSENGER</span><span>YUDAI</span></div>
-          <div class="hud-system-mini"><span>SECURITY</span><span>0AFP A1</span></div>
-        </div>
-      </div>
-
-      <div class="hud-warning-wrap">
+		<div class="hud-warning-wrap float">
         <div class="hud-warning-icon"></div>
       </div>
 
@@ -1752,7 +1756,7 @@ button {
           </div>
 
           <div class="hud-btn-wrap">
-            <button class="hud-confirm-btn" onclick="transit('page3', startTypewriter)">
+            <button class="hud-confirm-btn" onclick="confirmBoarding()">
               <span class="hud-btn-honey"></span>
               <span class="hud-btn-text">CONFIRM BOARDING</span>
               <span class="hud-btn-arrows">
@@ -1925,6 +1929,35 @@ function runLoadingTo(targetPage, cb) {
             flash.classList.remove('active');
         });
     }, 1800);
+}
+	  function confirmBoarding() {
+    const frame = document.querySelector('.hud-frame');
+    const main = document.getElementById('mainFrame');
+    const icon = document.querySelector('.hud-warning-icon');
+    const flash = document.getElementById('acceptFlash');
+
+    // reset animation（你之前那個優化）
+    frame.classList.remove('glitch-once');
+    icon.classList.remove('glitch');
+    void frame.offsetWidth;
+
+    // 1️⃣ glitch
+    frame.classList.add('glitch-once');
+    icon.classList.add('glitch');
+
+    // 2️⃣ flash
+    flash.classList.add('active');
+
+    // 🔥 3️⃣ 關機動畫
+    setTimeout(() => {
+        main.classList.add('crt-off');
+    }, 200);
+
+    // 🔥 4️⃣ 再切頁
+    setTimeout(() => {
+        transit('page3', startTypewriter);
+        main.classList.remove('crt-off'); // 回來要恢復
+    }, 700);
 }
       function transit(nextId, cb) {
           const frame = document.getElementById('mainFrame');
