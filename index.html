@@ -883,14 +883,16 @@ button {
 .hud-message {
     text-align: center;
     color: rgba(255,255,255,0.84);
-    font-size: 1.08rem;
-	font-weight: 600;
+    font-size: 1.2rem;
+	font-weight: 700;
 	letter-spacing: 0.6px;
 	text-shadow: 0 0 8px rgba(255,255,255,0.08);
     line-height: 1.7;
     margin-bottom: 24px;
 }
-
+.hud-warning-wrap {
+    margin: 20px 0 12px;
+}
 .hud-content-row {
     display: grid;
     grid-template-columns: 120px 1fr;
@@ -959,7 +961,11 @@ button {
     font-size: 0.84rem;
     letter-spacing: 0.8px;
 }
-
+.secure-line span {
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+	font-weight: 500;
+}
 .red-bars {
     display: flex;
     flex-direction: column;
@@ -975,10 +981,12 @@ button {
             90deg,
             rgba(255,77,109,0.08) 0%,
             rgba(255,77,109,0.16) 58%,
-            rgba(255,77,109,0.95) 64%,
+            rgba(255,77,109,0.75) 64%,
             rgba(255,77,109,0.08) 100%
         );
     box-shadow: 0 0 10px rgba(255,77,109,0.14);
+	    opacity: 0.5;
+
 }
 
 .hud-btn-wrap {
@@ -1008,8 +1016,8 @@ button {
     all: unset;
     position: relative;
     width: 100%;
-    max-width: 620px;
-    height: 96px;
+    max-width: 560px;
+    height: 86px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -1157,7 +1165,7 @@ button {
     }
 
     .hud-warning-wrap {
-        margin: 10px 0 10px;
+        margin: 18px 0 10px;
     }
 
     .hud-warning-icon {
@@ -1221,15 +1229,17 @@ button {
 
     .secure-line {
         grid-template-columns: 1fr;
-        gap: 8px;
-        font-size: 0.7rem;
+    opacity: 0.6;
+    font-size: 0.75rem;
     }
 
     .red-bars {
-        gap: 8px;
+        opacity: 0.6;
+    transform: scaleY(0.9);
     }
 
     .red-bars span {
+		filter: brightness(0.85);
         height: 10px;
     }
 
@@ -1497,7 +1507,7 @@ button {
     }
 
     .hud-warning-wrap {
-        margin: 10px 0 10px;
+        margin: 18px 0 10px;
     }
 
     .hud-message {
@@ -1721,14 +1731,6 @@ button {
 </div>
 
         <div class="hud-right-module">
-          <div class="secure-line">
-            <span>SECURE LINK: ESTABLISHED</span>
-            <div class="red-bars">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
 
           <div class="secure-line">
             <span>Y_CODE: YUDAI</span>
