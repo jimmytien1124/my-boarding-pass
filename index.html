@@ -801,29 +801,6 @@ button {
     letter-spacing: 1px;
     color: rgba(255,255,255,0.7);
 }
-.hud-warning-icon {
-    animation: warnPulse 1.8s ease-in-out infinite;
-
-    position: relative;
-    width: 96px;
-    height: 82px;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    backdrop-filter: blur(4px);
-
-    background:
-        linear-gradient(180deg, rgba(255,90,120,0.10), rgba(255,40,80,0.02)),
-        radial-gradient(circle at 50% 68%, rgba(255,77,109,0.22), transparent 58%);
-
-    border: 2px solid rgba(255,90,120,0.95);
-
-    box-shadow:
-        0 0 10px rgba(255,77,109,0.25),
-        0 0 24px rgba(255,77,109,0.14),
-        inset 0 0 10px rgba(255,77,109,0.08);
-
-    will-change: transform;
-    filter: contrast(1.2) saturate(1.15);
-}
 .hud-warning-icon::before {
 	will-change: transform;
 	letter-spacing: 2px;
@@ -845,7 +822,7 @@ button {
     position: absolute;
     left: 50%;
     top: 56%;
-    transform: translateX(-50%);
+    transform: translate(-50%, 0);
     width: 62%;
     height: 3px;
     background: linear-gradient(90deg, transparent, rgba(255,77,109,0.95), transparent);
@@ -866,7 +843,7 @@ button {
 /* ✅ 這段要「獨立出來」 */
 @keyframes scanLine {
     0% {
-        transform: translate(-50%, 0);
+        transform: translate(-50%, 8px);
         opacity: 0;
     }
     30% {
@@ -1442,12 +1419,6 @@ button {
 		.hud-title,
 .hud-denied {
     word-break: break-word;
-}
-		@media (max-width: 900px) {
-	.hud-warning-icon.glitch {
-    animation:
-        warnPulse 1.8s ease-in-out infinite,
-        glitchFlash 0.25s ease;
 }
     .hud-frame {
         min-height: auto;
