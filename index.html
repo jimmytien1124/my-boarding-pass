@@ -808,38 +808,76 @@ button {
 
 .hud-warning-icon {
     position: relative;
-    width: 86px;
-    height: 74px;
+    width: 90px;
+    height: 78px;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    border: 2px solid #ff4d6d;
+    border: 2px solid rgba(255,77,109,0.9);
+    background:
+        radial-gradient(circle at 50% 65%, rgba(255,77,109,0.18), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
     box-shadow:
-        0 0 16px rgba(255,77,109,0.36),
-        inset 0 0 10px rgba(255,77,109,0.08);
+        0 0 18px rgba(255,77,109,0.35),
+        0 0 40px rgba(255,77,109,0.18),
+        inset 0 0 12px rgba(255,77,109,0.08);
+    animation: warnPulse 1.8s ease-in-out infinite;
 }
-.hud-warning-icon::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 65%;
-    transform: translate(-50%, -50%);
-    width: 10px;
-    height: 10px;
-    background: #ff9aa8;
-    border-radius: 50%;
-    box-shadow:
-        0 0 10px rgba(255,77,109,0.8),
-        0 0 20px rgba(255,77,109,0.4);
-}
+
 .hud-warning-icon::before {
     content: "!";
     position: absolute;
     left: 50%;
-    top: 56%;
+    top: 58%;
     transform: translate(-50%, -50%);
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 900;
-    color: #ffd8df;
-    text-shadow: 0 0 14px rgba(255,77,109,0.36);
+    color: #ffe6eb;
+    text-shadow:
+        0 0 10px rgba(255,77,109,0.5),
+        0 0 20px rgba(255,77,109,0.25);
+}
+
+.hud-warning-icon::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 12%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff4d6d, transparent);
+    box-shadow: 0 0 10px rgba(255,77,109,0.5);
+    animation: scanLine 2.2s linear infinite;
+}
+
+@keyframes warnPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow:
+            0 0 18px rgba(255,77,109,0.35),
+            0 0 40px rgba(255,77,109,0.18),
+            inset 0 0 12px rgba(255,77,109,0.08);
+    }
+    50% {
+        transform: scale(1.06);
+        box-shadow:
+            0 0 26px rgba(255,77,109,0.5),
+            0 0 60px rgba(255,77,109,0.25),
+            inset 0 0 12px rgba(255,77,109,0.12);
+    }
+}
+
+@keyframes scanLine {
+    0% {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -28px);
+        opacity: 0;
+    }
 }
 
 .hud-message {
@@ -1401,6 +1439,10 @@ button {
     word-break: break-word;
 }
 		@media (max-width: 900px) {
+	.hud-warning-icon {
+    width: 74px;
+    height: 64px;
+}
     .hud-frame {
         min-height: auto;
         padding: 20px 14px 20px;
