@@ -807,28 +807,28 @@ button {
     content: "!";
     position: absolute;
     left: 50%;
-    top: 56%;
+    top: 60%;
     transform: translate(-50%, -50%);
-    font-size: 2.25rem;
+    font-size: 2.4rem;
     font-weight: 900;
     color: #fff3f6;
     text-shadow:
-        0 0 8px rgba(255,120,150,0.45),
-        0 0 18px rgba(255,77,109,0.18);
+        0 0 8px rgba(255,120,150,0.55),
+        0 0 18px rgba(255,77,109,0.28);
     z-index: 3;
 }
 .hud-warning-icon::after {
     content: "";
     position: absolute;
     left: 50%;
-    top: 56%;
+    top: 60%;
     transform: translate(-50%, 0);
     width: 62%;
     height: 3px;
     background: linear-gradient(90deg, transparent, rgba(255,77,109,0.95), transparent);
     box-shadow: 0 0 10px rgba(255,77,109,0.35);
     animation: scanLine 2.2s linear infinite;
-    z-index: 2;
+    z-index: 3;
 }
 
 @keyframes warnPulse {
@@ -1589,29 +1589,26 @@ button {
 }
 		.hud-warning-icon {
     position: relative;
-
-    width: 96px;
-    height: 82px;
-
-    /* 🔺 三角形本體 */
+    width: 110px;
+    height: 94px;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 
     background:
-        linear-gradient(180deg, rgba(255,90,120,0.12), rgba(255,40,80,0.02)),
-        radial-gradient(circle at 50% 70%, rgba(255,77,109,0.25), transparent 60%);
+        linear-gradient(180deg, rgba(255,90,120,0.32), rgba(255,40,80,0.10)),
+        radial-gradient(circle at 50% 70%, rgba(255,77,109,0.38), transparent 62%);
+    background-blend-mode: screen;
 
-    border: 2px solid rgba(255,90,120,0.95);
+    border: 3px solid rgba(255,90,120,1);
 
     box-shadow:
-        0 0 10px rgba(255,77,109,0.25),
-        0 0 24px rgba(255,77,109,0.14),
-        inset 0 0 10px rgba(255,77,109,0.08);
+        0 0 18px rgba(255,77,109,0.45),
+        0 0 34px rgba(255,77,109,0.22),
+        inset 0 0 14px rgba(255,77,109,0.16);
 
     animation:
         warnPulse 1.8s ease-in-out infinite,
         iconGlow 2.4s ease-in-out infinite;
 }
-
 @keyframes iconGlow {
     0%,100% {
         box-shadow:
@@ -1674,13 +1671,6 @@ button {
       <div class="hud-frame-line outer"></div>
       <div class="hud-frame-line inner"></div>
       <div class="hud-frame-line core"></div>
-	  <div class="hud-frame-deco top-left"></div>
-  	  <div class="hud-frame-deco top-right"></div>
-	  <div class="hud-frame-deco bottom-left"></div>
-	  <div class="hud-frame-deco bottom-right"></div>
-
-      <div class="hud-light top-cyan"></div>
-      <div class="hud-light top-red"></div>
       <div class="hud-light left-cyan"></div>
       <div class="hud-light right-cyan"></div>
       <div class="hud-light bl-red"></div>
