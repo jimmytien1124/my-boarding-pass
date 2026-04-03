@@ -17,6 +17,7 @@
         * { box-sizing: border-box; }
 
         body {
+			overflow-x: hidden;
             margin: 0;
             min-height: 100vh;
             background:
@@ -607,6 +608,7 @@ button {
 }
 
 .hud-frame {
+	max-width: 100%;
 	animation: hudBreath 6s ease-in-out infinite;
     position: relative;
     min-height: 620px;
@@ -889,6 +891,10 @@ button {
 	text-shadow: 0 0 8px rgba(255,255,255,0.08);
     line-height: 1.7;
     margin-bottom: 24px;
+	letter-spacing: 0.8px;
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.08),
+        0 0 14px rgba(255,77,109,0.08);
 }
 .hud-warning-wrap {
     margin: 20px 0 12px;
@@ -1988,6 +1994,21 @@ function runLoadingTo(targetPage, cb) {
 
           typeLine();
       }
+	  // 👉 等畫面載入完再綁事件（避免抓不到元素）
+window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.querySelector('.hud-confirm-btn');
+    const icon = document.querySelector('.hud-warning-icon');
+
+    if (btn && icon) {
+        btn.addEventListener('mouseenter', () => {
+            icon.classList.add('glitch');
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            icon.classList.remove('glitch');
+        });
+    }
+});
   </script>
 </body>
 </html>
