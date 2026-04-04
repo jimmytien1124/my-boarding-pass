@@ -800,46 +800,6 @@ button {
     letter-spacing: 1px;
     color: rgba(255,255,255,0.7);
 }
-.hud-warning-icon::before {
-    content: "!";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2.6rem;
-    font-weight: 900;
-
-    color: #000;                 /* 🔥 改這裡 */
-    -webkit-text-stroke: 0;      /* 🔥 關掉描邊 */
-
-    text-shadow:
-        0 0 6px rgba(255,255,255,0.9),
-        0 0 12px rgba(255,255,255,0.7);
-
-    z-index: 30;
-    pointer-events: none;
-}
-.hud-warning-icon::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    clip-path: polygon(50% 4%, 6% 96%, 94% 96%);
-
-    background:
-        linear-gradient(180deg, rgba(255,110,140,0.95) 0%, rgba(255,70,110,0.72) 55%, rgba(170,20,55,0.88) 100%),
-        radial-gradient(circle at 50% 25%, rgba(255,255,255,0.22), transparent 50%);
-
-    border: 3px solid rgba(255,90,120,1);
-
-    box-shadow:
-        0 0 18px rgba(255,77,109,0.45),
-        0 0 34px rgba(255,77,109,0.22),
-        inset 0 0 14px rgba(255,255,255,0.10),
-        inset 0 -10px 16px rgba(120,0,30,0.22),
-        inset 0 2px 6px rgba(255,255,255,0.08);
-
-    z-index: 1;
-}
 
 @keyframes warnPulse {
     0%, 100% {
@@ -1575,10 +1535,9 @@ button {
         opacity: 0.6;
     }
 }
-		.hud-warning-icon.glitch {
-    animation:
-        warnPulse 1.8s ease-in-out infinite,
-        glitchFlash 0.25s ease;
+		.hud-warning-icon.glitch .warn-triangle {
+    animation: warnPulse 2.2s ease-in-out infinite;
+    transform-origin: center;
 }
 		.hud-warning-wrap {
     display: flex;
@@ -1597,20 +1556,6 @@ button {
         transform: translateY(-6px);
     }
 }
-		.hud-warning-icon {
-	transform: translateZ(0);
-    position: relative;
-	display: block; 
-    width: 110px;
-    height: 94px;
-    z-index: 6;
-	overflow: visible;
-	border-radius: 12px;
-	animation:
-    iconGlow 2.2s ease-in-out infinite,
-    warnPulse 2.2s ease-in-out infinite;
-    background: none; /* ← 關鍵 */
-}
 @keyframes iconGlow {
     0%,100% {
         box-shadow:
@@ -1624,6 +1569,40 @@ button {
             0 0 40px rgba(255,77,109,0.25),
             inset 0 0 14px rgba(255,77,109,0.12);
     }
+}
+		.hud-warning-icon {
+    position: relative;
+    width: 170px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter:
+        drop-shadow(0 0 16px rgba(255, 70, 120, 0.35))
+        drop-shadow(0 0 34px rgba(255, 40, 100, 0.18));
+}
+
+.warn-triangle {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 黑色驚嘆號（保留你喜歡的版本） */
+.warn-exclaim {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #111;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,0.08),
+        0 0 8px rgba(0,0,0,0.18);
+    pointer-events: none;
 }
     </style>
 </head>
@@ -1682,34 +1661,32 @@ button {
         <div class="hud-title">★ DIGITAL BOARDING PASS</div>
         <div class="hud-denied">AWAITING CONFIRMATION</div>
       </div>
-	<div class="hud-warning-wrap">     
-		<div class="hud-warning-icon"></div>
-      </div>
+	<div class="hud-warning-icon">
+  <svg class="warn-triangle" viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <linearGradient id="warnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff9ab3"/>
+        <stop offset="45%" stop-color="#ff5b86"/>
+        <stop offset="100%" stop-color="#c81d4f"/>
+      </linearGradient>
+    </defs>
 
-      <div class="hud-message">
-        This is a one-way ticket.<br>
-		Once you confirm,<br>
-    	there is no going back.
-      </div>
+    <path
+      d="M50 12
+         Q55 12 58 17
+         L86 72
+         Q92 84 79 84
+         L21 84
+         Q8 84 14 72
+         L42 17
+         Q45 12 50 12
+         Z"
+      fill="url(#warnGrad)"
+    />
+  </svg>
 
-      <div class="hud-content-row">
-        <div class="hud-left-module">
-  <div class="module-row">
-    <span class="module-dot"></span>
-    <span class="module-bar"></span>
-  </div>
-  <div class="module-row">
-    <span class="module-dot"></span>
-    <span class="module-bar"></span>
-  </div>
-  <div class="module-row">
-    <span class="module-dot"></span>
-    <span class="module-bar"></span>
-  </div>
-  <div class="module-row">
-    <span class="module-dot"></span>
-    <span class="module-bar"></span>
-  </div>
+  <span class="warn-exclaim">!</span>
+</div>
 
   <!-- ⭐ 這段補上 -->
   <div class="module-core-wrap">
