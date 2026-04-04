@@ -53,10 +53,10 @@
         }
 
         @keyframes crtClose {
-            0% { transform: scale(1, 1); opacity: 1; }
-            50% { transform: scale(1, 0.005); opacity: 0.8; }
-            100% { transform: scale(0, 0); opacity: 0; }
-        }
+    0% { transform: scale(1, 1); opacity: 1; }
+    50% { transform: scale(1, 0.01); opacity: 0.8; }
+    100% { transform: scale(0.95, 0.02); opacity: 0; }
+}
 
         .glitch-once {
     /* 不要動畫，只當 trigger class */
@@ -1554,7 +1554,6 @@ function runLoadingTo(targetPage, cb) {
       function transit(nextId, cb) {
     const frame = document.getElementById('mainFrame');
 
-    // page2 -> page3 交給 confirmBoarding 自己控制
     if (nextId === 'page3') {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(nextId).classList.add('active');
@@ -1573,13 +1572,15 @@ function runLoadingTo(targetPage, cb) {
     frame.classList.add('crt-off');
 
     setTimeout(() => {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(nextId).classList.add('active');
-        frame.classList.remove('glitch');
-        window.scrollTo(0, 0);
-        if (cb) cb();
-    }, 600);
-}
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(nextId).classList.add('active');
+
+    frame.classList.remove('crt-off');
+    frame.style.transform = "";   // 🔥 保險
+
+    window.scrollTo(0, 0);
+    if (cb) cb();
+}, 600);
 
       const lines = [
           "Dear Most Precious Passenger Yudai:",
