@@ -1936,8 +1936,6 @@ function runLoadingTo(targetPage, cb) {
     void flash.offsetWidth;
     void frame.offsetWidth;
 
-    flash.classList.add('active');
-
     setTimeout(() => {
         frame.classList.add('glitch-once');
         setTimeout(() => frame.classList.remove('glitch-once'), 350);
@@ -1975,7 +1973,6 @@ function runLoadingTo(targetPage, cb) {
     // 🔥 4️⃣ 再切頁
     setTimeout(() => {
         transit('page3', startTypewriter);
-        main.classList.remove('crt-off'); // 回來要恢復
     }, 700);
 }
       function transit(nextId, cb) {
