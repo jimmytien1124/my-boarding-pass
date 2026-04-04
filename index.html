@@ -612,7 +612,7 @@ button {
     position: relative;
     min-height: 580px;
     padding: 20px 34px 28px;
-    overflow: hidden;
+    overflow: visible;
     background:
         radial-gradient(circle at 50% 16%, rgba(255,77,109,0.10), transparent 30%),
         radial-gradient(circle at 20% 60%, rgba(0,234,255,0.08), transparent 24%),
@@ -633,6 +633,7 @@ button {
     position: absolute;
     inset: 0;
     pointer-events: none;
+			z-index: 0;
 
     background:
         repeating-linear-gradient(
@@ -643,7 +644,7 @@ button {
             transparent 4px
         );
 
-    opacity: 0.25;
+    opacity: 0.15;
 }
 
 .hud-frame-line {
@@ -826,6 +827,8 @@ button {
 }
 
 .hud-message {
+	position: relative;
+    z-index: 5;
     text-align: center;
     color: rgba(255,255,255,0.84);
     font-size: 1.2rem;
@@ -879,7 +882,8 @@ button {
 }
 
 .hud-bottom-mini {
-    position: absolute;
+    position: relative;
+	margin-top: 10px;
     left: 0;
     bottom: -4px;
     display: flex;
@@ -1062,6 +1066,7 @@ button {
     }
 
     .hud-frame {
+		
         min-height: auto;
         padding: 20px 14px 20px;
     }
@@ -1167,7 +1172,57 @@ button {
         order: 2;
         gap: 12px;
     }
+<div class="hud-header">
+        <div class="hud-title">★ DIGITAL BOARDING PASS</div>
+        <div class="hud-denied">AWAITING CONFIRMATION</div>
+      </div>
+	<div class="hud-warning-icon">
+  <svg class="warn-triangle" viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <linearGradient id="warnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff9ab3"/>
+        <stop offset="45%" stop-color="#ff5b86"/>
+        <stop offset="100%" stop-color="#c81d4f"/>
+      </linearGradient>
+    </defs>
 
+    <path
+      d="M50 12
+         Q55 12 58 17
+         L86 72
+         Q92 84 79 84
+         L21 84
+         Q8 84 14 72
+         L42 17
+         Q45 12 50 12
+         Z"
+      fill="url(#warnGrad)"
+    />
+  </svg>
+
+  <span class="warn-exclaim">!</span>
+</div>
+		<div class="hud-message">
+  <div>This is a one-way ticket.</div>
+  <div>Once you confirm,</div>
+  <div>there is no going back.</div>
+</div>
+
+  <!-- ⭐ 這段補上 -->
+  <div class="module-core-wrap">
+    <span class="module-core"></span>
+    <span class="module-wire wire-1"></span>
+    <span class="module-wire wire-2"></span>
+    <span class="module-wire wire-3"></span>
+  </div>
+
+  <div class="hud-bottom-mini">
+    <span>0FBA1</span>
+    <span>8F-6T8</span>
+    <span>6AC6E</span>
+    <span>B41C7E</span>
+  </div>
+</div>
     .secure-line {
         grid-template-columns: 1fr;
     opacity: 0.6;
@@ -1355,7 +1410,7 @@ button {
     position: relative;
     width: 120px;
     height: 60px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 		.module-row {
     display: flex;
@@ -1604,6 +1659,20 @@ button {
         0 0 8px rgba(0,0,0,0.18);
     pointer-events: none;
 }
+		.hud-message {
+    position: relative;
+    z-index: 6;
+    text-align: center;
+    color: rgba(255,255,255,0.9);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.75;
+    letter-spacing: 0.6px;
+    margin: 8px 0 28px;
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.08),
+        0 0 14px rgba(255,77,109,0.08);
+}
     </style>
 </head>
 <body>
@@ -1649,20 +1718,20 @@ button {
   <div class="hud-board">
 
     <div class="hud-frame">
-      <div class="hud-frame-line outer"></div>
+		<div class="hud-frame-line outer"></div>
       <div class="hud-frame-line inner"></div>
       <div class="hud-frame-line core"></div>
       <div class="hud-light left-cyan"></div>
       <div class="hud-light right-cyan"></div>
       <div class="hud-light bl-red"></div>
       <div class="hud-light br-cyan"></div>
+		<div class="hud-header">
+  <div class="hud-title">★ DIGITAL BOARDING PASS</div>
+  <div class="hud-denied">AWAITING CONFIRMATION</div>
+</div>
 
-      <div class="hud-header">
-        <div class="hud-title">★ DIGITAL BOARDING PASS</div>
-        <div class="hud-denied">AWAITING CONFIRMATION</div>
-      </div>
-	<div class="hud-warning-icon">
-  <svg class="warn-triangle" viewBox="0 0 100 100" aria-hidden="true">
+<div class="hud-warning-icon">
+  <svg class="warn-triangle" viewBox="0 0 100 100">
     <defs>
       <linearGradient id="warnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#ff9ab3"/>
@@ -1670,43 +1739,32 @@ button {
         <stop offset="100%" stop-color="#c81d4f"/>
       </linearGradient>
     </defs>
-
-    <path
-      d="M50 12
-         Q55 12 58 17
-         L86 72
-         Q92 84 79 84
-         L21 84
-         Q8 84 14 72
-         L42 17
-         Q45 12 50 12
-         Z"
-      fill="url(#warnGrad)"
-    />
+    <path d="M50 12 Q55 12 58 17 L86 72 Q92 84 79 84 L21 84 Q8 84 14 72 L42 17 Q45 12 50 12 Z"
+          fill="url(#warnGrad)"/>
   </svg>
-
   <span class="warn-exclaim">!</span>
 </div>
 
-  <!-- ⭐ 這段補上 -->
-  <div class="module-core-wrap">
-    <span class="module-core"></span>
-    <span class="module-wire wire-1"></span>
-    <span class="module-wire wire-2"></span>
-    <span class="module-wire wire-3"></span>
-  </div>
-
-  <div class="hud-bottom-mini">
-    <span>0FBA1</span>
-    <span>8F-6T8</span>
-    <span>6AC6E</span>
-    <span>B41C7E</span>
-  </div>
+<div class="hud-message">
+  <div>This is a one-way ticket.</div>
+  <div>Once you confirm,</div>
+  <div>there is no going back.</div>
 </div>
 
-        <div class="hud-right-module">
+<div class="module-core-wrap">
+  <span class="module-core"></span>
+  <span class="module-wire wire-1"></span>
+  <span class="module-wire wire-2"></span>
+  <span class="module-wire wire-3"></span>
+</div>
 
-          <div class="secure-line">
+<div class="hud-bottom-mini">
+  <span>0FBA1</span>
+  <span>8F-6T8</span>
+  <span>6AC6E</span>
+  <span>B41C7E</span>
+</div>
+	<div class="secure-line">
             <span>Y_CODE: YUDAI</span>
             <div class="red-bars">
               <span></span>
@@ -1714,8 +1772,9 @@ button {
               <span></span>
             </div>
           </div>
-
+		<div class="hud-right-module">
           <div class="hud-btn-wrap">
+
             <button class="hud-confirm-btn" onclick="confirmBoarding()">
               <span class="hud-btn-honey"></span>
               <span class="hud-btn-text">CONFIRM BOARDING</span>
