@@ -1255,7 +1255,6 @@ button {
 
 .warn-triangle {
     display: block;
-    width: min(55vw, 220px);
     height: auto;
     max-width: 260px;
 	position: relative;
@@ -1266,7 +1265,7 @@ button {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -56%);
+    transform: translate(-50%, -50%);
     color: #111;
     font-size: clamp(42px, 12vw, 64px);
     font-weight: 900;
@@ -1277,7 +1276,7 @@ button {
 
 /* ===== PAGE 2 text size fix ===== */
 #page2 .hud-message {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     line-height: 1.75;
     margin: 16px 0 22px;
     letter-spacing: 0.4px;
@@ -1286,7 +1285,7 @@ button {
 /* ===== mobile only ===== */
 @media (max-width: 900px) {
     .hud-frame {
-        overflow: hidden;
+        overflow: visible;
     }
 
     .hud-warning-icon {
@@ -1294,7 +1293,7 @@ button {
     }
 
     .warn-triangle {
-        width: 72%;
+    width: min(60vw, 220px);
         max-width: 230px;
     }
 
