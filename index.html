@@ -1502,6 +1502,18 @@ button {
         padding: 0 8px;
     }
 }
+		.hud-warning-icon.glitch {
+    animation: glitchFlash 0.28s ease 2;
+    filter:
+        drop-shadow(3px 0 rgba(255,77,109,0.9))
+        drop-shadow(-3px 0 rgba(0,234,255,0.9));
+}
+
+.hud-warning-icon.glitch .warn-triangle {
+    animation:
+        warnPulse 0.9s ease-in-out,
+        glitchFlash 0.28s ease 2;
+}
     </style>
 </head>
 <body>
@@ -1786,15 +1798,15 @@ function runLoadingTo(targetPage, cb) {
     icon.classList.remove('glitch');
     flash.classList.remove('active');
     void frame.offsetWidth;
+    void icon.offsetWidth;
+    void flash.offsetWidth;
 
-    // 保留紅藍 glitch
+    // 1. 先讓整個警告框紅藍閃一下
     frame.classList.add('glitch-once');
     icon.classList.add('glitch');
-
-    // 保留閃光
     flash.classList.add('active');
 
-    // 直接交給 transit 做壓縮
+    // 2. 多留一點時間讓你看得到紅藍 glitch
     setTimeout(() => {
         transit('page3', () => {
             frame.classList.remove('glitch-once');
@@ -1802,7 +1814,7 @@ function runLoadingTo(targetPage, cb) {
             flash.classList.remove('active');
             startTypewriter();
         });
-    }, 180);
+    }, 420);
 }
       function transit(nextId, cb) {
     const frame = document.getElementById('mainFrame');
