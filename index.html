@@ -446,7 +446,7 @@ button {
     gap: 25px;
     margin-top: 40px;
     width: 100%;
-    padding-left: 30px;
+    padding-left: 0;
     opacity: 0;
     pointer-events: none;
     transform: translateY(20px);
@@ -460,7 +460,8 @@ button {
     all: unset;
     display: block;
     position: relative;
-    width: 260px;
+    width: 100%;
+    max-width: 100%;
     height: 56px;
     cursor: pointer;
     transition: transform 0.22s ease, filter 0.22s ease;
@@ -1065,12 +1066,6 @@ button {
         line-height: 1.45;
     }
 
-    .hud-frame {
-		
-        min-height: auto;
-        padding: 20px 14px 20px;
-    }
-
     .hud-header {
         align-items: flex-start;
         gap: 10px;
@@ -1172,57 +1167,6 @@ button {
         order: 2;
         gap: 12px;
     }
-<div class="hud-header">
-        <div class="hud-title">★ DIGITAL BOARDING PASS</div>
-        <div class="hud-denied">AWAITING CONFIRMATION</div>
-      </div>
-	<div class="hud-warning-icon">
-  <svg class="warn-triangle" viewBox="0 0 100 100" aria-hidden="true">
-    <defs>
-      <linearGradient id="warnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#ff9ab3"/>
-        <stop offset="45%" stop-color="#ff5b86"/>
-        <stop offset="100%" stop-color="#c81d4f"/>
-      </linearGradient>
-    </defs>
-
-    <path
-      d="M50 12
-         Q55 12 58 17
-         L86 72
-         Q92 84 79 84
-         L21 84
-         Q8 84 14 72
-         L42 17
-         Q45 12 50 12
-         Z"
-      fill="url(#warnGrad)"
-    />
-  </svg>
-
-  <span class="warn-exclaim">!</span>
-</div>
-		<div class="hud-message">
-  <div>This is a one-way ticket.</div>
-  <div>Once you confirm,</div>
-  <div>there is no going back.</div>
-</div>
-
-  <!-- ⭐ 這段補上 -->
-  <div class="module-core-wrap">
-    <span class="module-core"></span>
-    <span class="module-wire wire-1"></span>
-    <span class="module-wire wire-2"></span>
-    <span class="module-wire wire-3"></span>
-  </div>
-
-  <div class="hud-bottom-mini">
-    <span>0FBA1</span>
-    <span>8F-6T8</span>
-    <span>6AC6E</span>
-    <span>B41C7E</span>
-  </div>
-</div>
     .secure-line {
         grid-template-columns: 1fr;
     opacity: 0.6;
@@ -1445,151 +1389,6 @@ button {
 .hud-denied {
     word-break: break-word;
 }
-    .hud-frame {
-        min-height: auto;
-        padding: 20px 14px 20px;
-    }
-
-    .hud-header {
-        align-items: flex-start;
-        gap: 10px;
-        margin-bottom: 10px;
-        flex-wrap: wrap;
-    }
-
-    .hud-title {
-        font-size: 0.78rem;
-        line-height: 1.2;
-        max-width: 52%;
-    }
-
-    .hud-denied {
-        font-size: 0.72rem;
-        line-height: 1.15;
-        text-align: right;
-        max-width: 40%;
-    }
-
-    .hud-subrow {
-        margin-bottom: 12px;
-        gap: 10px;
-        align-items: flex-start;
-    }
-
-    .hud-code-group {
-        gap: 12px;
-        font-size: 0.7rem;
-        flex-wrap: wrap;
-        max-width: 42%;
-    }
-
-    .hud-system {
-        max-width: 52%;
-    }
-
-    .hud-system-title {
-        font-size: 0.72rem;
-        margin-bottom: 4px;
-    }
-
-    .hud-system-mini {
-        gap: 8px;
-        font-size: 0.5rem;
-        line-height: 1.3;
-    }
-    .hud-message {
-        font-size: 0.95rem;
-        line-height: 1.7;
-        margin: 10px 0 18px;
-        letter-spacing: 0.2px;
-    }
-
-    .hud-content-row {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    .hud-left-module {
-        min-height: auto;
-        padding-bottom: 28px;
-    }
-
-    .module-row {
-        margin-bottom: 12px;
-    }
-
-    .module-core-wrap {
-        width: 90px;
-        height: 44px;
-        margin-top: 6px;
-    }
-
-    .module-core {
-        width: 24px;
-        height: 24px;
-        border-width: 3px;
-    }
-
-    .module-wire {
-        left: 28px;
-        height: 2px;
-    }
-
-    .wire-1 { width: 52px; bottom: 16px; }
-    .wire-2 { width: 44px; bottom: 26px; }
-    .wire-3 { width: 58px; bottom: 8px; }
-
-    .hud-bottom-mini {
-        font-size: 0.42rem;
-        gap: 8px;
-        bottom: 0;
-        flex-wrap: wrap;
-    }
-
-    .hud-right-module {
-        gap: 12px;
-    }
-
-    .secure-line {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        font-size: 0.7rem;
-    }
-
-    .red-bars {
-        gap: 8px;
-    }
-
-    .red-bars span {
-        height: 10px;
-    }
-
-    .hud-btn-wrap {
-        margin-top: 10px;
-    }
-
-    .hud-confirm-btn {
-        height: 66px;
-        font-size: 0.78rem;
-        letter-spacing: 1.2px;
-    }
-
-    .hud-btn-arrows {
-        right: 12px;
-        gap: 4px;
-    }
-
-    .hud-btn-arrows i {
-        width: 8px;
-        height: 24px;
-    }
-
-    .hud-light.left-cyan,
-    .hud-light.right-cyan {
-        height: 60px;
-        opacity: 0.6;
-    }
-}
 		.hud-warning-icon.glitch .warn-triangle {
     animation: warnPulse 2.2s ease-in-out infinite;
     transform-origin: center;
@@ -1648,7 +1447,7 @@ button {
 .warn-exclaim {
     position: absolute;
     left: 50%;
-    top: 52%;
+    top: 50%;
     transform: translate(-50%, -50%);
     font-size: 4rem;
     font-weight: 900;
@@ -1948,31 +1747,23 @@ function runLoadingTo(targetPage, cb) {
     }, 1800);
 }
 	  function confirmBoarding() {
-    const frame = document.querySelector('.hud-frame');
-    const main = document.getElementById('mainFrame');
-    const icon = document.querySelector('.hud-warning-icon');
-    const flash = document.getElementById('acceptFlash');
+    const frame = document.getElementById('mainFrame');
 
-    // reset animation（你之前那個優化）
-    frame.classList.remove('glitch-once');
-    icon.classList.remove('glitch');
-    void frame.offsetWidth;
-
-    // 1️⃣ glitch
+    // glitch
     frame.classList.add('glitch-once');
-    icon.classList.add('glitch');
 
-    // 2️⃣ flash
-    flash.classList.add('active');
-
-    // 🔥 3️⃣ 關機動畫
+    // 壓縮
     setTimeout(() => {
-        main.classList.add('crt-off');
-    }, 200);
+        frame.classList.add('crt-off');
+    }, 180);
 
-    // 🔥 4️⃣ 再切頁
+    // 👉 切頁（關鍵順序）
     setTimeout(() => {
-        transit('page3', startTypewriter);
+        transit('page3', () => {
+            frame.classList.remove('crt-off');
+            frame.classList.remove('glitch-once');
+            startTypewriter();
+        });
     }, 700);
 }
       function transit(nextId, cb) {
