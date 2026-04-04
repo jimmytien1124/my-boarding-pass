@@ -62,8 +62,8 @@
         }
 
         .glitch-once {
-            animation: glitchFlash 0.35s ease;
-        }
+    /* 不要動畫，只當 trigger class */
+}
 
         @keyframes glitchFlash {
             0% {
@@ -71,17 +71,14 @@
                 filter: none;
             }
             20% {
-                transform: translate(-2px, 1px);
-                filter: drop-shadow(2px 0 rgba(255,77,109,0.8)) drop-shadow(-2px 0 rgba(0,234,255,0.8));
-            }
-            40% {
-                transform: translate(2px, -1px);
-                filter: drop-shadow(-2px 0 rgba(255,77,109,0.75)) drop-shadow(2px 0 rgba(0,234,255,0.75));
-            }
-            60% {
-                transform: translate(-1px, 1px);
-                filter: drop-shadow(1px 0 rgba(255,77,109,0.7)) drop-shadow(-1px 0 rgba(0,234,255,0.7));
-            }
+    transform: translate(-6px, 2px);
+}
+40% {
+    transform: translate(6px, -2px);
+}
+60% {
+    transform: translate(-4px, 2px);
+}
             100% {
                 transform: translate(0);
                 filter: none;
@@ -90,7 +87,7 @@
 
         .page {
             display: none;
-            text-align: center;
+            text-align: left;
         }
 
         .page.active {
@@ -609,7 +606,7 @@ button {
 
 .hud-frame {
 	max-width: 100%;
-	animation: hudBreath 6s ease-in-out infinite;
+	animation: none;
     position: relative;
     min-height: 580px;
     padding: 20px 34px 28px;
@@ -830,7 +827,7 @@ button {
 .hud-message {
 	position: relative;
     z-index: 5;
-    text-align: center;
+    text-align: left;
     color: rgba(255,255,255,0.84);
     font-size: 1.2rem;
 	font-weight: 700;
@@ -1060,6 +1057,19 @@ button {
 }
 
 @media (max-width: 900px) {
+    .main-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px 16px 18px;
+        border-radius: 0;
+    }
+
+    .hud-frame {
+        min-height: auto;
+        padding: 18px 16px 22px;
+		clip-path: none;
+    }
+
     .hud-top-meta {
         font-size: 0.56rem;
         gap: 10px;
@@ -1067,120 +1077,49 @@ button {
     }
 
     .hud-header {
+        display: flex;
+        flex-direction: column;
         align-items: flex-start;
-        gap: 10px;
+        gap: 6px;
         margin-bottom: 10px;
+    }
+
+    .hud-title,
+    .hud-denied {
+        max-width: 100%;
+        width: 100%;
+        text-align: left;
     }
 
     .hud-title {
         font-size: 0.78rem;
-        line-height: 1.2;
-        max-width: 52%;
+        line-height: 1.25;
     }
 
     .hud-denied {
         font-size: 0.72rem;
-        line-height: 1.15;
-        text-align: right;
-        max-width: 40%;
-    }
-
-    .hud-subrow {
-        margin-bottom: 12px;
-        gap: 10px;
-        align-items: flex-start;
-    }
-
-    .hud-code-group {
-        gap: 12px;
-        font-size: 0.7rem;
-        flex-wrap: wrap;
-        max-width: 42%;
-    }
-
-    .hud-system {
-        max-width: 52%;
-    }
-
-    .hud-system-title {
-        font-size: 0.72rem;
-        margin-bottom: 4px;
-    }
-
-    .hud-system-mini {
-        gap: 8px;
-        font-size: 0.5rem;
-        line-height: 1.3;
+        line-height: 1.2;
     }
 
     .hud-message {
         font-size: 0.78rem;
-        line-height: 1.6;
+        line-height: 1.65;
         margin: 10px 0 18px;
         letter-spacing: 0.2px;
+        padding: 0;
     }
 
-    .hud-content-row {
+    .secure-line {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 10px;
+        font-size: 0.75rem;
+        opacity: 0.85;
     }
-
-    .hud-left-module {
-        order: 1;
-        min-height: auto;
-        padding-bottom: 28px;
-    }
-
-    .module-row {
-        margin-bottom: 12px;
-    }
-
-    .module-core-wrap {
-        width: 90px;
-        height: 44px;
-        margin-top: 6px;
-    }
-
-    .module-core {
-        width: 24px;
-        height: 24px;
-        border-width: 3px;
-    }
-
-    .module-wire {
-        left: 28px;
-        height: 2px;
-    }
-
-    .wire-1 { width: 52px; bottom: 16px; }
-    .wire-2 { width: 44px; bottom: 26px; }
-    .wire-3 { width: 58px; bottom: 8px; }
 
     .hud-bottom-mini {
         font-size: 0.42rem;
         gap: 8px;
-        bottom: 0;
         flex-wrap: wrap;
-    }
-
-    .hud-right-module {
-        order: 2;
-        gap: 12px;
-    }
-    .secure-line {
-        grid-template-columns: 1fr;
-    opacity: 0.6;
-    font-size: 0.75rem;
-    }
-
-    .red-bars {
-        opacity: 0.6;
-    transform: scaleY(0.9);
-    }
-
-    .red-bars span {
-		filter: brightness(0.85);
-        height: 10px;
     }
 
     .hud-btn-wrap {
@@ -1217,11 +1156,22 @@ button {
         top: 120px;
     }
 
-    .hud-frame-deco.top-left,
-    .hud-frame-deco.top-right,
-    .hud-frame-deco.bottom-left,
-    .hud-frame-deco.bottom-right {
-        opacity: 0.45;
+    #page3 {
+        padding: 0;
+    }
+
+    #typewriter {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 16px;
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.8;
+    }
+
+    #btnGroup {
+        margin-top: 28px;
+        padding: 0 16px;
     }
 }
 		@keyframes hudBreath {
@@ -1382,8 +1332,14 @@ button {
     filter: brightness(1.2);
 }
 		.glitch-once {
-    animation: glitchFlash 0.35s ease;
-    filter: contrast(1.3) saturate(1.2);
+    /* 不要動畫，只當 trigger class */
+}
+
+.hud-frame.glitch {
+    animation: glitchFlash 0.32s ease 2;
+    filter:
+        drop-shadow(4px 0 rgba(255,77,109,0.85))
+        drop-shadow(-4px 0 rgba(0,234,255,0.85));
 }
 		.hud-title,
 .hud-denied {
@@ -1461,7 +1417,7 @@ button {
 		.hud-message {
     position: relative;
     z-index: 6;
-    text-align: center;
+    text-align: left;
     color: rgba(255,255,255,0.9);
     font-size: 1.15rem;
     font-weight: 700;
@@ -1480,7 +1436,7 @@ button {
 #typewriter {
     width: 100%;
     max-width: 100%;
-    padding: 0 10px;
+    padding: 0 16px;
     margin: 0 auto;
     box-sizing: border-box;
     word-break: break-word;
@@ -1499,8 +1455,11 @@ button {
     #typewriter {
         font-size: 0.95rem;
         line-height: 1.8;
-        padding: 0 8px;
+        padding: 0 16px;
     }
+	#btnGroup {
+    padding: 0 16px;
+}
 }
 		.hud-warning-icon.glitch {
     animation: glitchFlash 0.28s ease 2;
@@ -1513,6 +1472,15 @@ button {
     animation:
         warnPulse 0.9s ease-in-out,
         glitchFlash 0.28s ease 2;
+}
+		.hud-frame.glitch {
+    animation: glitchFlash 0.32s ease 2;
+    filter:
+        drop-shadow(4px 0 rgba(255,77,109,0.85))
+        drop-shadow(-4px 0 rgba(0,234,255,0.85));
+}
+		.hud-frame.breath {
+    animation: hudBreath 6s ease-in-out infinite;
 }
     </style>
 </head>
@@ -1744,8 +1712,8 @@ function runLoadingTo(targetPage, cb) {
     const frame = document.getElementById('mainFrame');
 
     if (targetPage !== 'page2') {
-        frame.classList.add('glitch-once');
-        setTimeout(() => frame.classList.remove('glitch-once'), 350);
+        frame.classList.add('glitch');
+        setTimeout(() => frame.classList.remove('glitch'), 350);
     }
 
     ld.style.display = 'flex';
@@ -1772,44 +1740,48 @@ function runLoadingTo(targetPage, cb) {
     const frame = document.getElementById('mainFrame');
 
     flash.classList.remove('active');
-    frame.classList.remove('glitch-once');
+    frame.classList.remove('glitch');
 
     void flash.offsetWidth;
     void frame.offsetWidth;
 
     setTimeout(() => {
-        frame.classList.add('glitch-once');
-        setTimeout(() => frame.classList.remove('glitch-once'), 350);
+        frame.classList.add('glitch');
+        setTimeout(() => frame.classList.remove('glitch'), 350);
     }, 180);
 
     setTimeout(() => {
+        flash.classList.add('active');
+
         transit('pageFinal', () => {
             flash.classList.remove('active');
         });
     }, 1800);
 }
 	  function confirmBoarding() {
+		  
     const frame = document.querySelector('.hud-frame');
     const icon = document.querySelector('.hud-warning-icon');
     const flash = document.getElementById('acceptFlash');
 
     // reset
-    frame.classList.remove('glitch-once');
-    icon.classList.remove('glitch');
+		  frame.classList.remove('breath');
+    frame.classList.add('glitch');
+    frame.classList.remove('glitch');
     flash.classList.remove('active');
     void frame.offsetWidth;
     void icon.offsetWidth;
     void flash.offsetWidth;
 
     // 1. 先讓整個警告框紅藍閃一下
-    frame.classList.add('glitch-once');
+    frame.classList.add('glitch');
     icon.classList.add('glitch');
     flash.classList.add('active');
 
     // 2. 多留一點時間讓你看得到紅藍 glitch
     setTimeout(() => {
         transit('page3', () => {
-            frame.classList.remove('glitch-once');
+            frame.classList.remove('glitch');
             icon.classList.remove('glitch');
             flash.classList.remove('active');
             startTypewriter();
@@ -1829,9 +1801,9 @@ function runLoadingTo(targetPage, cb) {
     }
 
     if (nextId === 'page2') {
-        frame.classList.add('glitch-once');
+        frame.classList.add('glitch-once', 'glitch');
         setTimeout(() => {
-            frame.classList.remove('glitch-once');
+            frame.classList.remove('glitch');
         }, 350);
     }
 
@@ -1840,7 +1812,7 @@ function runLoadingTo(targetPage, cb) {
     setTimeout(() => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(nextId).classList.add('active');
-        frame.classList.remove('crt-off');
+        frame.classList.remove('glitch');
         window.scrollTo(0, 0);
         if (cb) cb();
     }, 600);
@@ -1905,6 +1877,11 @@ window.addEventListener('DOMContentLoaded', () => {
             icon.classList.remove('glitch');
         });
     }
+});
+	  frame.classList.add('breath');
+	  window.addEventListener('DOMContentLoaded', () => {
+    const frame = document.querySelector('.hud-frame');
+    if (frame) frame.classList.add('breath');
 });
   </script>
 </body>
