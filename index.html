@@ -1255,9 +1255,11 @@ button {
 
 .warn-triangle {
     display: block;
-    width: min(62vw, 260px);
+    width: min(55vw, 220px);
     height: auto;
     max-width: 260px;
+	position: relative;
+    z-index: 1;
 }
 
 .warn-exclaim {
@@ -1269,7 +1271,7 @@ button {
     font-size: clamp(42px, 12vw, 64px);
     font-weight: 900;
     line-height: 1;
-    z-index: 3;
+    z-index: 5;
     text-shadow: none;
 }
 
