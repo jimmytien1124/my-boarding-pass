@@ -1472,6 +1472,36 @@ button {
         0 0 6px rgba(255,255,255,0.08),
         0 0 14px rgba(255,77,109,0.08);
 }
+		#page3 {
+    text-align: left;
+    padding: 4px 0 12px;
+}
+
+#typewriter {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 10px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+#typewriter div {
+    margin-bottom: 16px !important;
+}
+
+@media (max-width: 900px) {
+    #page3 {
+        padding: 4px 2px 12px;
+    }
+
+    #typewriter {
+        font-size: 0.95rem;
+        line-height: 1.8;
+        padding: 0 8px;
+    }
+}
     </style>
 </head>
 <body>
@@ -1747,45 +1777,62 @@ function runLoadingTo(targetPage, cb) {
     }, 1800);
 }
 	  function confirmBoarding() {
-    const frame = document.getElementById('mainFrame');
+    const frame = document.querySelector('.hud-frame');
+    const icon = document.querySelector('.hud-warning-icon');
+    const flash = document.getElementById('acceptFlash');
 
-    // glitch
+    // reset
+    frame.classList.remove('glitch-once');
+    icon.classList.remove('glitch');
+    flash.classList.remove('active');
+    void frame.offsetWidth;
+
+    // 保留紅藍 glitch
     frame.classList.add('glitch-once');
+    icon.classList.add('glitch');
 
-    // 壓縮
-    setTimeout(() => {
-        frame.classList.add('crt-off');
-    }, 180);
+    // 保留閃光
+    flash.classList.add('active');
 
-    // 👉 切頁（關鍵順序）
+    // 直接交給 transit 做壓縮
     setTimeout(() => {
         transit('page3', () => {
-            frame.classList.remove('crt-off');
             frame.classList.remove('glitch-once');
+            icon.classList.remove('glitch');
+            flash.classList.remove('active');
             startTypewriter();
         });
-    }, 700);
+    }, 180);
 }
       function transit(nextId, cb) {
-          const frame = document.getElementById('mainFrame');
+    const frame = document.getElementById('mainFrame');
 
-          if (nextId === 'page2') {
-              frame.classList.add('glitch-once');
-              setTimeout(() => {
-                  frame.classList.remove('glitch-once');
-              }, 350);
-          }
+    // page2 -> page3 交給 confirmBoarding 自己控制
+    if (nextId === 'page3') {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(nextId).classList.add('active');
+        window.scrollTo(0, 0);
+        if (cb) cb();
+        return;
+    }
 
-          frame.classList.add('crt-off');
+    if (nextId === 'page2') {
+        frame.classList.add('glitch-once');
+        setTimeout(() => {
+            frame.classList.remove('glitch-once');
+        }, 350);
+    }
 
-          setTimeout(() => {
-              document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-              document.getElementById(nextId).classList.add('active');
-              frame.classList.remove('crt-off');
-              window.scrollTo(0, 0);
-              if (cb) cb();
-          }, 600);
-      }
+    frame.classList.add('crt-off');
+
+    setTimeout(() => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(nextId).classList.add('active');
+        frame.classList.remove('crt-off');
+        window.scrollTo(0, 0);
+        if (cb) cb();
+    }, 600);
+}
 
       const lines = [
           "Dear Most Precious Passenger Yudai:",
@@ -1810,7 +1857,6 @@ function runLoadingTo(targetPage, cb) {
           function typeLine() {
               if (lIdx < lines.length) {
                   const div = document.createElement('div');
-                  div.style.marginBottom = "12px";
                   box.appendChild(div);
 
                   let cIdx = 0;
