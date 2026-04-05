@@ -12,25 +12,21 @@
             --red: #ff4d6d;
             --gold: #c7a43a;
             --purple-glow: rgba(180, 120, 255, 0.15);
-			--primary-color: #00f3ff;
-			--secondary-color: #ff003c;
-			
-			--gold-main: #c6a94f;
-			--gold-dark: #7f6a2a;
-			--gold-glow: rgba(198, 169, 79, 0.4);
         }
 
         * { box-sizing: border-box; }
 
         body {
-			overflow-x: hidden;
             margin: 0;
             min-height: 100vh;
             background:
                 radial-gradient(circle at 50% 15%, rgba(0, 234, 255, 0.05), transparent 40%),
                 var(--bg);
             color: var(--text);
-            font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
             overflow-x: hidden;
             overflow-y: auto;
             padding: 40px 0;
@@ -54,19 +50,32 @@
             0%, 100% { opacity: 0; }
             50% { opacity: 0.6; }
         }
+
+.main-container {
+    width: min(94vw, 1100px);
+    max-width: 1100px;
+    position: relative;
+    z-index: 10;
+    border: 1px solid rgba(180, 120, 255, 0.12);
+    border-radius: 24px;
+    padding: 18px 18px 24px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 36px rgba(180, 120, 255, 0.08);
+}
         .crt-off {
             animation: crtClose 0.6s forwards ease-in;
         }
 
         @keyframes crtClose {
-    0% { transform: scale(1, 1); opacity: 1; }
-    50% { transform: scale(1, 0.01); opacity: 0.8; }
-    100% { transform: scale(0.95, 0.02); opacity: 0; }
-}
+            0% { transform: scale(1, 1); opacity: 1; }
+            50% { transform: scale(1, 0.005); opacity: 0.8; }
+            100% { transform: scale(0, 0); opacity: 0; }
+        }
 
         .glitch-once {
-    /* 不要動畫，只當 trigger class */
-}
+            animation: glitchFlash 0.35s ease;
+        }
 
         @keyframes glitchFlash {
             0% {
@@ -74,33 +83,32 @@
                 filter: none;
             }
             20% {
-    transform: translate(-6px, 2px);
-}
-40% {
-    transform: translate(6px, -2px);
-}
-60% {
-    transform: translate(-4px, 2px);
-}
+                transform: translate(-2px, 1px);
+                filter: drop-shadow(2px 0 rgba(255,77,109,0.8)) drop-shadow(-2px 0 rgba(0,234,255,0.8));
+            }
+            40% {
+                transform: translate(2px, -1px);
+                filter: drop-shadow(-2px 0 rgba(255,77,109,0.75)) drop-shadow(2px 0 rgba(0,234,255,0.75));
+            }
+            60% {
+                transform: translate(-1px, 1px);
+                filter: drop-shadow(1px 0 rgba(255,77,109,0.7)) drop-shadow(-1px 0 rgba(0,234,255,0.7));
+            }
             100% {
                 transform: translate(0);
                 filter: none;
             }
         }
 
-       .page {
-    display: none;
-    width: 100%;
-    text-align: left;
-}
+        .page {
+            display: none;
+            text-align: center;
+        }
 
-.page.active {
-    display: block;
-    animation: fadeIn 0.8s ease;
-}
-		#page1 {
-    text-align: center;
-}
+        .page.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -113,7 +121,8 @@
             border-radius: 16px;
             padding: 24px;
             text-align: left;
-            overflow: visible;
+            position: relative;
+            overflow: hidden;
             margin-bottom: 30px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
@@ -169,6 +178,7 @@ button {
     cursor: pointer;
     font-family: inherit;
     position: relative;
+    overflow: hidden;
     color: #ffffff;
     background: rgba(255,255,255,0.04);
     backdrop-filter: blur(8px);
@@ -185,7 +195,6 @@ button {
 }
 
 .scan-btn span,
-.exo-btn span,
 .hud-confirm-btn span {
     position: relative;
     z-index: 5;
@@ -233,14 +242,13 @@ button {
         }
 
         .scan-btn:hover {
-    transform: translateY(-2px);
-    box-shadow:
-        0 0 10px rgba(0,234,255,0.35),
-        0 0 24px rgba(0,234,255,0.12),
-        inset 0 0 6px rgba(0,234,255,0.10),
-        inset 0 0 20px rgba(0,0,0,0.35);
-    filter: brightness(1.06);
-}
+            transform: translateY(-2px);
+            box-shadow:
+                0 0 10px rgba(0,234,255,0.35),
+                0 0 24px rgba(0,234,255,0.12),
+                inset 0 0 6px rgba(0,234,255,0.10);
+            filter: brightness(1.06);
+        }
 
         .scan-btn:active {
             transform: scale(0.97);
@@ -441,154 +449,43 @@ button {
         filter: brightness(1);
     }
 }
-/* ===== CLEAN EXO BUTTON SYSTEM ===== */
-#btnGroup {
+#pageNotice {
+    text-align: left;
+}
+
+.notice-status {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 6px 12px;
+    border: 1px solid rgba(0,234,255,0.28);
+    border-radius: 999px;
+    color: var(--cyan);
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    box-shadow: 0 0 12px rgba(0,234,255,0.12);
+}
+
+.notice-list {
+    margin: 0 0 28px 0;
+    padding-left: 18px;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.8;
+    font-size: 0.92rem;
+}
+
+.notice-list li {
+    margin-bottom: 8px;
+}
+
+.notice-back-wrap {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    margin-top: 40px;
-    width: 100%;
-    padding-left: 0;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.exo-btn {
-    --btn-color: var(--cyan);
-    --btn-glow: rgba(0, 234, 255, 0.38);
-
-    all: unset;
-    display: block;
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    height: 56px;
-    cursor: pointer;
-    transition: transform 0.22s ease, filter 0.22s ease;
-}
-
-.exo-btn::before {
-    content: "";
-    position: absolute;
-    left: -34px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    background: #05070a;
-    border: 2px solid var(--btn-color);
-    border-radius: 50%;
-    box-shadow:
-        0 0 10px var(--btn-color),
-        0 0 20px var(--btn-glow);
-    z-index: 3;
-}
-
-.exo-btn::after {
-    content: "";
-    position: absolute;
-    left: -22px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    height: 2px;
-    background: var(--btn-color);
-    box-shadow: 0 0 10px var(--btn-color);
-}
-
-.exo-body {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    overflow: hidden;
-
-    background: rgba(0, 0, 0, 0.58);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow:
-        0 0 12px var(--btn-glow),
-        0 0 30px rgba(255,255,255,0.03),
-        inset 0 0 18px rgba(255,255,255,0.04);
-
-    border-radius: 28px 0 0 28px;
-    clip-path: polygon(0 0, 84% 0, 100% 100%, 0 100%);
+    margin-top: 12px;
 }
-
-.exo-body::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255,255,255,0.10) 46%,
-        rgba(255,255,255,0.22) 50%,
-        rgba(255,255,255,0.10) 54%,
-        transparent 100%
-    );
-    transform: translateX(-100%);
-    animation: exoSweepLite 3s linear infinite;
+.scan-btn {
+    border: 1px solid rgba(0,234,255,0.35);
 }
-
-.exo-body::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 22%;
-    width: 2px;
-    height: 56%;
-    background: var(--btn-color);
-    box-shadow:
-        0 0 8px var(--btn-color),
-        0 0 16px var(--btn-glow);
-}
-
-.exo-label {
-    position: relative;
-    z-index: 2;
-    color: var(--btn-color);
-    font-size: 0.86rem;
-    font-weight: 800;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    text-shadow: 0 0 6px var(--btn-glow);
-}
-
-.exo-btn:hover {
-    transform: translateX(6px);
-    filter: brightness(1.08);
-}
-
-.exo-btn:hover .exo-body {
-    border-color: rgba(255,255,255,0.14);
-    box-shadow:
-        0 0 16px var(--btn-glow),
-        0 0 34px rgba(255,255,255,0.05),
-        inset 0 0 18px rgba(255,255,255,0.08);
-}
-
-.exo-btn:active {
-    transform: translateX(6px) scale(0.97);
-}
-
-.exo-btn.red {
-    --btn-color: var(--red);
-    --btn-glow: rgba(255, 77, 109, 0.38);
-}
-
-@keyframes exoSweepLite {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-		/* ===== PAGE 2 HUD ===== */
+/* ===== PAGE 2 HUD ===== */
 #page2 {
     text-align: left;
 }
@@ -611,12 +508,10 @@ button {
 }
 
 .hud-frame {
-	max-width: 100%;
-	animation: none;
     position: relative;
-    min-height: 580px;
-    padding: 20px 34px 28px;
-    overflow: visible;
+    min-height: 620px;
+    padding: 34px 34px 28px;
+    overflow: hidden;
     background:
         radial-gradient(circle at 50% 16%, rgba(255,77,109,0.10), transparent 30%),
         radial-gradient(circle at 20% 60%, rgba(0,234,255,0.08), transparent 24%),
@@ -629,26 +524,7 @@ button {
     box-shadow:
         0 0 28px rgba(255,77,109,0.18),
         0 0 24px rgba(0,234,255,0.10),
-        inset 0 0 0 1px rgba(255,255,255,0.03),
-		inset 0 0 20px rgba(0,0,0,0.35);
-}
-		.hud-frame::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-			z-index: 0;
-
-    background:
-        repeating-linear-gradient(
-            180deg,
-            rgba(255,255,255,0.015) 0px,
-            rgba(255,255,255,0.015) 1px,
-            transparent 1px,
-            transparent 4px
-        );
-
-    opacity: 0.15;
+        inset 0 0 0 1px rgba(255,255,255,0.03);
 }
 
 .hud-frame-line {
@@ -688,7 +564,7 @@ button {
 .hud-light.top-cyan {
     top: 22px;
     left: 34%;
-    width: 120px;
+    width: 90px;
     height: 4px;
     background: #53f2ff;
     box-shadow: 0 0 12px rgba(0,234,255,0.6);
@@ -697,7 +573,7 @@ button {
 .hud-light.top-red {
     top: 22px;
     right: 12%;
-    width: 210px;
+    width: 170px;
     height: 4px;
     background: #ff4d6d;
     box-shadow: 0 0 12px rgba(255,77,109,0.55);
@@ -745,7 +621,7 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 18px;
     position: relative;
     z-index: 2;
 }
@@ -806,56 +682,92 @@ button {
     color: rgba(255,255,255,0.7);
 }
 
-@keyframes warnPulse {
-    0%, 100% {
-        transform: scale(1) translateY(0);
-    }
-    50% {
-        transform: scale(1.12) translateY(-8px);
-    }
+.hud-warning-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 12px 0 16px;
 }
 
-/* ✅ 這段要「獨立出來」 */
-@keyframes scanLine {
-    0% {
-        transform: translate(-50%, 8px);
-        opacity: 0;
-    }
-    30% {
-        opacity: 1;
-    }
-    100% {
-        transform: translate(-50%, -28px);
-        opacity: 0;
-    }
+.hud-warning-icon {
+    position: relative;
+    width: 86px;
+    height: 74px;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    border: 2px solid #ff4d6d;
+    box-shadow:
+        0 0 16px rgba(255,77,109,0.36),
+        inset 0 0 10px rgba(255,77,109,0.08);
+}
+
+.hud-warning-icon::before {
+    content: "!";
+    position: absolute;
+    left: 50%;
+    top: 56%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ffd8df;
+    text-shadow: 0 0 14px rgba(255,77,109,0.36);
 }
 
 .hud-message {
-    position: relative;
-    z-index: 5;
-    text-align: left;
+    text-align: center;
     color: rgba(255,255,255,0.84);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 8px 0 18px;
-    font-weight: 700;
-    letter-spacing: 0.6px;
-    text-shadow:
-        0 0 6px rgba(255,255,255,0.08),
-        0 0 14px rgba(255,77,109,0.08);
+    font-size: 0.98rem;
+    line-height: 1.7;
+    margin-bottom: 24px;
 }
+
 .hud-content-row {
     display: grid;
     grid-template-columns: 120px 1fr;
     gap: 24px;
     align-items: end;
 }
+
+.hud-left-module {
+    position: relative;
+    min-height: 220px;
+}
+
+.module-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.module-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #53f2ff;
+    box-shadow: 0 0 12px rgba(0,234,255,0.55);
+}
+
+.module-bar {
+    flex: 1;
+    height: 8px;
+    background: linear-gradient(90deg, rgba(83,242,255,0.95), rgba(83,242,255,0.28));
+    clip-path: polygon(0 0, 76% 0, 100% 50%, 76% 100%, 0 100%);
+    box-shadow: 0 0 10px rgba(0,234,255,0.24);
+}
+
+.module-core-wrap {
+    position: absolute;
+    left: 0;
+    bottom: 28px;
+    width: 120px;
+    height: 70px;
+}
+
 .module-core {
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     border: 4px solid rgba(165,255,255,0.95);
     box-shadow: 0 0 16px rgba(0,234,255,0.44);
@@ -863,41 +775,38 @@ button {
 
 .module-wire {
     position: absolute;
-    left: 38px;
+    left: 30px;
     height: 3px;
     background: linear-gradient(90deg, #53f2ff, rgba(255,77,109,0.9));
     box-shadow: 0 0 10px rgba(0,234,255,0.18);
 }
 
 .wire-1 {
-    width: 86px;
-    bottom: 22px;
+    width: 70px;
+    bottom: 18px;
 }
 
 .wire-2 {
-    width: 74px;
-    bottom: 36px;
+    width: 60px;
+    bottom: 30px;
 }
 
 .wire-3 {
-    width: 94px;
-    bottom: 8px;
+    width: 76px;
+    bottom: 6px;
 }
 
 .hud-bottom-mini {
-    position: relative;
-	margin-top: 10px;
+    position: absolute;
     left: 0;
-    bottom: -4px;
+    bottom: 0;
     display: flex;
-    gap: 14px;
+    gap: 10px;
     font-size: 0.56rem;
     letter-spacing: 0.8px;
     color: rgba(255,255,255,0.55);
 }
-.hud-left-module {
-    position: relative;
-}
+
 .hud-right-module {
     display: flex;
     flex-direction: column;
@@ -913,15 +822,7 @@ button {
     font-size: 0.84rem;
     letter-spacing: 0.8px;
 }
-.secure-line span {
-	opacity: 0.35;
-    letter-spacing: 3px;
-    color: rgba(255,255,255,0.18);
-	font-weight: 500;
-}
-.secure-line {
-    opacity: 1;
-}
+
 .red-bars {
     display: flex;
     flex-direction: column;
@@ -937,43 +838,24 @@ button {
             90deg,
             rgba(255,77,109,0.08) 0%,
             rgba(255,77,109,0.16) 58%,
-            rgba(255,77,109,0.75) 64%,
+            rgba(255,77,109,0.95) 64%,
             rgba(255,77,109,0.08) 100%
         );
     box-shadow: 0 0 10px rgba(255,77,109,0.14);
-	    opacity: 0.5;
-
 }
 
 .hud-btn-wrap {
     display: flex;
     justify-content: center;
-    margin-top: 18px;
-    position: relative;
-}
-
-.hud-btn-wrap::before {
-    content: "";
-    position: absolute;
-    left: 3%;
-    right: 3%;
-    top: 50%;
-    height: 118px;
-    transform: translateY(-50%);
-    border: 1px solid rgba(255,77,109,0.16);
-    clip-path: polygon(0 18%, 4% 0, 92% 0, 100% 50%, 92% 100%, 4% 100%, 0 82%);
-    box-shadow: inset 0 0 18px rgba(255,77,109,0.05);
-    pointer-events: none;
+    margin-top: 12px;
 }
 
 .hud-confirm-btn {
-	filter: contrast(1.1) brightness(1.05);
-	transform: translateZ(0);
     all: unset;
     position: relative;
     width: 100%;
     max-width: 560px;
-    height: 86px;
+    height: 88px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -990,9 +872,8 @@ button {
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.00)),
         linear-gradient(90deg, rgba(32,8,16,0.96), rgba(85,14,30,0.98) 54%, rgba(175,30,58,1) 100%);
     box-shadow:
-        0 0 26px rgba(255,77,109,0.20),
-        inset 0 0 24px rgba(255,77,109,0.12),
-        inset 0 -10px 16px rgba(0,0,0,0.28);
+        0 0 22px rgba(255,77,109,0.20),
+        inset 0 0 18px rgba(255,77,109,0.10);
 }
 
 .hud-confirm-btn::before {
@@ -1054,593 +935,148 @@ button {
 }
 
 .hud-confirm-btn:hover {
-    transform: translateY(-1px) scale(1.01);
-    filter: brightness(1.12);
+    transform: translateY(-1px);
     box-shadow:
         0 0 26px rgba(255,77,109,0.26),
         inset 0 0 18px rgba(255,77,109,0.14);
 }
 
 @media (max-width: 900px) {
-    body {
-        padding: 20px 0 28px;
-    }
-
-    .main-container {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 12px 16px 18px;
-        border-radius: 0;
-    }
-
-    .red-bars {
-        display: none;
+    .hud-top-meta {
+        font-size: 0.56rem;
+        gap: 10px;
     }
 
     .hud-frame {
         min-height: auto;
-        padding: 18px 16px 22px;
-        clip-path: none;
-        overflow: visible;
+        padding: 22px 18px 22px;
     }
 
-    .hud-top-meta {
-        font-size: 0.56rem;
-        gap: 10px;
-        line-height: 1.45;
-    }
-
-    .hud-header {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-        margin-bottom: 10px;
-    }
-
-    .hud-title,
-    .hud-denied {
-        width: 100%;
-        max-width: 100%;
-        text-align: left;
-    }
-
-    .hud-title {
-        font-size: 0.78rem;
-        line-height: 1.25;
-    }
-
-    .hud-denied {
-        font-size: 0.72rem;
-        line-height: 1.2;
-    }
-
-    .hud-message {
-        font-size: 0.78rem;
-        line-height: 1.65;
-        margin: 10px 0 18px;
-        letter-spacing: 0.2px;
-        padding: 0;
+    .hud-content-row {
+        grid-template-columns: 1fr;
+        gap: 18px;
     }
 
     .secure-line {
         grid-template-columns: 1fr;
         gap: 10px;
-        font-size: 0.75rem;
-        opacity: 0.85;
-    }
-
-    .hud-bottom-mini {
-        font-size: 0.42rem;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-
-    .hud-btn-wrap {
-        margin-top: 10px;
-    }
-
-    .hud-btn-wrap::before {
-        height: 84px;
     }
 
     .hud-confirm-btn {
-        height: 66px;
-        font-size: 0.78rem;
-        letter-spacing: 1.2px;
-    }
-
-    .hud-btn-text {
-        line-height: 1.2;
-    }
-
-    .hud-btn-arrows {
-        right: 12px;
-        gap: 4px;
+        height: 72px;
+        font-size: 0.94rem;
     }
 
     .hud-btn-arrows i {
-        width: 8px;
-        height: 24px;
+        width: 10px;
+        height: 30px;
     }
 
     .hud-light.left-cyan,
     .hud-light.right-cyan {
-        height: 88px;
-        top: 120px;
-    }
-
-    #page3,
-    #pageNotice,
-    #pageFinal {
-        text-align: left;
-        padding: 4px 2px calc(28px + env(safe-area-inset-bottom));
-    }
-
-    #typewriter {
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        padding: 0 16px;
-        font-size: 0.95rem;
-        line-height: 1.8;
-    }
-
-    #btnGroup {
-        margin-top: 28px;
-        padding: 0 16px calc(12px + env(safe-area-inset-bottom));
-    }
-
-    #pageNotice h3 {
-        font-size: 0.95rem;
-        letter-spacing: 1.2px !important;
-        text-align: center;
-        margin-bottom: 10px !important;
-    }
-
-    .notice-status {
-        font-size: 0.78rem;
-        text-align: center;
-        margin-bottom: 12px;
-    }
-
-    .notice-list {
-        padding-left: 18px;
-        padding-right: 8px;
-        font-size: 0.88rem;
-        line-height: 1.8;
-        margin: 0;
-    }
-
-    .notice-back-wrap {
-        margin-top: 22px;
-        padding-bottom: calc(20px + env(safe-area-inset-bottom));
-    }
-
-    #pageFinal {
-        text-align: center;
-        padding-top: 8px;
-    }
-
-    #pageFinal h2 {
-        font-size: 1rem !important;
-        letter-spacing: 3px !important;
-        line-height: 1.35;
-        margin-bottom: 10px !important;
-    }
-
-    #pageFinal p {
-        font-size: 0.8rem !important;
-        line-height: 1.7 !important;
-        padding: 0 10px;
-    }
-
-    .heart-monitor {
-        margin-top: 24px;
-        width: 100%;
-        max-width: 100%;
-        display: block;
+        height: 120px;
     }
 }
-		.glitch {
-    animation: glitchFlash 0.35s linear;
-    filter: drop-shadow(-2px 0 red) drop-shadow(2px 0 cyan);
-}
-		/* ===== PAGE 2 warning icon fix ===== */
-.hud-warning-icon {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 18px 0 20px;
-    z-index: 2;
-}
-
-.warn-triangle {
-    display: block;
-    height: auto;
-    max-width: 260px;
-	position: relative;
-    z-index: 1;
-}
-
-.warn-exclaim {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #111;
-    font-size: clamp(42px, 12vw, 64px);
-    font-weight: 900;
-    line-height: 1;
-    z-index: 5;
-    text-shadow: none;
-}
-
-/* ===== PAGE 2 text size fix ===== */
-#page2 .hud-message {
-    font-size: 0.95rem;
-    line-height: 1.75;
-    margin: 16px 0 22px;
-    letter-spacing: 0.4px;
-}
-
-
-
-/* 左下裝飾紋 */
-/* ===== HUD ACTION MODULE BUTTONS ===== */
 #btnGroup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 26px;
-  margin-top: 34px;
-  width: 100%;
-  padding-left: 0;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 40px;
+    width: 100%;
+    padding-left: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .notice-back-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
 }
 
-.hud-action {
-  --ha-main: #00f3ff;
-  --ha-dark: rgba(0, 243, 255, 0.22);
-  --ha-border: rgba(0, 243, 255, 0.62);
-  --ha-glow: rgba(0, 243, 255, 0.22);
-
-  position: relative;
-  width: min(100%, 720px);
-  min-height: 110px;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 128px 1fr 128px;
-  align-items: stretch;
-  border: 1px solid var(--ha-border);
-  background:
-    linear-gradient(90deg,
-      rgba(255,255,255,0.03) 0%,
-      rgba(9, 16, 22, 0.92) 18%,
-      rgba(7, 11, 18, 0.96) 82%,
-      rgba(255,255,255,0.03) 100%);
-  clip-path: polygon(2% 0, 92% 0, 100% 50%, 92% 100%, 2% 100%, 0 72%, 0 28%);
-  overflow: hidden;
-  box-shadow:
-    0 0 16px var(--ha-glow),
-    inset 0 0 24px rgba(255,255,255,0.04),
-    inset 0 0 0 1px rgba(255,255,255,0.03);
-  cursor: pointer;
-  transform: translateZ(0);
-  transition: transform 0.22s ease, filter 0.22s ease, box-shadow 0.22s ease;
-}
-
-.hud-action:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.07);
-  box-shadow:
-    0 0 22px var(--ha-glow),
-    0 0 36px rgba(255,255,255,0.06),
-    inset 0 0 24px rgba(255,255,255,0.05);
-}
-
-.hud-action:active {
-  transform: translateY(0) scale(0.985);
-}
-
-.hud-action::before {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(255,255,255,0.08);
-  clip-path: polygon(2% 0, 92% 0, 100% 50%, 92% 100%, 2% 100%, 0 72%, 0 28%);
-  pointer-events: none;
-}
-
-.hud-action::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: 8px;
-  height: 3px;
-  background: var(--ha-main);
-  box-shadow: 0 0 14px var(--ha-main);
-  opacity: 0.8;
-  pointer-events: none;
-}
-
-.hud-action__line {
-  position: absolute;
-  left: -46px;
-  top: 50%;
-  width: 52px;
-  height: 2px;
-  transform: translateY(-50%);
-  background: var(--ha-main);
-  box-shadow: 0 0 12px var(--ha-main);
-  pointer-events: none;
-}
-
-.hud-action__panel {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  padding: 14px 12px;
-  min-width: 0;
-}
-
-.hud-action__panel--left {
-  border-right: 1px solid rgba(255,255,255,0.08);
-}
-
-.hud-action__panel--right {
-  border-left: 1px solid rgba(255,255,255,0.08);
-  text-align: right;
-}
-
-.hud-action__panel::before {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(255,255,255,0.05);
-
-  background:
-    repeating-linear-gradient(
-      180deg,
-      rgba(255,255,255,0.03) 0px,
-      rgba(255,255,255,0.03) 1px,
-      transparent 1px,
-      transparent 4px
-    );
-
-  pointer-events: none;
-}
-
-.hud-action__mini {
-  font-size: 0.62rem;
-  letter-spacing: 1.2px;
-  line-height: 1.2;
-  color: rgba(255,255,255,0.52);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.hud-action__core {
-  position: relative;
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  padding: 16px 10px;
-}
-
-.hud-action__core::before,
-.hud-action__core::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 36px;
-  height: 2px;
-  background: rgba(255,255,255,0.12);
-  transform: translateY(-50%);
-}
-
-.hud-action__core::before {
-  left: 8px;
-}
-
-.hud-action__core::after {
-  right: 8px;
-}
-
-.hud-action__title {
-  position: relative;
-  z-index: 2;
-  color: var(--ha-main);
-  font-size: 2.3rem;
-  font-weight: 900;
-  letter-spacing: 5px;
-  line-height: 1;
-  text-transform: uppercase;
-  text-shadow: 0 0 12px var(--ha-glow);
-  white-space: nowrap;
-}
-
-.hud-action__sub {
-  position: relative;
-  z-index: 2;
-  color: rgba(255,255,255,0.48);
-  font-size: 0.72rem;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-/* color themes */
-.hud-action--cyan {
-  --ha-main: #61f6ff;
-  --ha-dark: rgba(97, 246, 255, 0.18);
-  --ha-border: rgba(97, 246, 255, 0.58);
-  --ha-glow: rgba(97, 246, 255, 0.24);
-}
-
-.hud-action--red {
-  --ha-main: #ff5b78;
-  --ha-dark: rgba(255, 91, 120, 0.20);
-  --ha-border: rgba(255, 91, 120, 0.58);
-  --ha-glow: rgba(255, 91, 120, 0.24);
-}
-
-.hud-action--gold {
-  --ha-main: var(--gold-main);
-  --ha-dark: rgba(198, 169, 79, 0.18);
-  --ha-border: rgba(198, 169, 79, 0.58);
-  --ha-glow: rgba(198, 169, 79, 0.24);
-}
-
-/* accent fill */
-.hud-action--cyan .hud-action__panel--left,
-.hud-action--cyan .hud-action__panel--right {
-  background: linear-gradient(180deg, rgba(97,246,255,0.05), transparent);
-}
-
-.hud-action--red .hud-action__panel--left,
-.hud-action--red .hud-action__panel--right {
-  background: linear-gradient(180deg, rgba(255,91,120,0.06), transparent);
-}
-
-.hud-action--gold .hud-action__panel--left,
-.hud-action--gold .hud-action__panel--right {
-  background: linear-gradient(180deg, rgba(198,169,79,0.06), transparent);
-}
-
-/* mobile */
-@media (max-width: 900px) {
-  #btnGroup,
-  .notice-back-wrap {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .hud-action {
-    width: min(92vw, 340px);
-    min-height: 86px;
-    grid-template-columns: 72px 1fr 72px;
-  }
-
-  .hud-action__panel {
-    padding: 10px 6px;
-    gap: 4px;
-  }
-
-  .hud-action__mini {
-    font-size: 0.45rem;
-    letter-spacing: 0.6px;
-  }
-
-  .hud-action__title {
-    font-size: 1.25rem;
-    letter-spacing: 2.5px;
-  }
-
-  .hud-action__sub {
-    font-size: 0.5rem;
-    letter-spacing: 0.8px;
-  }
-
-  .hud-action__core::before,
-  .hud-action__core::after {
-    width: 12px;
-  }
-
-  .hud-action__line {
-    left: -28px;
-    width: 34px;
-  }
-}
-.hud-action__title::after {
-  content: "";
-  position: absolute;
-  left: -20%;
-  top: 0;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.18),
-    transparent
-  );
-  transform: skewX(-20deg) scaleX(1.2) translateX(-200%);
-  animation: scanShine 1.6s infinite linear;
-	will-change: transform;
-}
-.hud-action:hover .hud-action__title::after {
-  animation-duration: 0.8s;
-}
-@keyframes scanShine {
-  to {
-    transform: skewX(-20deg) translateX(500%);
-  }
-}
-		.img-btn {
-  all: unset;
-  position: relative;
-  display: block;
-  width: min(92vw, 360px);
-  margin: 20px auto;
-  cursor: pointer;
-  transition: 0.25s;
+.img-btn {
+    all: unset;
+    position: relative;
+    display: block;
+    width: min(92vw, 360px);
+    margin: 20px auto;
+    cursor: pointer;
+    transition: 0.25s;
 }
 
 .img-btn:hover {
-  transform: translateY(-4px);
-  filter: brightness(1.1);
+    transform: translateY(-4px);
+    filter: brightness(1.1);
 }
 
 .btn-bg {
-  width: 100%;
-  display: block;
+    width: 100%;
+    display: block;
+    user-select: none;
+    pointer-events: none;
 }
 
 .text-layer {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
 }
 
 .main-text {
-  font-weight: 900;
-  letter-spacing: 4px;
-  font-size: clamp(1.2rem, 3vw, 2rem);
+    font-weight: 900;
+    letter-spacing: 4px;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    text-shadow: 0 0 10px rgba(255,255,255,0.12);
 }
 
-/* 顏色 */
 .accept-btn .main-text {
-  color: #61f6ff;
+    color: #61f6ff;
 }
 
 .gift-btn .main-text {
-  color: #ff5b78;
+    color: #ff5b78;
 }
 
 .back-btn .main-text {
-  color: #c6a94f;
+    color: #c6a94f;
+}
+
+@media (max-width: 900px) {
+    #btnGroup,
+    .notice-back-wrap {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .img-btn {
+        width: min(92vw, 360px);
+        margin: 18px auto;
+    }
+
+    .main-text {
+        letter-spacing: 2px;
+    }
+
+    .accept-btn .main-text {
+        font-size: 1.15rem;
+        transform: translateY(-2%);
+    }
+
+    .gift-btn .main-text {
+        font-size: 1.02rem;
+        transform: translateY(0%);
+    }
+
+    .back-btn .main-text {
+        font-size: 1.2rem;
+        transform: translateY(-1%);
+    }
 }
     </style>
 </head>
@@ -1686,54 +1122,91 @@ button {
 <div id="page2" class="page">
   <div class="hud-board">
 
+    <div class="hud-top-meta">
+      <span>EAST DISTRICT, HSINCHU CITY, TAIWAN</span>
+      <span>THU, APR 2, 2026, 10:00 PM CST</span>
+    </div>
+
     <div class="hud-frame">
-		<div class="hud-frame-line outer"></div>
+      <div class="hud-frame-line outer"></div>
       <div class="hud-frame-line inner"></div>
       <div class="hud-frame-line core"></div>
+
+      <div class="hud-light top-cyan"></div>
+      <div class="hud-light top-red"></div>
       <div class="hud-light left-cyan"></div>
       <div class="hud-light right-cyan"></div>
       <div class="hud-light bl-red"></div>
       <div class="hud-light br-cyan"></div>
-		<div class="hud-header">
-  <div class="hud-title">★ DIGITAL BOARDING PASS</div>
-  <div class="hud-denied">AWAITING CONFIRMATION</div>
-</div>
 
-<div class="hud-warning-icon">
-  <svg class="warn-triangle" viewBox="0 0 100 100">
-    <defs>
-      <linearGradient id="warnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#ff9ab3"/>
-        <stop offset="45%" stop-color="#ff5b86"/>
-        <stop offset="100%" stop-color="#c81d4f"/>
-      </linearGradient>
-    </defs>
-    <path d="M50 12 Q55 12 58 17 L86 72 Q92 84 79 84 L21 84 Q8 84 14 72 L42 17 Q45 12 50 12 Z"
-          fill="url(#warnGrad)"/>
-  </svg>
-  <span class="warn-exclaim">!</span>
-</div>
+      <div class="hud-header">
+        <div class="hud-title">★ DIGITAL BOARDING PASS</div>
+        <div class="hud-denied">ACCESS DENIED</div>
+      </div>
 
-<div class="hud-message">
-  <div>This is a one-way ticket.</div>
-  <div>Once you confirm,</div>
-  <div>there is no going back.</div>
-</div>
+      <div class="hud-subrow">
+        <div class="hud-code-group">
+          <span>0xF9A1</span>
+          <span>0x1C7E</span>
+        </div>
 
-<div class="module-core-wrap">
-  <span class="module-core"></span>
-  <span class="module-wire wire-1"></span>
-  <span class="module-wire wire-2"></span>
-  <span class="module-wire wire-3"></span>
-</div>
+        <div class="hud-system">
+          <div class="hud-system-title">SYSTEM INFO</div>
+          <div class="hud-system-mini"><span>PASSENGER</span><span>YUDAI</span></div>
+          <div class="hud-system-mini"><span>SECURITY</span><span>0AFP A1</span></div>
+        </div>
+      </div>
 
-<div class="hud-bottom-mini">
-  <span>0FBA1</span>
-  <span>8F-6T8</span>
-  <span>6AC6E</span>
-  <span>B41C7E</span>
-</div>
-	<div class="secure-line">
+      <div class="hud-warning-wrap">
+        <div class="hud-warning-icon"></div>
+      </div>
+
+      <div class="hud-message">
+        This is a one-way ticket.<br>
+        There is no return after confirmation.
+      </div>
+
+      <div class="hud-content-row">
+        <div class="hud-left-module">
+          <div class="module-row">
+            <span class="module-dot"></span>
+            <span class="module-bar"></span>
+          </div>
+          <div class="module-row">
+            <span class="module-dot"></span>
+            <span class="module-bar"></span>
+          </div>
+          <div class="module-row">
+            <span class="module-dot"></span>
+            <span class="module-bar"></span>
+          </div>
+
+          <div class="module-core-wrap">
+            <span class="module-core"></span>
+            <span class="module-wire wire-1"></span>
+            <span class="module-wire wire-2"></span>
+            <span class="module-wire wire-3"></span>
+          </div>
+
+          <div class="hud-bottom-mini">
+            <span>0FBA1</span>
+            <span>8F-6T8</span>
+            <span>6AC6E</span>
+            <span>B41C7E</span>
+          </div>
+        </div>
+
+        <div class="hud-right-module">
+          <div class="secure-line">
+            <span>SECURE LINK: ESTABLISHED</span>
+            <div class="red-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="secure-line">
             <span>Y_CODE: YUDAI</span>
             <div class="red-bars">
               <span></span>
@@ -1741,10 +1214,9 @@ button {
               <span></span>
             </div>
           </div>
-		<div class="hud-right-module">
-          <div class="hud-btn-wrap">
 
-            <button class="hud-confirm-btn" onclick="confirmBoarding()">
+          <div class="hud-btn-wrap">
+            <button class="hud-confirm-btn" onclick="transit('page3', startTypewriter)">
               <span class="hud-btn-honey"></span>
               <span class="hud-btn-text">CONFIRM BOARDING</span>
               <span class="hud-btn-arrows">
@@ -1760,23 +1232,23 @@ button {
 <div id="page3" class="page">
     <div id="typewriter"></div>
 
-    <div id="btnGroup">
+   <div id="btnGroup">
   <button class="img-btn accept-btn" onclick="runAcceptEffect()">
-    <img src="accept.jpeg" class="btn-bg">
+    <img src="accept.jpeg" class="btn-bg" alt="">
     <div class="text-layer">
       <div class="main-text">ACCEPT</div>
     </div>
   </button>
 
   <button class="img-btn gift-btn" onclick="transit('pageNotice')">
-    <img src="gift.jpeg" class="btn-bg">
+    <img src="gift.jpeg" class="btn-bg" alt="">
     <div class="text-layer">
       <div class="main-text">GIFT NOTICE</div>
     </div>
   </button>
 
   <button class="img-btn back-btn" onclick="runLoadingTo('page2')">
-    <img src="back.jpeg" class="btn-bg">
+    <img src="back.jpeg" class="btn-bg" alt="">
     <div class="text-layer">
       <div class="main-text">BACK</div>
     </div>
@@ -1802,30 +1274,20 @@ button {
         <li>No perfection is needed, only honesty.</li>
         <li>Continue only if you mean it.</li>
     </ul>
-
-    <div class="notice-back-wrap">
-  <button class="hud-action hud-action--gold" onclick="runLoadingTo('page3', () => {
+<div class="notice-back-wrap">
+  <button class="img-btn back-btn" onclick="runLoadingTo('page3', () => {
       const g = document.getElementById('btnGroup');
       g.style.opacity = '1';
       g.style.pointerEvents = 'auto';
   })">
-    <span class="hud-action__line"></span>
-    <span class="hud-action__panel hud-action__panel--left">
-      <span class="hud-action__mini">NAV-2</span>
-      <span class="hud-action__mini">RETURN</span>
-    </span>
-    <span class="hud-action__core">
-      <span class="hud-action__title">BACK</span>
-      <span class="hud-action__sub">RETURN PROTOCOL</span>
-    </span>
-    <span class="hud-action__panel hud-action__panel--right">
-      <span class="hud-action__mini">SAFE</span>
-      <span class="hud-action__mini">BK</span>
-    </span>
+    <img src="back.jpeg" class="btn-bg">
+    <div class="text-layer">
+      <div class="main-text">BACK</div>
+    </div>
   </button>
 </div>
-</div>
-
+ 
+    </div>
       <div id="pageFinal" class="page">
           <h2 style="letter-spacing: 6px; font-size: 1.3rem; margin-bottom: 8px;">BOARDING CONFIRMED</h2>
           <p style="opacity:0.6; font-size: 0.85rem; line-height: 1.7; margin-top: 0;">
@@ -1885,8 +1347,8 @@ function runLoadingTo(targetPage, cb) {
     const frame = document.getElementById('mainFrame');
 
     if (targetPage !== 'page2') {
-        frame.classList.add('glitch');
-        setTimeout(() => frame.classList.remove('glitch'), 350);
+        frame.classList.add('glitch-once');
+        setTimeout(() => frame.classList.remove('glitch-once'), 350);
     }
 
     ld.style.display = 'flex';
@@ -1913,85 +1375,44 @@ function runLoadingTo(targetPage, cb) {
     const frame = document.getElementById('mainFrame');
 
     flash.classList.remove('active');
-    frame.classList.remove('glitch');
+    frame.classList.remove('glitch-once');
 
     void flash.offsetWidth;
     void frame.offsetWidth;
 
+    flash.classList.add('active');
+
     setTimeout(() => {
-        frame.classList.add('glitch');
-        setTimeout(() => frame.classList.remove('glitch'), 350);
+        frame.classList.add('glitch-once');
+        setTimeout(() => frame.classList.remove('glitch-once'), 350);
     }, 180);
 
     setTimeout(() => {
-        flash.classList.add('active');
-
         transit('pageFinal', () => {
             flash.classList.remove('active');
         });
     }, 1800);
 }
-	  function confirmBoarding() {
-		  
-    const frame = document.querySelector('.hud-frame');
-    const icon = document.querySelector('.hud-warning-icon');
-    const flash = document.getElementById('acceptFlash');
-
-    // reset
-		  frame.classList.remove('breath');
-    frame.classList.remove('glitch');
-	icon.classList.remove('glitch');
-    flash.classList.remove('active');
-    void frame.offsetWidth;
-    void icon.offsetWidth;
-    void flash.offsetWidth;
-
-    // 1. 先讓整個警告框紅藍閃一下
-    frame.classList.add('glitch');
-    icon.classList.add('glitch');
-    flash.classList.add('active');
-
-    // 2. 多留一點時間讓你看得到紅藍 glitch
-    setTimeout(() => {
-        transit('page3', () => {
-            frame.classList.remove('glitch');
-            icon.classList.remove('glitch');
-            flash.classList.remove('active');
-            startTypewriter();
-        });
-    }, 520);
-}
       function transit(nextId, cb) {
-    const frame = document.getElementById('mainFrame');
+          const frame = document.getElementById('mainFrame');
 
-    if (nextId === 'page3') {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(nextId).classList.add('active');
-        window.scrollTo(0, 0);
-        if (cb) cb();
-        return;
-    }
+          if (nextId === 'page2') {
+              frame.classList.add('glitch-once');
+              setTimeout(() => {
+                  frame.classList.remove('glitch-once');
+              }, 350);
+          }
 
-    if (nextId === 'page2') {
-        frame.classList.add('glitch-once', 'glitch');
-        setTimeout(() => {
-            frame.classList.remove('glitch');
-        }, 350);
-    }
+          frame.classList.add('crt-off');
 
-    frame.classList.add('crt-off');
-
-    setTimeout(() => {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(nextId).classList.add('active');
-
-    frame.classList.remove('crt-off');
-    frame.style.transform = "";   // 🔥 保險
-
-    window.scrollTo(0, 0);
-    if (cb) cb();
-}, 600);
-	  }
+          setTimeout(() => {
+              document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+              document.getElementById(nextId).classList.add('active');
+              frame.classList.remove('crt-off');
+              window.scrollTo(0, 0);
+              if (cb) cb();
+          }, 600);
+      }
 
       const lines = [
           "Dear Most Precious Passenger Yudai:",
@@ -2016,6 +1437,7 @@ function runLoadingTo(targetPage, cb) {
           function typeLine() {
               if (lIdx < lines.length) {
                   const div = document.createElement('div');
+                  div.style.marginBottom = "12px";
                   box.appendChild(div);
 
                   let cIdx = 0;
@@ -2038,25 +1460,6 @@ function runLoadingTo(targetPage, cb) {
 
           typeLine();
       }
-	  // 👉 等畫面載入完再綁事件（避免抓不到元素）
-window.addEventListener('DOMContentLoaded', () => {
-    const btn = document.querySelector('.hud-confirm-btn');
-    const icon = document.querySelector('.hud-warning-icon');
-
-    if (btn && icon) {
-        btn.addEventListener('mouseenter', () => {
-            icon.classList.add('glitch');
-        });
-
-        btn.addEventListener('mouseleave', () => {
-            icon.classList.remove('glitch');
-        });
-    }
-});
-	  window.addEventListener('DOMContentLoaded', () => {
-    const frame = document.querySelector('.hud-frame');
-    if (frame) frame.classList.add('breath');
-});
   </script>
 </body>
 </html>
