@@ -460,8 +460,8 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 25px;
-    margin-top: 40px;
+    gap: 2px;
+    margin-top: 10px;
     width: 100%;
     padding-left: 0;
     opacity: 0;
@@ -1176,8 +1176,8 @@ button {
     all: unset;
     position: relative;
     display: block;
-    width: min(92vw, 360px);
-    margin: 20px auto;
+    width: min(92vw, 760px);
+    margin: 10px auto;
     cursor: pointer;
     transition: 0.25s;
     overflow: visible;
@@ -1227,8 +1227,8 @@ button {
 }
 
 .back-btn {
-    width: min(92vw, 520px);
-    margin: 20px auto;
+    width: min(92vw, 760px);
+    margin: 10px auto;
     display: block;
     overflow: visible;
 }
@@ -1239,7 +1239,6 @@ button {
     display: block;
     transform: none;
     object-fit: contain;
-    aspect-ratio: 16 / 6;
 }
 .text-layer {
   position: absolute;
@@ -1275,11 +1274,6 @@ button {
     padding-right: 0;
   }
 
-  .img-btn {
-    width: min(92vw, 360px);
-    margin: 18px auto;
-  }
-
   .main-text {
     letter-spacing: 2px;
   }
@@ -1299,20 +1293,16 @@ button {
     transform: translateY(-1%);
   }
 
-.back-btn {
-    width: min(92vw, 520px);
-    margin: 20px auto;
-    display: block;
-    overflow: visible;
+.img-btn {
+    width: 92vw;
+    max-width: 760px;
+    margin: 8px auto;
 }
 
-.back-btn .btn-bg {
-    width: 100%;
-    height: auto;
-    display: block;
-    transform: none;
-    object-fit: contain;
-    aspect-ratio: 16 / 6;
+.back-btn {
+    width: 92vw;
+    max-width: 760px;
+    margin: 8px auto;
 }
 }
 @keyframes breathGlow {
