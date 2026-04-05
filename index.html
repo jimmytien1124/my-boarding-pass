@@ -200,7 +200,6 @@ button {
 }
 
 .scan-btn span,
-.exo-btn span,
 .hud-confirm-btn span {
     position: relative;
     z-index: 5;
@@ -469,139 +468,6 @@ button {
     pointer-events: none;
     transform: translateY(20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.exo-btn {
-    --btn-color: var(--cyan);
-    --btn-glow: rgba(0, 234, 255, 0.38);
-
-    all: unset;
-    display: block;
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    height: 56px;
-    cursor: pointer;
-    transition: transform 0.22s ease, filter 0.22s ease;
-}
-
-.exo-btn::before {
-    content: "";
-    position: absolute;
-    left: -34px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    background: #05070a;
-    border: 2px solid var(--btn-color);
-    border-radius: 50%;
-    box-shadow:
-        0 0 10px var(--btn-color),
-        0 0 20px var(--btn-glow);
-    z-index: 3;
-}
-
-.exo-btn::after {
-    content: "";
-    position: absolute;
-    left: -22px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    height: 2px;
-    background: var(--btn-color);
-    box-shadow: 0 0 10px var(--btn-color);
-}
-
-.exo-body {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-
-    background: rgba(0, 0, 0, 0.58);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow:
-        0 0 12px var(--btn-glow),
-        0 0 30px rgba(255,255,255,0.03),
-        inset 0 0 18px rgba(255,255,255,0.04);
-
-    border-radius: 28px 0 0 28px;
-    clip-path: polygon(0 0, 84% 0, 100% 100%, 0 100%);
-}
-
-.exo-body::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255,255,255,0.10) 46%,
-        rgba(255,255,255,0.22) 50%,
-        rgba(255,255,255,0.10) 54%,
-        transparent 100%
-    );
-    transform: translateX(-100%);
-    animation: exoSweepLite 3s linear infinite;
-}
-
-.exo-body::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 22%;
-    width: 2px;
-    height: 56%;
-    background: var(--btn-color);
-    box-shadow:
-        0 0 8px var(--btn-color),
-        0 0 16px var(--btn-glow);
-}
-
-.exo-label {
-    position: relative;
-    z-index: 2;
-    color: var(--btn-color);
-    font-size: 0.86rem;
-    font-weight: 800;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    text-shadow: 0 0 6px var(--btn-glow);
-}
-
-.exo-btn:hover {
-    transform: translateX(6px);
-    filter: brightness(1.08);
-}
-
-.exo-btn:hover .exo-body {
-    border-color: rgba(255,255,255,0.14);
-    box-shadow:
-        0 0 16px var(--btn-glow),
-        0 0 34px rgba(255,255,255,0.05),
-        inset 0 0 18px rgba(255,255,255,0.08);
-}
-
-.exo-btn:active {
-    transform: translateX(6px) scale(0.97);
-}
-
-.exo-btn.red {
-    --btn-color: var(--red);
-    --btn-glow: rgba(255, 77, 109, 0.38);
-}
-
-@keyframes exoSweepLite {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
 }
 		/* ===== PAGE 2 HUD ===== */
 #page2 {
@@ -1311,6 +1177,7 @@ button {
     position: relative;
     display: block;
     width: min(92vw, 360px);
+    height: 140px;
     margin: 20px auto;
     cursor: pointer;
     transition: 0.25s;
@@ -1356,12 +1223,14 @@ button {
 
 .btn-bg {
     width: 100%;
+    height: 100%;
     display: block;
+    object-fit: cover;
     user-select: none;
     pointer-events: none;
 }
-.back-rotated {
-    transform: rotate(-90deg) scale(1.22);
+.back-btn .btn-bg {
+    transform: rotate(-90deg) scale(1.4);
     transform-origin: center;
 }
 
@@ -1577,7 +1446,7 @@ button {
         </button>
 
         <button class="img-btn back-btn" onclick="runLoadingTo('page2')">
-            <img src="back.jpg" class="btn-bg back-rotated" alt="">
+        <img src="back.jpg" class="btn-bg" alt="">
             <div class="text-layer">
                 <div class="main-text">BACK</div>
             </div>
@@ -1611,7 +1480,7 @@ button {
         g.style.pointerEvents = 'auto';
         g.style.transform = 'translateY(0)';
     })">
-        <img src="back.jpg" class="btn-bg back-rotated" alt="">
+      <img src="back.jpg" class="btn-bg" alt="">
         <div class="text-layer">
             <div class="main-text">BACK</div>
         </div>
