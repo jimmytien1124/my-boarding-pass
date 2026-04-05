@@ -1177,11 +1177,11 @@ button {
     position: relative;
     display: block;
     width: min(92vw, 360px);
-    height: 140px;
     margin: 20px auto;
     cursor: pointer;
     transition: 0.25s;
-    overflow: hidden;
+    overflow: visible;
+    background: transparent;
 }
 #pageNotice {
     text-align: left;
@@ -1220,20 +1220,24 @@ button {
   transform: translateY(-4px);
   filter: brightness(1.1);
 }
-
 .btn-bg {
     width: 100%;
-    height: 100%;
+    height: auto;
     display: block;
-    object-fit: cover;
     user-select: none;
     pointer-events: none;
 }
-.back-btn .btn-bg {
-    transform: rotate(-90deg) scale(1.4);
-    transform-origin: center;
+
+.back-btn {
+    width: 140px !important;
+    margin: 40px auto;
+    display: block;
 }
 
+.back-btn .btn-bg {
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
 .text-layer {
   position: absolute;
   inset: 0;
@@ -1291,11 +1295,19 @@ button {
     font-size: 1.2rem;
     transform: translateY(-1%);
   }
-}
-.breath {
-    animation: breathGlow 2.8s ease-in-out infinite;
-}
 
+  .back-btn {
+    width: 140px !important;
+    margin: 40px auto;
+    display: block;
+  }
+
+  .back-btn .btn-bg {
+    transform: rotate(-90deg);
+    transform-origin: center;
+  }
+
+}
 @keyframes breathGlow {
     0%, 100% {
         box-shadow:
