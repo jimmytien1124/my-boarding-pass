@@ -916,7 +916,7 @@ button {
 .secure-line span {
 	opacity: 0.35;
     letter-spacing: 3px;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.18);
 	font-weight: 500;
 }
 .secure-line {
@@ -1570,7 +1570,7 @@ button {
     width: 34px;
   }
 }
-		.hud-action__title::after {
+.hud-action__title::after {
   content: "";
   position: absolute;
   left: -20%;
@@ -1580,13 +1580,16 @@ button {
   background: linear-gradient(
     120deg,
     transparent,
-    rgba(255,255,255,0.5),
+    rgba(255,255,255,0.18),
     transparent
   );
-  transform: skewX(-20deg) translateX(-200%);
-  animation: scanShine 2.5s infinite;
+  transform: skewX(-20deg) scaleX(1.2) translateX(-200%);
+  animation: scanShine 1.6s infinite linear;
+	will-change: transform;
 }
-
+.hud-action:hover .hud-action__title::after {
+  animation-duration: 0.8s;
+}
 @keyframes scanShine {
   to {
     transform: skewX(-20deg) translateX(500%);
