@@ -1595,6 +1595,53 @@ button {
     transform: skewX(-20deg) translateX(500%);
   }
 }
+		.img-btn {
+  all: unset;
+  position: relative;
+  display: block;
+  width: min(92vw, 360px);
+  margin: 20px auto;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.img-btn:hover {
+  transform: translateY(-4px);
+  filter: brightness(1.1);
+}
+
+.btn-bg {
+  width: 100%;
+  display: block;
+}
+
+.text-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.main-text {
+  font-weight: 900;
+  letter-spacing: 4px;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+}
+
+/* 顏色 */
+.accept-btn .main-text {
+  color: #61f6ff;
+}
+
+.gift-btn .main-text {
+  color: #ff5b78;
+}
+
+.back-btn .main-text {
+  color: #c6a94f;
+}
     </style>
 </head>
 <body>
@@ -1714,52 +1761,25 @@ button {
     <div id="typewriter"></div>
 
     <div id="btnGroup">
-  <button class="hud-action hud-action--cyan" onclick="runAcceptEffect()">
-    <span class="hud-action__line"></span>
-    <span class="hud-action__panel hud-action__panel--left">
-      <span class="hud-action__mini">SYS-A</span>
-      <span class="hud-action__mini">PASS KEY</span>
-    </span>
-    <span class="hud-action__core">
-      <span class="hud-action__title">ACCEPT</span>
-      <span class="hud-action__sub">PASSENGER VERIFIED</span>
-    </span>
-    <span class="hud-action__panel hud-action__panel--right">
-      <span class="hud-action__mini">AUTH OK</span>
-      <span class="hud-action__mini">GATE OPEN</span>
-    </span>
+  <button class="img-btn accept-btn" onclick="runAcceptEffect()">
+    <img src="accept.jpeg" class="btn-bg">
+    <div class="text-layer">
+      <div class="main-text">ACCEPT</div>
+    </div>
   </button>
 
-  <button class="hud-action hud-action--red" onclick="transit('pageNotice')">
-    <span class="hud-action__line"></span>
-    <span class="hud-action__panel hud-action__panel--left">
-      <span class="hud-action__mini">WARN-7</span>
-      <span class="hud-action__mini">NOTICE</span>
-    </span>
-    <span class="hud-action__core">
-      <span class="hud-action__title">GIFT NOTICE</span>
-      <span class="hud-action__sub">MEMETIC PROTOCOL 7.3</span>
-    </span>
-    <span class="hud-action__panel hud-action__panel--right">
-      <span class="hud-action__mini">LOCKED</span>
-      <span class="hud-action__mini">READ ONLY</span>
-    </span>
+  <button class="img-btn gift-btn" onclick="transit('pageNotice')">
+    <img src="gift.jpeg" class="btn-bg">
+    <div class="text-layer">
+      <div class="main-text">GIFT NOTICE</div>
+    </div>
   </button>
 
-  <button class="hud-action hud-action--gold" onclick="runLoadingTo('page2')">
-    <span class="hud-action__line"></span>
-    <span class="hud-action__panel hud-action__panel--left">
-      <span class="hud-action__mini">NAV-2</span>
-      <span class="hud-action__mini">RETURN</span>
-    </span>
-    <span class="hud-action__core">
-      <span class="hud-action__title">BACK</span>
-      <span class="hud-action__sub">RETURN PROTOCOL</span>
-    </span>
-    <span class="hud-action__panel hud-action__panel--right">
-      <span class="hud-action__mini">SAFE</span>
-      <span class="hud-action__mini">BK</span>
-    </span>
+  <button class="img-btn back-btn" onclick="runLoadingTo('page2')">
+    <img src="back.jpeg" class="btn-bg">
+    <div class="text-layer">
+      <div class="main-text">BACK</div>
+    </div>
   </button>
 </div>
 </div>
