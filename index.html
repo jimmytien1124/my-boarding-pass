@@ -12,6 +12,8 @@
             --red: #ff4d6d;
             --gold: #c7a43a;
             --purple-glow: rgba(180, 120, 255, 0.15);
+			--primary-color: #00f3ff;
+			--secondary-color: #ff003c;
         }
 
         * { box-sizing: border-box; }
@@ -163,7 +165,6 @@ button {
     cursor: pointer;
     font-family: inherit;
     position: relative;
-    overflow: hidden;
     color: #ffffff;
     background: rgba(255,255,255,0.04);
     backdrop-filter: blur(8px);
@@ -1282,30 +1283,75 @@ button {
     letter-spacing: 0.4px;
 }
 
-/* ===== mobile only ===== */
+
+
+/* 左下裝飾紋 */
+.cyber-btn::before {
+	z-index: 0;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 5%,
+    var(--secondary-color) 5%,
+    var(--secondary-color) 10%,
+    var(--primary-color) 10%
+  );
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* 右下 tag */
+.cyber-btn__tag {
+  position: absolute;
+  font-size: 8px;
+  bottom: 2px;
+  right: 15px;
+  color: var(--primary-color);
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+
+/* 預留 glitch 層 */
+.cyber-btn__glitch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* page3 按鈕群置中 */
+#btnGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* notice back 置中 */
+.notice-back-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+/* 手機版 */
 @media (max-width: 900px) {
-    .hud-frame {
-        overflow: visible;
-    }
+  .cyber-btn {
+	position: relative;
+    width: min(92vw, 280px);
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
 
-    .hud-warning-icon {
-        margin: 14px 0 16px;
-    }
+  .cyber-btn__tag {
+    right: 12px;
+    bottom: 3px;
+  }
 
-    .warn-triangle {
-    width: min(60vw, 220px);
-        max-width: 230px;
-    }
-
-    .warn-exclaim {
-        font-size: 52px;
-    }
-
-    #page2 .hud-message {
-        font-size: 0.95rem;
-        line-height: 1.7;
-        margin: 12px 0 18px;
-    }
+  #btnGroup,
+  .notice-back-wrap {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
     </style>
 </head>
@@ -1426,23 +1472,23 @@ button {
     <div id="typewriter"></div>
 
     <div id="btnGroup">
-    <button class="exo-btn" onclick="runAcceptEffect()">
-        <span class="exo-body">
-            <span class="exo-label">Accept</span>
-        </span>
-    </button>
+  <button class="cyber-btn" onclick="runAcceptEffect()">
+    ACCEPT
+    <span class="cyber-btn__glitch"></span>
+    <span class="cyber-btn__tag">R25</span>
+  </button>
 
-    <button class="exo-btn red" onclick="transit('pageNotice')">
-        <span class="exo-body">
-            <span class="exo-label">Gift Notice</span>
-        </span>
-    </button>
+  <button class="cyber-btn" onclick="transit('pageNotice')">
+    GIFT NOTICE
+    <span class="cyber-btn__glitch"></span>
+    <span class="cyber-btn__tag">SYS</span>
+  </button>
 
-    <button class="exo-btn" onclick="runLoadingTo('page2')">
-        <span class="exo-body">
-            <span class="exo-label">Back</span>
-        </span>
-    </button>
+  <button class="cyber-btn" onclick="runLoadingTo('page2')">
+    BACK
+    <span class="cyber-btn__glitch"></span>
+    <span class="cyber-btn__tag">←</span>
+  </button>
 </div>
 </div>
 <div id="pageNotice" class="page">
@@ -1466,16 +1512,16 @@ button {
     </ul>
 
     <div class="notice-back-wrap">
-        <button class="exo-btn" onclick="runLoadingTo('page3', () => {
-            const g = document.getElementById('btnGroup');
-            g.style.opacity = '1';
-            g.style.pointerEvents = 'auto';
-        })">
-            <span class="exo-body">
-                <span class="exo-label">Back</span>
-            </span>
-        </button>
-    </div>
+  <button class="cyber-btn" onclick="runLoadingTo('page3', () => {
+      const g = document.getElementById('btnGroup');
+      g.style.opacity = '1';
+      g.style.pointerEvents = 'auto';
+  })">
+    BACK
+    <span class="cyber-btn__glitch"></span>
+    <span class="cyber-btn__tag">←</span>
+  </button>
+</div>
 </div>
 
       <div id="pageFinal" class="page">
