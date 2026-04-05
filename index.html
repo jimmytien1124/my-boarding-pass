@@ -14,6 +14,10 @@
             --purple-glow: rgba(180, 120, 255, 0.15);
 			--primary-color: #00f3ff;
 			--secondary-color: #ff003c;
+			
+			--gold-main: #c6a94f;
+			--gold-dark: #7f6a2a;
+			--gold-glow: rgba(198, 169, 79, 0.4);
         }
 
         * { box-sizing: border-box; }
@@ -1286,71 +1290,306 @@ button {
 
 
 /* 左下裝飾紋 */
-.cyber-btn::before {
-	z-index: 0;
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    45deg,
-    transparent 5%,
-    var(--secondary-color) 5%,
-    var(--secondary-color) 10%,
-    var(--primary-color) 10%
-  );
-  opacity: 0.2;
-  pointer-events: none;
-}
-
-/* 右下 tag */
-.cyber-btn__tag {
-  position: absolute;
-  font-size: 8px;
-  bottom: 2px;
-  right: 15px;
-  color: var(--primary-color);
-  letter-spacing: 1px;
-  pointer-events: none;
-}
-
-/* 預留 glitch 層 */
-.cyber-btn__glitch {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-/* page3 按鈕群置中 */
+/* ===== HUD ACTION MODULE BUTTONS ===== */
 #btnGroup {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 26px;
+  margin-top: 34px;
+  width: 100%;
+  padding-left: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-/* notice back 置中 */
 .notice-back-wrap {
   display: flex;
   justify-content: center;
+  margin-top: 22px;
 }
 
-/* 手機版 */
+.hud-action {
+  --ha-main: #00f3ff;
+  --ha-dark: rgba(0, 243, 255, 0.22);
+  --ha-border: rgba(0, 243, 255, 0.62);
+  --ha-glow: rgba(0, 243, 255, 0.22);
+
+  position: relative;
+  width: min(100%, 720px);
+  min-height: 110px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 128px 1fr 128px;
+  align-items: stretch;
+  border: 1px solid var(--ha-border);
+  background:
+    linear-gradient(90deg,
+      rgba(255,255,255,0.03) 0%,
+      rgba(9, 16, 22, 0.92) 18%,
+      rgba(7, 11, 18, 0.96) 82%,
+      rgba(255,255,255,0.03) 100%);
+  clip-path: polygon(2% 0, 92% 0, 100% 50%, 92% 100%, 2% 100%, 0 72%, 0 28%);
+  overflow: hidden;
+  box-shadow:
+    0 0 16px var(--ha-glow),
+    inset 0 0 24px rgba(255,255,255,0.04),
+    inset 0 0 0 1px rgba(255,255,255,0.03);
+  cursor: pointer;
+  transform: translateZ(0);
+  transition: transform 0.22s ease, filter 0.22s ease, box-shadow 0.22s ease;
+}
+
+.hud-action:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.07);
+  box-shadow:
+    0 0 22px var(--ha-glow),
+    0 0 36px rgba(255,255,255,0.06),
+    inset 0 0 24px rgba(255,255,255,0.05);
+}
+
+.hud-action:active {
+  transform: translateY(0) scale(0.985);
+}
+
+.hud-action::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  clip-path: polygon(2% 0, 92% 0, 100% 50%, 92% 100%, 2% 100%, 0 72%, 0 28%);
+  pointer-events: none;
+}
+
+.hud-action::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 8px;
+  height: 3px;
+  background: var(--ha-main);
+  box-shadow: 0 0 14px var(--ha-main);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.hud-action__line {
+  position: absolute;
+  left: -46px;
+  top: 50%;
+  width: 52px;
+  height: 2px;
+  transform: translateY(-50%);
+  background: var(--ha-main);
+  box-shadow: 0 0 12px var(--ha-main);
+  pointer-events: none;
+}
+
+.hud-action__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 12px;
+  min-width: 0;
+}
+
+.hud-action__panel--left {
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.hud-action__panel--right {
+  border-left: 1px solid rgba(255,255,255,0.08);
+  text-align: right;
+}
+
+.hud-action__panel::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
+  pointer-events: none;
+}
+
+.hud-action__mini {
+  font-size: 0.62rem;
+  letter-spacing: 1.2px;
+  line-height: 1.2;
+  color: rgba(255,255,255,0.52);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hud-action__core {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 10px;
+}
+
+.hud-action__core::before,
+.hud-action__core::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 36px;
+  height: 2px;
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-50%);
+}
+
+.hud-action__core::before {
+  left: 8px;
+}
+
+.hud-action__core::after {
+  right: 8px;
+}
+
+.hud-action__title {
+  position: relative;
+  z-index: 2;
+  color: var(--ha-main);
+  font-size: 2.3rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px var(--ha-glow);
+  white-space: nowrap;
+}
+
+.hud-action__sub {
+  position: relative;
+  z-index: 2;
+  color: rgba(255,255,255,0.48);
+  font-size: 0.72rem;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* color themes */
+.hud-action--cyan {
+  --ha-main: #61f6ff;
+  --ha-dark: rgba(97, 246, 255, 0.18);
+  --ha-border: rgba(97, 246, 255, 0.58);
+  --ha-glow: rgba(97, 246, 255, 0.24);
+}
+
+.hud-action--red {
+  --ha-main: #ff5b78;
+  --ha-dark: rgba(255, 91, 120, 0.20);
+  --ha-border: rgba(255, 91, 120, 0.58);
+  --ha-glow: rgba(255, 91, 120, 0.24);
+}
+
+.hud-action--gold {
+  --ha-main: var(--gold-main);
+  --ha-dark: rgba(198, 169, 79, 0.18);
+  --ha-border: rgba(198, 169, 79, 0.58);
+  --ha-glow: rgba(198, 169, 79, 0.24);
+}
+
+/* accent fill */
+.hud-action--cyan .hud-action__panel--left,
+.hud-action--cyan .hud-action__panel--right {
+  background: linear-gradient(180deg, rgba(97,246,255,0.05), transparent);
+}
+
+.hud-action--red .hud-action__panel--left,
+.hud-action--red .hud-action__panel--right {
+  background: linear-gradient(180deg, rgba(255,91,120,0.06), transparent);
+}
+
+.hud-action--gold .hud-action__panel--left,
+.hud-action--gold .hud-action__panel--right {
+  background: linear-gradient(180deg, rgba(198,169,79,0.06), transparent);
+}
+
+/* mobile */
 @media (max-width: 900px) {
-  .cyber-btn {
-	position: relative;
-    width: min(92vw, 280px);
-    font-size: 16px;
-    letter-spacing: 2px;
-  }
-
-  .cyber-btn__tag {
-    right: 12px;
-    bottom: 3px;
-  }
-
   #btnGroup,
   .notice-back-wrap {
     padding-left: 0;
     padding-right: 0;
+  }
+
+  .hud-action {
+    width: min(92vw, 340px);
+    min-height: 86px;
+    grid-template-columns: 72px 1fr 72px;
+  }
+
+  .hud-action__panel {
+    padding: 10px 6px;
+    gap: 4px;
+  }
+
+  .hud-action__mini {
+    font-size: 0.45rem;
+    letter-spacing: 0.6px;
+  }
+
+  .hud-action__title {
+    font-size: 1.25rem;
+    letter-spacing: 2.5px;
+  }
+
+  .hud-action__sub {
+    font-size: 0.5rem;
+    letter-spacing: 0.8px;
+  }
+
+  .hud-action__core::before,
+  .hud-action__core::after {
+    width: 12px;
+  }
+
+  .hud-action__line {
+    left: -28px;
+    width: 34px;
+  }
+}
+		.hud-action__title::after {
+  content: "";
+  position: absolute;
+  left: -20%;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.5),
+    transparent
+  );
+  transform: skewX(-20deg) translateX(-200%);
+  animation: scanShine 2.5s infinite;
+}
+
+@keyframes scanShine {
+  to {
+    transform: skewX(-20deg) translateX(500%);
   }
 }
     </style>
@@ -1472,22 +1711,52 @@ button {
     <div id="typewriter"></div>
 
     <div id="btnGroup">
-  <button class="cyber-btn" onclick="runAcceptEffect()">
-    ACCEPT
-    <span class="cyber-btn__glitch"></span>
-    <span class="cyber-btn__tag">R25</span>
+  <button class="hud-action hud-action--cyan" onclick="runAcceptEffect()">
+    <span class="hud-action__line"></span>
+    <span class="hud-action__panel hud-action__panel--left">
+      <span class="hud-action__mini">SYS-A</span>
+      <span class="hud-action__mini">PASS KEY</span>
+    </span>
+    <span class="hud-action__core">
+      <span class="hud-action__title">ACCEPT</span>
+      <span class="hud-action__sub">PASSENGER VERIFIED</span>
+    </span>
+    <span class="hud-action__panel hud-action__panel--right">
+      <span class="hud-action__mini">AUTH OK</span>
+      <span class="hud-action__mini">GATE OPEN</span>
+    </span>
   </button>
 
-  <button class="cyber-btn" onclick="transit('pageNotice')">
-    GIFT NOTICE
-    <span class="cyber-btn__glitch"></span>
-    <span class="cyber-btn__tag">SYS</span>
+  <button class="hud-action hud-action--red" onclick="transit('pageNotice')">
+    <span class="hud-action__line"></span>
+    <span class="hud-action__panel hud-action__panel--left">
+      <span class="hud-action__mini">WARN-7</span>
+      <span class="hud-action__mini">NOTICE</span>
+    </span>
+    <span class="hud-action__core">
+      <span class="hud-action__title">GIFT NOTICE</span>
+      <span class="hud-action__sub">MEMETIC PROTOCOL 7.3</span>
+    </span>
+    <span class="hud-action__panel hud-action__panel--right">
+      <span class="hud-action__mini">LOCKED</span>
+      <span class="hud-action__mini">READ ONLY</span>
+    </span>
   </button>
 
-  <button class="cyber-btn" onclick="runLoadingTo('page2')">
-    BACK
-    <span class="cyber-btn__glitch"></span>
-    <span class="cyber-btn__tag">←</span>
+  <button class="hud-action hud-action--gold" onclick="runLoadingTo('page2')">
+    <span class="hud-action__line"></span>
+    <span class="hud-action__panel hud-action__panel--left">
+      <span class="hud-action__mini">NAV-2</span>
+      <span class="hud-action__mini">RETURN</span>
+    </span>
+    <span class="hud-action__core">
+      <span class="hud-action__title">BACK</span>
+      <span class="hud-action__sub">RETURN PROTOCOL</span>
+    </span>
+    <span class="hud-action__panel hud-action__panel--right">
+      <span class="hud-action__mini">SAFE</span>
+      <span class="hud-action__mini">BK</span>
+    </span>
   </button>
 </div>
 </div>
@@ -1512,14 +1781,24 @@ button {
     </ul>
 
     <div class="notice-back-wrap">
-  <button class="cyber-btn" onclick="runLoadingTo('page3', () => {
+  <button class="hud-action hud-action--gold" onclick="runLoadingTo('page3', () => {
       const g = document.getElementById('btnGroup');
       g.style.opacity = '1';
       g.style.pointerEvents = 'auto';
   })">
-    BACK
-    <span class="cyber-btn__glitch"></span>
-    <span class="cyber-btn__tag">←</span>
+    <span class="hud-action__line"></span>
+    <span class="hud-action__panel hud-action__panel--left">
+      <span class="hud-action__mini">NAV-2</span>
+      <span class="hud-action__mini">RETURN</span>
+    </span>
+    <span class="hud-action__core">
+      <span class="hud-action__title">BACK</span>
+      <span class="hud-action__sub">RETURN PROTOCOL</span>
+    </span>
+    <span class="hud-action__panel hud-action__panel--right">
+      <span class="hud-action__mini">SAFE</span>
+      <span class="hud-action__mini">BK</span>
+    </span>
   </button>
 </div>
 </div>
