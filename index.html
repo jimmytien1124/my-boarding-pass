@@ -1222,24 +1222,23 @@ button {
 }
 .btn-bg {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
 }
 
 .back-btn {
-    width: 140px !important;
-    height: 360px;
-    margin: 40px auto;
+    width: min(92vw, 360px);
+    margin: 20px auto;
     display: block;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .back-btn .btn-bg {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scale(1.9);
-    transform-origin: center;
+    height: auto;
+    display: block;
+    transform: none;
+    object-fit: contain;
 }
 .text-layer {
   position: absolute;
@@ -1300,21 +1299,17 @@ button {
   }
 
 .back-btn {
-    width: 140px !important;
-    height: 360px;
-    margin: 40px auto;
-    display: block;
-    overflow: hidden;
+    width: min(92vw, 360px);
+    margin: 18px auto;
 }
 
 .back-btn .btn-bg {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scale(1.9);
-    transform-origin: center;
+    height: auto;
+    display: block;
+    transform: none;
+    object-fit: contain;
 }
-
 }
 @keyframes breathGlow {
     0%, 100% {
