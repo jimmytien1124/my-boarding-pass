@@ -1183,6 +1183,11 @@ button {
     overflow: visible;
     background: transparent;
 }
+.accept-btn,
+.back-btn {
+    width: 82.8vw;
+    max-width: 684px;
+}
 #pageNotice {
     text-align: left;
 }
@@ -1225,29 +1230,18 @@ button {
     height: auto;
     display: block;
 }
-.accept-btn .btn-bg {
-    transform: scale(0.92);
-    transform-origin: center;
-}
-
-.back-btn .btn-bg {
-    transform: scale(0.92);
-    transform-origin: center;
-}
 .back-btn {
-    width: min(92vw, 760px);
-    margin: 10px auto;
+    margin: 2px auto;
     display: block;
     overflow: visible;
 }
-
-.back-btn .btn-bg {
+.btn-bg {
     width: 100%;
     height: auto;
     display: block;
-    transform: none;
     object-fit: contain;
 }
+
 .text-layer {
   position: absolute;
   inset: 0;
@@ -1301,11 +1295,15 @@ button {
     transform: translateY(-1%);
   }
 
-.img-btn,
-.back-btn {
+.img-btn {
     width: 92vw;
     max-width: 760px;
     margin: 2px auto;
+}
+.accept-btn,
+.back-btn {
+    width: 82.8vw;
+    max-width: 684px;
 }
 }
 @keyframes breathGlow {
