@@ -460,8 +460,8 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    margin-top: 10px;
+    gap: 0;
+    margin-top: 4px;
     width: 100%;
     padding-left: 0;
     opacity: 0;
@@ -1185,8 +1185,35 @@ button {
 }
 .accept-btn,
 .back-btn {
-    width: 82.8vw;
-    max-width: 684px;
+    width: 74vw;
+    max-width: 600px;
+}
+
+.accept-btn {
+    transform: translateY(12px);
+}
+
+.gift-btn {
+    transform: translateY(0);
+}
+
+.back-btn {
+    transform: translateY(-12px);
+}
+
+.accept-btn:hover {
+  transform: translateY(8px);
+  filter: brightness(1.1);
+}
+
+.gift-btn:hover {
+  transform: translateY(-4px);
+  filter: brightness(1.1);
+}
+
+.back-btn:hover {
+  transform: translateY(-16px);
+  filter: brightness(1.1);
 }
 #pageNotice {
     text-align: left;
@@ -1221,10 +1248,7 @@ button {
     justify-content: center;
     margin-top: 12px;
 }
-.img-btn:hover {
-  transform: translateY(-4px);
-  filter: brightness(1.1);
-}
+
 .btn-bg {
     width: 100%;
     height: auto;
@@ -1302,8 +1326,8 @@ button {
 }
 .accept-btn,
 .back-btn {
-    width: 82.8vw;
-    max-width: 684px;
+    width: 72vw;
+    max-width: 580px;
 }
 }
 @keyframes breathGlow {
@@ -1321,6 +1345,10 @@ button {
             inset 0 0 0 1px rgba(255,255,255,0.05),
             inset 0 0 24px rgba(0,0,0,0.4);
     }
+}
+
+.hud-frame.breath {
+    animation: breathGlow 2.8s ease-in-out infinite;
 }
     </style>
 </head>
