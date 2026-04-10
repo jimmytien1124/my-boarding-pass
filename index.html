@@ -1735,7 +1735,11 @@ function runLoadingTo(targetPage, cb) {
                   bg.style.pointerEvents = "auto";
               }
           }
-
+box.onclick = () => {
+        if (isTyping) {
+            skipLine = true;
+        }
+    };
           typeLine();
       }
 	  // 👉 等畫面載入完再綁事件（避免抓不到元素）
