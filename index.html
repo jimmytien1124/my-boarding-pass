@@ -1754,11 +1754,14 @@ function runLoadingTo(targetPage, cb) {
         typeChar();
     }
 
-    box.onclick = () => {
-        if (isTyping) {
-            skipLine = true;
-        }
-    };
+box.addEventListener('click', handleSkip);
+box.addEventListener('touchstart', handleSkip);
+
+function handleSkip() {
+    if (isTyping) {
+        skipLine = true;
+    }
+}
 
     typeLine();
 }
@@ -1777,10 +1780,23 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-	  window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
     const frame = document.querySelector('.hud-frame');
     if (frame) frame.classList.add('breath');
+
+    const skipArea = document.getElementById('page3');
+
+    if (skipArea) {
+        skipArea.addEventListener('click', handleSkip);
+        skipArea.addEventListener('touchstart', handleSkip);
+    }
 });
+
+function handleSkip() {
+    if (isTyping) {
+        skipLine = true;
+    }
+}
   </script>
 </body>
 </html>
