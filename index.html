@@ -1707,43 +1707,61 @@ function runLoadingTo(targetPage, cb) {
       ];
 
       function startTypewriter() {
-          const box = document.getElementById('typewriter');
-          const bg = document.getElementById('btnGroup');
-          box.innerHTML = "";
-          bg.style.opacity = "0";
-          bg.style.pointerEvents = "none";
+    const box = document.getElementById('typewriter');
+    const bg = document.getElementById('btnGroup');
 
-          let lIdx = 0;
+    box.innerHTML = "";
+    bg.style.opacity = "0";
+    bg.style.pointerEvents = "none";
 
-          function typeLine() {
-              if (lIdx < lines.length) {
-                  const div = document.createElement('div');
-                  box.appendChild(div);
+    let lIdx = 0;
 
-                  let cIdx = 0;
-                  function typeChar() {
-                      if (cIdx < lines[lIdx].length) {
-                          div.innerHTML += lines[lIdx].charAt(cIdx++);
-                          setTimeout(typeChar, 45);
-                      } else {
-                          lIdx++;
-                          setTimeout(typeLine, 600);
-                      }
-                  }
-                  typeChar();
-              } else {
-                          bg.style.opacity = "1";
-                        bg.style.transform = "translateY(0)";
-                  bg.style.pointerEvents = "auto";
-              }
-          }
-box.onclick = () => {
+    function typeLine() {
+        if (lIdx >= lines.length) {
+            bg.style.opacity = "1";
+            bg.style.transform = "translateY(0)";
+            bg.style.pointerEvents = "auto";
+            isTyping = false;
+            return;
+        }
+
+        const div = document.createElement('div');
+        box.appendChild(div);
+
+        let cIdx = 0;
+        isTyping = true;
+        skipLine = false;
+
+        function typeChar() {
+            if (skipLine) {
+                div.innerHTML = lines[lIdx];
+                isTyping = false;
+                lIdx++;
+                setTimeout(typeLine, 250);
+                return;
+            }
+
+            if (cIdx < lines[lIdx].length) {
+                div.innerHTML += lines[lIdx].charAt(cIdx++);
+                setTimeout(typeChar, 45);
+            } else {
+                isTyping = false;
+                lIdx++;
+                setTimeout(typeLine, 600);
+            }
+        }
+
+        typeChar();
+    }
+
+    box.onclick = () => {
         if (isTyping) {
             skipLine = true;
         }
     };
-          typeLine();
-      }
+
+    typeLine();
+}
 	  // 👉 等畫面載入完再綁事件（避免抓不到元素）
 window.addEventListener('DOMContentLoaded', () => {
     const btn = document.querySelector('.hud-confirm-btn');
