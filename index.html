@@ -1626,7 +1626,7 @@ function runLoadingTo(targetPage, cb) {
         txt.innerText = p + '%';
     }, 50);
 }
-      function runAcceptEffect() {
+function runAcceptEffect() {
     const flash = document.getElementById('acceptFlash');
     const frame = document.getElementById('mainFrame');
 
@@ -1636,22 +1636,33 @@ function runLoadingTo(targetPage, cb) {
     void flash.offsetWidth;
     void frame.offsetWidth;
 
-frame.classList.add('glitch');
-setTimeout(() => {
-    frame.classList.remove('glitch');
-    setTimeout(() => {
-        frame.classList.add('glitch');
-        setTimeout(() => frame.classList.remove('glitch'), 200);
-    }, 80);
-}, 200);
+    // 第一段 glitch：立刻出現
+    frame.classList.add('glitch');
 
+    setTimeout(() => {
+        frame.classList.remove('glitch');
+
+        // 第二段 glitch：補一下
+        setTimeout(() => {
+            frame.classList.add('glitch');
+
+            setTimeout(() => {
+                frame.classList.remove('glitch');
+            }, 180);
+        }, 60);
+    }, 160);
+
+    // flash 提早，不要拖太久
     setTimeout(() => {
         flash.classList.add('active');
+    }, 120);
 
+    // 切頁也提早
+    setTimeout(() => {
         transit('pageFinal', () => {
             flash.classList.remove('active');
         });
-    }, 1800);
+    }, 420);
 }
 	  function confirmBoarding() {
 		  
@@ -1773,10 +1784,6 @@ setTimeout(() => {
 
         typeChar();
     }
-
-box.addEventListener('click', handleSkip);
-box.addEventListener('touchstart', handleSkip);
-
     typeLine();
 }
 	  // 👉 等畫面載入完再綁事件（避免抓不到元素）
