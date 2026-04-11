@@ -1498,18 +1498,34 @@ button {
         PASSENGER VERIFIED
     </div>
 
-    <ul class="notice-list">
-        <li>This gift is one-way and non-returnable.</li>
-        <li>It may not always be perfect, but it will always be sincere.</li>
-        <li>Care is expected, and care will be given in return.</li>
-        <li>Honesty is required, even when it may hurt.</li>
-        <li>Replies shouldn’t take too long. Being left waiting may make this gift a little sad.</li>
-        <li>Occasional photos are appreciated. They tend to make this gift very happy.</li>
-        <li>If something feels wrong, communication is required.</li>
-        <li>Silence is not a solution.</li>
-        <li>No perfection is needed, only honesty.</li>
-        <li>Continue only if you mean it.</li>
-    </ul>
+<ul class="notice-list">
+    <li>This gift is one-way and non-returnable.</li>
+
+    <li>It may not always be perfect,<br>
+    but it will always be sincere.</li>
+
+    <li>Care is expected—<br>
+    and care will always be returned.</li>
+
+    <li>Honesty is required,<br>
+    even when it’s difficult.</li>
+
+    <li>Replies don’t have to be instant,<br>
+    but being left waiting… might make this gift a little sad.</li>
+
+    <li>Occasional photos are appreciated—<br>
+    they tend to make this gift very happy.</li>
+
+    <li>If something feels wrong,<br>
+    please say it.</li>
+
+    <li>Silence is not a solution.</li>
+
+    <li>Perfection isn’t needed.<br>
+    Only honesty.</li>
+
+    <li>Continue… only if you truly mean it.</li>
+</ul>
 
 <div class="notice-back-wrap">
     <button class="img-btn back-btn" onclick="runLoadingTo('page3', () => {
@@ -1756,12 +1772,6 @@ function runLoadingTo(targetPage, cb) {
 
 box.addEventListener('click', handleSkip);
 box.addEventListener('touchstart', handleSkip);
-
-function handleSkip() {
-    if (isTyping) {
-        skipLine = true;
-    }
-}
 
     typeLine();
 }
